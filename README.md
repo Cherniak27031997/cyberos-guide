@@ -19,21 +19,21 @@
 (стилі й скрипт), `shots/` (знімки) і `videos/` (відео проходу).
 Жодного бекенду: це звичайні файли, які відкриваються і з диска.
 
-## Публікація на GitHub Pages
+## Де це живе
 
-```bash
-# 1. створити порожній репозиторій на GitHub (наприклад cyberos-guide)
-# 2. підключити й залити
-git remote add origin git@github.com:<акаунт>/cyberos-guide.git
-git push -u origin main
-# 3. Settings → Pages → Source: Deploy from a branch → main / (root)
-```
+**https://cherniak27031997.github.io/cyberos-guide/**
 
-Через хвилину сайт буде на `https://<акаунт>.github.io/cyberos-guide/`.
-Файл `.nojekyll` уже є — Jekyll не потрібен і нічого не переписує.
+GitHub Pages віддають сайт із ветки `main`, тека `/` (root). Тобто
+достатньо запушити в `main` — за хвилину зміни вже на сайті, жодних
+Actions не потрібно. Файл `.nojekyll` вимикає Jekyll, щоб він нічого не
+переписував.
 
-Для приватного репозиторію Pages доступні лише на платному плані. Якщо
-план безкоштовний — репозиторій має бути публічним.
+Спроба вмикати Pages через Actions (`configure-pages` з
+`enablement: true`) у новому репозиторії падає: типово `GITHUB_TOKEN`
+має лише права на читання, тому workflow не може ввімкнути Pages сам.
+Тому джерело виставлене вручну в Settings → Pages, а workflow прибраний.
+
+Репозиторій публічний — на безкоштовному плані Pages інакше не працюють.
 
 ## Звідки беруться сторінки
 
