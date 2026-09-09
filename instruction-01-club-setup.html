@@ -121,6 +121,8 @@
     border: 1px solid transparent;
   }
   .rail a:hover, .rail a:focus-visible { background: var(--accent-soft); color: var(--accent); outline: none; }
+  .rail a.rail-home { border-color: var(--line); background: var(--surface); color: var(--ink-2); }
+  .rail a.rail-home i { background: none; color: var(--ink-2); }
   .rail a.done { color: var(--ok); }
   .rail a i {
     display: grid; place-items: center;
@@ -265,6 +267,14 @@
   @media (prefers-reduced-motion: reduce) { * { transition: none !important; animation: none !important; } }
 
   /* ── навігація між розділами ───────────────────────────── */
+  .home-link {
+    display: inline-flex; align-items: center; gap: 7px; margin: 22px 0 -8px;
+    padding: 8px 13px; border: 1px solid var(--line); border-radius: 999px;
+    background: var(--surface); color: var(--ink-2); text-decoration: none;
+    font: 500 13.5px/1 var(--body-font);
+  }
+  .home-link:hover, .home-link:focus-visible { border-color: var(--accent); color: var(--accent); outline: none; }
+  .home-link span { font-size: 15px; line-height: 1; }
   .chapters { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 40px; }
   .chapters a {
     display: inline-flex; align-items: center; gap: 8px;
@@ -281,6 +291,7 @@
 </head>
 <body>
 <div class="wrap">
+  <a class="home-link" href="index.html"><span>&#8592;</span>Усі розділи інструкції</a>
   <header class="masthead">
     <p class="kicker">CyberOS · інструкція, розділ 1</p>
     <h1>Заведення клубу: від пошти до кабінету</h1>
@@ -298,6 +309,7 @@
   </header>
 
   <nav class="rail" aria-label="Кроки розділу">
+    <a class="rail-home" href="index.html"><i>&#9666;</i>Розділи</a>
     <a href="#step-1" data-rail="1"><i>1</i>Реєстрація</a>
     <a href="#step-2" data-rail="2"><i>2</i>Код із пошти</a>
     <a href="#step-3" data-rail="3"><i>3</i>Клуб і години</a>
@@ -496,6 +508,7 @@
   </main>
 
   <nav class="chapters" aria-label="Розділи інструкції">
+    <a href="index.html"><i>&#9666;</i>Усі розділи</a>
     <a href="instruction-01-club-setup.html" class="current"><i>01</i>Заведення клубу</a>
     <a href="instruction-02-zones-devices.html"><i>02</i>Зони і пристрої</a>
     <a href="instruction-03-tariffs.html"><i>03</i>Тарифи</a>

@@ -104,6 +104,8 @@
     border: 1px solid transparent;
   }
   .rail a:hover, .rail a:focus-visible { background: var(--accent-soft); color: var(--accent); outline: none; }
+  .rail a.rail-home { border-color: var(--line); background: var(--surface); }
+  .rail a.rail-home i { background: none; color: var(--ink-2); }
   .rail a.done { color: var(--ok); }
   .rail a i {
     display: grid; place-items: center;
@@ -249,6 +251,16 @@
   .next ol b { color: var(--ink); }
   footer { margin-top: 44px; padding-top: 20px; border-top: 1px solid var(--line); color: var(--muted); font-size: 13.5px; display: flex; flex-wrap: wrap; gap: 6px 18px; }
   @media (prefers-reduced-motion: reduce) { * { transition: none !important; animation: none !important; } }
+
+  /* ── повернення на головну ─────────────────────────────── */
+  .home-link {
+    display: inline-flex; align-items: center; gap: 7px; margin: 22px 0 -8px;
+    padding: 8px 13px; border: 1px solid var(--line); border-radius: 999px;
+    background: var(--surface); color: var(--ink-2); text-decoration: none;
+    font: 500 13.5px/1 var(--body-font);
+  }
+  .home-link:hover, .home-link:focus-visible { border-color: var(--accent); color: var(--accent); outline: none; }
+  .home-link span { font-size: 15px; line-height: 1; }
 
   /* ── навігація між розділами ───────────────────────────── */
   .chapters { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 40px; }

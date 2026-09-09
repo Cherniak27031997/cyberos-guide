@@ -121,6 +121,8 @@
     border: 1px solid transparent;
   }
   .rail a:hover, .rail a:focus-visible { background: var(--accent-soft); color: var(--accent); outline: none; }
+  .rail a.rail-home { border-color: var(--line); background: var(--surface); }
+  .rail a.rail-home i { background: none; color: var(--ink-2); }
   .rail a.done { color: var(--ok); }
   .rail a i {
     display: grid; place-items: center;
@@ -267,6 +269,16 @@
   footer { margin-top: 44px; padding-top: 20px; border-top: 1px solid var(--line); color: var(--muted); font-size: 13.5px; display: flex; flex-wrap: wrap; gap: 6px 18px; }
   @media (prefers-reduced-motion: reduce) { * { transition: none !important; animation: none !important; } }
 
+  /* ── повернення на головну ─────────────────────────────── */
+  .home-link {
+    display: inline-flex; align-items: center; gap: 7px; margin: 22px 0 -8px;
+    padding: 8px 13px; border: 1px solid var(--line); border-radius: 999px;
+    background: var(--surface); color: var(--ink-2); text-decoration: none;
+    font: 500 13.5px/1 var(--body-font);
+  }
+  .home-link:hover, .home-link:focus-visible { border-color: var(--accent); color: var(--accent); outline: none; }
+  .home-link span { font-size: 15px; line-height: 1; }
+
   /* ── навігація між розділами ───────────────────────────── */
   .chapters { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 40px; }
   .chapters a {
@@ -284,6 +296,7 @@
 </head>
 <body>
 <div class="wrap">
+  <a class="home-link" href="index.html"><span>&#8592;</span>Усі розділи інструкції</a>
   <header class="masthead">
     <p class="kicker">CyberOS · інструкція, розділ 7</p>
     <h1>Клієнти: QR і ручне заведення</h1>
@@ -296,6 +309,7 @@
   </header>
 
   <nav class="rail" aria-label="Кроки розділу">
+    <a class="rail-home" href="index.html"><i>&#9666;</i>Розділи</a>
     <a href="#step-1" data-rail=1><i>1</i>Два шляхи</a>
     <a href="#step-2" data-rail=2><i>2</i>QR клубу</a>
     <a href="#step-3" data-rail=3><i>3</i>Вручну</a>
@@ -350,7 +364,7 @@
         <ol class="hints" data-shot="72-club-qr"><li data-key="72-club-qr:qr"><span class="hint-num">1</span><span class="hint-text"><b>QR клубу</b> — гість наводить камеру телефона, потрапляє в Telegram-бот CyberOS ID, тисне «Старт» і реєструється сам. Клієнт зʼявляється у вашому списку без участі персоналу.</span></li>
 <li data-key="72-club-qr:link"><span class="hint-num">2</span><span class="hint-text"><b>Те саме посилання текстом</b> — його можна кинути в сторіс, чат клубу або на сайт. Код у посиланні привʼязаний саме до вашого клубу.</span></li>
 <li data-key="72-club-qr:download"><span class="hint-num">3</span><span class="hint-text"><b>Завантажити</b> — картинка QR для друку. Найкраще працює наліпка на стійці й на кожному столі.</span></li>
-<li data-key="72-club-qr:refresh"><span class="hint-num">4</span><span class="hint-text"><b>Оновити код</b> — робить старий QR недійсним. Тисніть, якщо роздруківка загубилась або код потрапив не туди.</span></li></ol>
+<li data-key="72-club-qr:refresh"><span class="hint-num">4</span><span class="hint-text"><b>Оновити код</b> — видає новий код і в ту ж мить вимикає старий. Тисніть лише якщо код справді втік не туди.</span></li></ol>
         <figure>
           <div class="shot" id="shot-72-club-qr">
             <img src="shots/crop-72-club-qr.png" alt="QR для реєстрації: картинка, посилання, завантаження для друку й оновлення коду.">
@@ -380,7 +394,7 @@
         </figure>
       </div>
       <div class="note"><span class="note-tag">Як це виглядає для гостя</span><span>Камера телефона → бот <b>CyberOS ID</b> → кнопка <b>«Старт»</b> → коротка реєстрація. Далі він уже у вашому списку клієнтів, а на клубному ПК заходить за QR — без пароля. Той самий акаунт працює в будь-якому клубі на CyberOS, тому постійному гравцю не треба реєструватися заново.</span></div>
-      <div class="note note--warn"><span class="note-tag">Код варто берегти</span><span>QR у посиланні — це запрошення у ваш клуб. Якщо роздруківка пішла не туди або ви публікували код, натисніть «Оновити код»: старий перестане працювати, а новий треба буде передрукувати.</span></div>
+      <div class="note note--warn"><span class="note-tag">Оновлення коду — не безкоштовна дія</span><span>Старий QR перестає працювати одразу, і замінити його треба <b>всюди</b>, де він уже є: наліпки на стійці й на столах, посилання в Instagram і Telegram, пост із рекламою, сайт, візитки. Поки десь висить старий код, гість сканує його й потрапляє в нікуди — а ви про це навіть не дізнаєтесь. Тому оновлюйте тільки тоді, коли код справді втік не туди, і одразу складіть список місць, де його треба перевісити.</span></div>
       <label class="check"><input type="checkbox" data-step="2"> QR роздрукований і лежить на стійці</label>
     </section>
 
@@ -515,6 +529,7 @@
   </main>
 
   <nav class="chapters" aria-label="Розділи інструкції">
+    <a href="index.html"><i>◂</i>Усі розділи</a>
     <a href="instruction-01-club-setup.html"><i>01</i>Заведення клубу</a>
     <a href="instruction-02-zones-devices.html"><i>02</i>Зони і пристрої</a>
     <a href="instruction-03-tariffs.html"><i>03</i>Тарифи</a>
