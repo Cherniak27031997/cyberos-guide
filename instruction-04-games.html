@@ -1,0 +1,545 @@
+<!doctype html>
+<html lang="uk">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="light dark">
+<meta name="description" content="Готова бібліотека, лаунчери, своя гра й база застосунків.">
+<style>
+  html, body { margin: 0; }
+  img { max-width: 100%; }
+  [hidden] { display: none !important; }
+</style>
+<title>Ігри та лаунчери CyberOS</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Manrope:wght@600;800&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+:root {
+    --ink: #0F1425;
+    --ink-2: #2B3450;
+    --muted: #5A6280;
+    --paper: #F7F8FB;
+    --surface: #FFFFFF;
+    --line: #E2E5EE;
+    --accent: #4F46E5;
+    --accent-soft: #EEF0FE;
+    --warn: #B45309;
+    --warn-soft: #FEF6E7;
+    --ok: #047857;
+    --ok-soft: #E9F6F1;
+    --shadow: 0 1px 2px rgba(15, 20, 37, .06), 0 12px 28px -18px rgba(15, 20, 37, .35);
+    --radius: 10px;
+    --step-font: 'Manrope', 'Trebuchet MS', sans-serif;
+    --body-font: 'IBM Plex Sans', 'Helvetica Neue', Arial, sans-serif;
+    --mono-font: 'IBM Plex Mono', ui-monospace, 'SF Mono', Menlo, monospace;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --ink: #EEF1F8;
+      --ink-2: #C6CCDD;
+      --muted: #949CB5;
+      --paper: #0B0F1A;
+      --surface: #131926;
+      --line: #262E42;
+      --accent: #8B85F5;
+      --accent-soft: #1D2237;
+      --warn: #E9A23B;
+      --warn-soft: #2A2113;
+      --ok: #4BC299;
+      --ok-soft: #12261F;
+      --shadow: 0 1px 2px rgba(0, 0, 0, .5), 0 16px 34px -20px rgba(0, 0, 0, .8);
+    }
+  }
+  :root[data-theme="dark"] {
+    --ink: #EEF1F8;
+    --ink-2: #C6CCDD;
+    --muted: #949CB5;
+    --paper: #0B0F1A;
+    --surface: #131926;
+    --line: #262E42;
+    --accent: #8B85F5;
+    --accent-soft: #1D2237;
+    --warn: #E9A23B;
+    --warn-soft: #2A2113;
+    --ok: #4BC299;
+    --ok-soft: #12261F;
+    --shadow: 0 1px 2px rgba(0, 0, 0, .5), 0 16px 34px -20px rgba(0, 0, 0, .8);
+  }
+
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    background: var(--paper);
+    color: var(--ink);
+    font: 400 16px/1.62 var(--body-font);
+    -webkit-font-smoothing: antialiased;
+  }
+  .wrap { max-width: 1120px; margin: 0 auto; padding: 0 24px 96px; }
+
+  /* ── шапка ─────────────────────────────────────────────── */
+  .masthead { padding: 56px 0 28px; border-bottom: 1px solid var(--line); }
+  .kicker {
+    font: 500 12px/1 var(--mono-font);
+    letter-spacing: .14em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin: 0 0 14px;
+  }
+  h1 {
+    font: 800 clamp(32px, 5vw, 46px)/1.08 var(--step-font);
+    letter-spacing: -.02em;
+    margin: 0 0 14px;
+    text-wrap: balance;
+  }
+  .lede { margin: 0; max-width: 62ch; color: var(--ink-2); font-size: 17px; }
+  .facts {
+    display: flex; flex-wrap: wrap; gap: 10px 28px;
+    margin: 26px 0 0; padding: 0; list-style: none;
+  }
+  .facts div { display: flex; flex-direction: column; gap: 2px; }
+  .facts dt { font: 500 11px/1 var(--mono-font); letter-spacing: .1em; text-transform: uppercase; color: var(--muted); }
+  .facts dd { margin: 0; font: 600 15px/1.3 var(--body-font); }
+
+  /* ── навігація кроків ──────────────────────────────────── */
+  .rail {
+    position: sticky; top: 0; z-index: 20;
+    display: flex; gap: 6px; align-items: center;
+    padding: 12px 0; margin-bottom: 8px;
+    background: color-mix(in srgb, var(--paper) 92%, transparent);
+    backdrop-filter: blur(8px);
+    border-bottom: 1px solid var(--line);
+    overflow-x: auto;
+  }
+  .rail a {
+    flex: 0 0 auto;
+    display: inline-flex; align-items: center; gap: 8px;
+    padding: 7px 13px 7px 9px;
+    border-radius: 999px;
+    color: var(--ink-2); text-decoration: none;
+    font: 600 13.5px/1 var(--body-font);
+    border: 1px solid transparent;
+  }
+  .rail a:hover, .rail a:focus-visible { background: var(--accent-soft); color: var(--accent); outline: none; }
+  .rail a.done { color: var(--ok); }
+  .rail a i {
+    display: grid; place-items: center;
+    width: 20px; height: 20px; border-radius: 50%;
+    background: var(--accent-soft); color: var(--accent);
+    font: 600 11px/1 var(--mono-font); font-style: normal;
+  }
+  .rail a.done i { background: var(--ok-soft); color: var(--ok); }
+
+  /* ── крок ──────────────────────────────────────────────── */
+  .step { padding: 52px 0; border-bottom: 1px solid var(--line); scroll-margin-top: 68px; }
+  .step:last-of-type { border-bottom: 0; }
+  .step-head { display: grid; grid-template-columns: 54px 1fr; gap: 18px; align-items: start; }
+  .step-num {
+    font: 800 34px/1 var(--step-font);
+    color: var(--accent);
+    letter-spacing: -.03em;
+    font-variant-numeric: tabular-nums;
+  }
+  .step h2 { font: 600 clamp(23px, 3vw, 29px)/1.2 var(--step-font); margin: 0 0 8px; letter-spacing: -.015em; text-wrap: balance; }
+  .step-head p { margin: 0; color: var(--ink-2); max-width: 64ch; }
+  .step-body { margin-top: 28px; display: grid; grid-template-columns: minmax(300px, 380px) 1fr; gap: 28px; align-items: start; }
+  @media (max-width: 900px) { .step-body { grid-template-columns: 1fr; } }
+
+  /* ── підказки ──────────────────────────────────────────── */
+  .hints { margin: 0; padding: 0; list-style: none; display: flex; flex-direction: column; gap: 2px; }
+  .hints li {
+    display: grid; grid-template-columns: 24px 1fr; gap: 12px;
+    padding: 11px 12px; border-radius: 8px;
+    border: 1px solid transparent;
+    cursor: default;
+    transition: background .14s ease, border-color .14s ease;
+  }
+  .hints li:hover, .hints li.on { background: var(--accent-soft); border-color: color-mix(in srgb, var(--accent) 28%, transparent); }
+  .hint-num {
+    display: grid; place-items: center;
+    width: 24px; height: 24px; border-radius: 50%;
+    background: var(--accent); color: #fff;
+    font: 600 12px/1 var(--mono-font);
+  }
+  .hint-text { font-size: 14.6px; color: var(--ink-2); }
+  .hint-text b { color: var(--ink); font-weight: 600; }
+
+  /* ── скріншот з рамками ────────────────────────────────── */
+  figure { margin: 0; }
+  .shot {
+    position: relative;
+    border: 1px solid var(--line); border-radius: var(--radius);
+    background: var(--surface); box-shadow: var(--shadow);
+    overflow: hidden;
+  }
+  .shot img { display: block; width: 100%; height: auto; }
+  .spot {
+    position: absolute;
+    margin: -5px 0 0 -5px; padding: 5px;
+    width: auto; background: transparent;
+    border: 2px solid var(--accent); border-radius: 7px;
+    box-shadow: 0 0 0 3px color-mix(in srgb, var(--accent) 18%, transparent);
+    cursor: pointer; opacity: .95;
+    transition: box-shadow .14s ease, transform .14s ease;
+  }
+  .spot:hover, .spot.on { box-shadow: 0 0 0 6px color-mix(in srgb, var(--accent) 30%, transparent); transform: scale(1.015); }
+  .spot:focus-visible { outline: 3px solid var(--warn); outline-offset: 3px; }
+  .spot-num {
+    position: absolute; top: -12px; left: -12px;
+    display: grid; place-items: center;
+    width: 22px; height: 22px; border-radius: 50%;
+    background: var(--accent); color: #fff;
+    font: 600 12px/1 var(--mono-font);
+    box-shadow: 0 1px 4px rgba(0, 0, 0, .3);
+  }
+  .spot-num.tr { left: auto; right: -12px; }
+  .spot-num.bl { top: auto; bottom: -12px; }
+  .spot-num.br { top: auto; bottom: -12px; left: auto; right: -12px; }
+  .shot.bare .spot { opacity: 0; pointer-events: none; }
+  .shot-bar {
+    display: flex; align-items: center; justify-content: space-between; gap: 12px;
+    margin-top: 10px;
+  }
+  figcaption { font: 400 13px/1.5 var(--body-font); color: var(--muted); }
+  .toggle {
+    flex: 0 0 auto;
+    display: inline-flex; align-items: center; gap: 7px;
+    font: 500 12.5px/1 var(--body-font); color: var(--ink-2);
+    padding: 7px 11px; border: 1px solid var(--line); border-radius: 999px;
+    background: var(--surface); cursor: pointer;
+  }
+  .toggle:hover { border-color: var(--accent); color: var(--accent); }
+
+  /* ── плашки ────────────────────────────────────────────── */
+  .note {
+    display: grid; grid-template-columns: auto 1fr; gap: 12px;
+    margin: 22px 0 0; padding: 14px 16px;
+    border-radius: 8px; font-size: 14.8px;
+    border-left: 3px solid var(--accent); background: var(--accent-soft); color: var(--ink-2);
+  }
+  .note b { color: var(--ink); }
+  .note--warn { border-left-color: var(--warn); background: var(--warn-soft); }
+  .note--ok { border-left-color: var(--ok); background: var(--ok-soft); }
+  .note-tag { font: 500 11px/1.5 var(--mono-font); letter-spacing: .08em; text-transform: uppercase; color: var(--warn); }
+  .note--ok .note-tag { color: var(--ok); }
+  .note:not(.note--warn):not(.note--ok) .note-tag { color: var(--accent); }
+  code {
+    font: 400 .92em/1.4 var(--mono-font);
+    background: color-mix(in srgb, var(--ink) 7%, transparent);
+    padding: .12em .38em; border-radius: 4px;
+    word-break: break-word;
+  }
+
+  /* ── лист ──────────────────────────────────────────────── */
+  .letter { display: grid; grid-template-columns: minmax(240px, 320px) 1fr; gap: 26px; align-items: start; margin-top: 26px; }
+  @media (max-width: 900px) { .letter { grid-template-columns: 1fr; } }
+  .letter-meta { margin: 0; display: flex; flex-direction: column; gap: 14px; }
+  .letter-meta div { display: grid; gap: 3px; }
+  .letter-meta dt { font: 500 11px/1 var(--mono-font); letter-spacing: .1em; text-transform: uppercase; color: var(--muted); }
+  .letter-meta dd { margin: 0; font: 500 14.5px/1.45 var(--body-font); }
+  .letter-shot { border: 1px solid var(--line); border-radius: var(--radius); overflow: hidden; background: var(--surface); box-shadow: var(--shadow); max-height: 460px; overflow-y: auto; }
+  .letter-shot img { display: block; width: 100%; height: auto; }
+
+  /* ── відео ─────────────────────────────────────────────── */
+  .video-block { scroll-margin-top: 68px; margin-top: 44px; padding-top: 34px; border-top: 1px dashed var(--line); }
+  .video-block h3 { font: 600 20px/1.25 var(--step-font); margin: 0 0 6px; }
+  .video-block p { margin: 0 0 16px; color: var(--ink-2); max-width: 62ch; }
+  video { width: 100%; border-radius: var(--radius); border: 1px solid var(--line); background: #000; box-shadow: var(--shadow); }
+
+  /* ── чекліст ───────────────────────────────────────────── */
+  .check {
+    display: flex; align-items: center; gap: 10px;
+    margin-top: 26px; padding: 12px 14px;
+    border: 1px dashed var(--line); border-radius: 8px;
+    font: 500 14.5px/1 var(--body-font); color: var(--ink-2);
+    cursor: pointer; user-select: none;
+    background: var(--surface);
+  }
+  .check input { width: 17px; height: 17px; accent-color: var(--ok); cursor: pointer; }
+  .check.done { border-style: solid; border-color: var(--ok); color: var(--ok); background: var(--ok-soft); }
+
+  /* ── фінал ─────────────────────────────────────────────── */
+  .next { margin-top: 52px; padding: 30px; border: 1px solid var(--line); border-radius: var(--radius); background: var(--surface); box-shadow: var(--shadow); }
+  .next h2 { font: 600 24px/1.2 var(--step-font); margin: 0 0 8px; }
+  .next p { margin: 0 0 18px; color: var(--ink-2); max-width: 64ch; }
+  .next ol { margin: 0; padding-left: 22px; display: grid; gap: 8px; color: var(--ink-2); }
+  .next ol b { color: var(--ink); }
+  footer { margin-top: 44px; padding-top: 20px; border-top: 1px solid var(--line); color: var(--muted); font-size: 13.5px; display: flex; flex-wrap: wrap; gap: 6px 18px; }
+  @media (prefers-reduced-motion: reduce) { * { transition: none !important; animation: none !important; } }
+
+  /* ── навігація між розділами ───────────────────────────── */
+  .chapters { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 40px; }
+  .chapters a {
+    display: inline-flex; align-items: center; gap: 8px;
+    padding: 10px 14px; border: 1px solid var(--line); border-radius: 999px;
+    background: var(--surface); color: var(--ink-2); text-decoration: none;
+    font: 500 14px/1 var(--body-font);
+  }
+  .chapters a:hover, .chapters a:focus-visible { border-color: var(--accent); color: var(--accent); outline: none; }
+  .chapters a.current { background: var(--accent-soft); border-color: color-mix(in srgb, var(--accent) 30%, transparent); color: var(--accent); }
+  .chapters i { font-style: normal; font: 600 11px/1 var(--mono-font); opacity: .7; }
+
+</style>
+
+</head>
+<body>
+<div class="wrap">
+  <header class="masthead">
+    <p class="kicker">CyberOS · інструкція, розділ 4</p>
+    <h1>Ігри та застосунки клубу</h1>
+    <p class="lede">У клубі одразу 89 ігор з обкладинками, категоріями й віковими рейтингами — додавати треба лише те, чого в бібліотеці немає. Наведіть курсор на пункт списку — на знімку підсвітиться те саме поле.</p>
+    <dl class="facts">
+      <div><dt>Часу</dt><dd>5 хвилин</dd></div>
+      <div><dt>Потрібно</dt><dd>Список ігор вашого клубу</dd></div>
+      <div><dt>Результат</dt><dd>89 ігор готові до запуску</dd></div>
+      <div><dt>Далі</dt><dd>Shell на клубних ПК</dd></div>
+    </dl>
+  </header>
+
+  <nav class="rail" aria-label="Кроки розділу">
+    <a href="#step-1" data-rail=1><i>1</i>Бібліотека</a>
+    <a href="#step-2" data-rail=2><i>2</i>Увімкнути гру</a>
+    <a href="#step-3" data-rail=3><i>3</i>Лаунчери</a>
+    <a href="#step-4" data-rail=4><i>4</i>Своя гра</a>
+    <a href="#video"><i>▶</i>Відео проходу</a>
+  </nav>
+
+  <main>
+    <section class="step" id="step-1">
+      <div class="step-head">
+        <span class="step-num">01</span>
+        <div>
+          <h2>Бібліотека вже наповнена</h2>
+          <p>
+            Найприємніше в цьому розділі — здебільшого робити нічого не треба.
+            У клубі одразу <b>89 ігор</b>, і в 88 з них уже є обкладинка,
+            категорія, віковий рейтинг і ID у лаунчері. Ви не заводите їх руками —
+            вони приходять із бібліотекою CyberOS.
+          </p>
+        </div>
+      </div>
+      <figure>
+          <div class="shot bare" id="shot-41-games-cards">
+            <img src="shots/crop-41-games-cards.png" alt="Вигляд «Картки»: 88 ігор з обкладинками — саме так їх бачить гість у Shell.">
+            
+          </div>
+          <div class="shot-bar"><figcaption>Вигляд «Картки»: 88 ігор з обкладинками — саме так їх бачить гість у Shell.</figcaption></div>
+        </figure>
+      <label class="check"><input type="checkbox" data-step="1"> Подивився, що вже є в бібліотеці</label>
+    </section>
+
+    <section class="step" id="step-2">
+      <div class="step-head">
+        <span class="step-num">02</span>
+        <div>
+          <h2>Додати гру з бібліотеки — це один перемикач</h2>
+          <p>
+            Гру, яка вже є в бібліотеці, не потрібно «створювати». Знаходите її пошуком
+            і вмикаєте перемикачем <b>«Активний»</b> — вона одразу зʼявляється на екрані
+            машини. Вимкнули — зникла з екрана, але лишилась у списку.
+          </p>
+        </div>
+      </div>
+      <div class="step-body">
+        <ol class="hints" data-shot="42-games-table"><li data-key="42-games-table:toggle"><span class="hint-num">1</span><span class="hint-text"><b>Перемикач «Активний»</b> — це і є «додати» гру, яка вже є в бібліотеці: увімкнули — вона зʼявилась у гостя на екрані, вимкнули — зникла. Нічого заповнювати не треба.</span></li>
+<li data-key="42-games-table:search"><span class="hint-num">2</span><span class="hint-text"><b>Пошук за назвою</b> — найшвидший спосіб знайти гру у списку з сотні.</span></li>
+<li data-key="42-games-table:filter_launcher"><span class="hint-num">3</span><span class="hint-text"><b>Лаунчери</b> — фільтр за платформою, звідки гра запускається.</span></li>
+<li data-key="42-games-table:filter_age"><span class="hint-num">4</span><span class="hint-text"><b>Віковий рейтинг</b> — 12+, 16+, 18+. Знадобиться, якщо у вас є дитячі години або зона.</span></li></ol>
+        <figure>
+          <div class="shot" id="shot-42-games-table">
+            <img src="shots/crop-42-games-table.png" alt="Вигляд «Таблиця»: назва, категорія, лаунчер, вік і перемикач «Активний».">
+            <button class="spot" data-key="42-games-table:toggle" style="left:88.007%;top:45.500%;width:3.716%;height:7.500%" aria-label="toggle"><span class="spot-num tr">1</span></button>
+<button class="spot" data-key="42-games-table:search" style="left:1.689%;top:10.250%;width:31.926%;height:8.000%" aria-label="search"><span class="spot-num br">2</span></button>
+<button class="spot" data-key="42-games-table:filter_launcher" style="left:18.750%;top:20.750%;width:14.865%;height:8.000%" aria-label="filter_launcher"><span class="spot-num ">3</span></button>
+<button class="spot" data-key="42-games-table:filter_age" style="left:48.818%;top:20.750%;width:13.514%;height:8.000%" aria-label="filter_age"><span class="spot-num ">4</span></button>
+          </div>
+          <div class="shot-bar"><figcaption>Вигляд «Таблиця»: назва, категорія, лаунчер, вік і перемикач «Активний».</figcaption><button class="toggle" type="button" data-toggle="shot-42-games-table">Прибрати підсвітку</button></div>
+        </figure>
+      </div>
+      <div class="note"><span class="note-tag">Два вигляди</span><span>«Картки» — щоб побачити зал очима гостя, «Таблиця» — щоб швидко правити багато ігор. Перемикач у правому верхньому куті.</span></div>
+      <div class="note"><span class="note-tag">Застосунки — окрема база</span><span>Поруч із «Іграми» є вкладка <b>«Застосунки»</b>, і вона теж уже наповнена: у клубі {APPS} записів — Google Chrome, Opera GX, FACEIT, EA App, Battle.net, Epic Games Launcher та інші. Вмикаються так само перемикачем. Для застосунку зазвичай потрібен лише <b>шлях до .exe</b> на клубному ПК — його вказують у режимі «Локальний шлях».</span></div>
+      <label class="check"><input type="checkbox" data-step="2"> Увімкнув ігри, які потрібні в клубі</label>
+    </section>
+
+    <section class="step" id="step-3">
+      <div class="step-head">
+        <span class="step-num">03</span>
+        <div>
+          <h2>Які лаунчери підтримуються</h2>
+          <p>
+            Гра прив’язується не до ярлика на робочому столі, а до <b>лаунчера</b> — тому
+            Shell знає, як її запустити на будь-якій машині клубу.
+          </p>
+        </div>
+      </div>
+      <figure>
+          <div class="shot bare" id="shot-43-launchers">
+            <img src="shots/43-launchers.png" alt="Список лаунчерів у фільтрі: Steam · Epic Games · Battle.net · Riot Games · HoYoPlay · Minecraft Launcher · Roblox Player · Standalone.">
+            
+          </div>
+          <div class="shot-bar"><figcaption>Список лаунчерів у фільтрі: Steam · Epic Games · Battle.net · Riot Games · HoYoPlay · Minecraft Launcher · Roblox Player · Standalone.</figcaption></div>
+        </figure>
+      <label class="check"><input type="checkbox" data-step="3"> Знаю, з яких лаунчерів запускаються ігри</label>
+    </section>
+
+    <section class="step" id="step-4">
+      <div class="step-head">
+        <span class="step-num">04</span>
+        <div>
+          <h2>Додати гру, якої немає в бібліотеці</h2>
+          <p>
+            Тут доведеться заповнити самому: назву, спосіб запуску й картинки.
+            Обкладинки для своєї гри не підтягуються — на відміну від бібліотечних.
+          </p>
+        </div>
+      </div>
+      <div class="step-body">
+        <ol class="hints" data-shot="44-game-form"><li data-key="44-game-form:type"><span class="hint-num">1</span><span class="hint-text"><b>Тип</b> — «Гра» або «Застосунок». Застосунки (браузер, Discord, FACEIT) додаються тут же, тільки другим типом.</span></li>
+<li data-key="44-game-form:name"><span class="hint-num">2</span><span class="hint-text"><b>Назва</b> — так гру побачить гість на екрані машини.</span></li>
+<li data-key="44-game-form:poster"><span class="hint-num">3</span><span class="hint-text"><b>Постер</b> — вертикальна обкладинка, як у бібліотечних ігор. Для своєї гри картинку ставите самі.</span></li>
+<li data-key="44-game-form:bg"><span class="hint-num">4</span><span class="hint-text"><b>Фон</b> — широке зображення, яке Shell показує позаду екрана гри.</span></li>
+<li data-key="44-game-form:logo"><span class="hint-num">5</span><span class="hint-text"><b>Логотип</b> — PNG або SVG, необовʼязково; ставиться поверх фону.</span></li></ol>
+        <figure>
+          <div class="shot" id="shot-44-game-form">
+            <img src="shots/crop-44-game-form.png" alt="Верх форми «Нова гра»: тип, назва, постер, фон, логотип.">
+            <button class="spot" data-key="44-game-form:type" style="left:26.310%;top:6.027%;width:70.833%;height:5.753%" aria-label="type"><span class="spot-num ">1</span></button>
+<button class="spot" data-key="44-game-form:name" style="left:26.310%;top:17.671%;width:70.833%;height:5.753%" aria-label="name"><span class="spot-num ">2</span></button>
+<button class="spot" data-key="44-game-form:poster" style="left:9.167%;top:35.890%;width:14.762%;height:4.110%" aria-label="poster"><span class="spot-num ">3</span></button>
+<button class="spot" data-key="44-game-form:bg" style="left:16.667%;top:91.370%;width:12.619%;height:4.110%" aria-label="bg"><span class="spot-num ">4</span></button>
+<button class="spot" data-key="44-game-form:logo" style="left:45.119%;top:91.370%;width:15.476%;height:4.110%" aria-label="logo"><span class="spot-num ">5</span></button>
+          </div>
+          <div class="shot-bar"><figcaption>Верх форми «Нова гра»: тип, назва, постер, фон, логотип.</figcaption><button class="toggle" type="button" data-toggle="shot-44-game-form">Прибрати підсвітку</button></div>
+        </figure>
+      </div>
+      <div class="step-body" style="margin-top:28px">
+        <ol class="hints" data-shot="47-launch-mode"><li data-key="47-launch-mode:via_launcher"><span class="hint-num">1</span><span class="hint-text"><b>Через лаунчер</b> — гра запускається платформою: Steam, Epic, Battle.net та інші.</span></li>
+<li data-key="47-launch-mode:local_path"><span class="hint-num">2</span><span class="hint-text"><b>Локальний шлях</b> — другий спосіб: запуск напряму через <code>.exe</code> на клубному ПК. Потрібен для ігор без лаунчера й для власних збірок.</span></li>
+<li data-key="47-launch-mode:launcher"><span class="hint-num">3</span><span class="hint-text"><b>Лаунчер</b> — обираєте зі списку платформ.</span></li>
+<li data-key="47-launch-mode:app_id"><span class="hint-num">4</span><span class="hint-text"><b>ID гри в лаунчері</b> — для Steam це номер із адреси сторінки гри (наприклад <code>1030300</code>).</span></li>
+<li data-key="47-launch-mode:process"><span class="hint-num">5</span><span class="hint-text"><b>Процес</b> — необовʼязково: за ним система розуміє, що гра справді запущена.</span></li></ol>
+        <figure>
+          <div class="shot" id="shot-47-launch-mode">
+            <img src="shots/crop-47-launch-mode.png" alt="Блок «Спосіб запуску»: через лаунчер за ID або локальним шляхом до .exe.">
+            <button class="spot" data-key="47-launch-mode:via_launcher" style="left:12.955%;top:19.474%;width:42.045%;height:10.526%" aria-label="via_launcher"><span class="spot-num ">1</span></button>
+<button class="spot" data-key="47-launch-mode:local_path" style="left:55.000%;top:19.474%;width:42.045%;height:10.526%" aria-label="local_path"><span class="spot-num ">2</span></button>
+<button class="spot" data-key="47-launch-mode:launcher" style="left:12.841%;top:41.579%;width:41.364%;height:11.053%" aria-label="launcher"><span class="spot-num ">3</span></button>
+<button class="spot" data-key="47-launch-mode:app_id" style="left:55.909%;top:41.579%;width:41.364%;height:11.053%" aria-label="app_id"><span class="spot-num ">4</span></button>
+<button class="spot" data-key="47-launch-mode:process" style="left:12.841%;top:63.947%;width:84.432%;height:11.053%" aria-label="process"><span class="spot-num ">5</span></button>
+          </div>
+          <div class="shot-bar"><figcaption>Блок «Спосіб запуску»: через лаунчер за ID або локальним шляхом до .exe.</figcaption><button class="toggle" type="button" data-toggle="shot-47-launch-mode">Прибрати підсвітку</button></div>
+        </figure>
+      </div>
+      <figure>
+          <div class="shot bare" id="shot-48-local-path">
+            <img src="shots/crop-48-local-path.png" alt="Режим «Локальний шлях»: до трьох шляхів до .exe (для різних залів), аргументи запуску й робоча папка.">
+            
+          </div>
+          <div class="shot-bar"><figcaption>Режим «Локальний шлях»: до трьох шляхів до .exe (для різних залів), аргументи запуску й робоча папка.</figcaption></div>
+        </figure>
+      <div class="note"><span class="note-tag">Два способи запуску</span><span><b>Через лаунчер</b> — коли гра є у Steam, Epic, Battle.net тощо: вказуєте платформу й ID. <b>Локальний шлях</b> — коли лаунчера немає: вказуєте <code>.exe</code> на клубному ПК, за потреби аргументи й робочу папку. Другий спосіб підходить і для застосунків, і для власних збірок.</span></div>
+      <div class="note note--warn"><span class="note-tag">Три поля обовʼязкові</span><span>Однієї назви не достатньо: без <b>способу запуску</b> (лаунчер + ID або шлях до .exe) гра не збережеться — форма просто залишиться відкритою.</span></div>
+      <figure>
+          <div class="shot bare" id="shot-46-game-created">
+            <img src="shots/46-game-created.png" alt="Гра у списку. Картинку для своєї гри треба завантажити самому — інакше вона буде без обкладинки.">
+            
+          </div>
+          <div class="shot-bar"><figcaption>Гра у списку. Картинку для своєї гри треба завантажити самому — інакше вона буде без обкладинки.</figcaption></div>
+        </figure>
+      <label class="check"><input type="checkbox" data-step="4"> Додав гру, якої не було в бібліотеці</label>
+    </section>
+
+    <section class="video-block" id="video">
+      <h3>Відео: бібліотека і додавання гри</h3>
+      <p>
+        Запис у демо-клубі: бібліотека в двох виглядах, фільтри, список лаунчерів
+        і додавання гри за назвою, лаунчером та ID.
+      </p>
+      <video controls preload="metadata" playsinline poster="shots/crop-41-games-cards.png">
+        <source src="videos/uc04-games.mp4" type="video/mp4">
+        Ваш браузер не показує це відео.
+      </video>
+    </section>
+
+    <section class="next">
+      <h2>Наступний розділ</h2>
+      <p>Клуб описаний і має ціни й ігри. Далі — програма на самих машинах:</p>
+      <ol>
+        <li><b>Де взяти Shell</b> — інсталятор і ключ клубу в налаштуваннях.</li>
+        <li><b>Сервісний доступ</b> — пароль, без якого не вийти з кіоску.</li>
+        <li><b>Встановлення на ПК</b> — усі пʼять кроків інсталятора й перша привʼязка.</li>
+        <li><b>Екран гостя</b> — вхід за QR, бар, новини, рейтинг.</li>
+      </ol>
+    </section>
+
+  </main>
+
+  <nav class="chapters" aria-label="Розділи інструкції">
+    <a href="instruction-01-club-setup.html"><i>01</i>Заведення клубу</a>
+    <a href="instruction-02-zones-devices.html"><i>02</i>Зони і пристрої</a>
+    <a href="instruction-03-tariffs.html"><i>03</i>Тарифи</a>
+    <a href="instruction-04-games.html" class="current"><i>04</i>Ігри</a>
+    <a href="instruction-05-shell.html"><i>05</i>Shell</a>
+    <a href="instruction-06-install.html"><i>06</i>Встановлення на ПК</a>
+    <a href="instruction-07-clients.html"><i>07</i>Клієнти</a>
+  </nav>
+
+  <footer>
+    <span>CyberOS · інструкція власника, розділ 4 з 7</span>
+    <span>Знімки зроблені в демо-клубі 9 вересня 2026</span>
+  </footer>
+</div>
+
+<script>
+// підсвітка: пункт списку ↔ рамка на скріншоті
+  const setOn = (key, on) => {
+    document.querySelectorAll('[data-key="' + key + '"]').forEach((el) => el.classList.toggle('on', on));
+  };
+  document.querySelectorAll('.hints li, .spot').forEach((el) => {
+    const key = el.dataset.key;
+    el.addEventListener('mouseenter', () => setOn(key, true));
+    el.addEventListener('mouseleave', () => setOn(key, false));
+    el.addEventListener('focus', () => setOn(key, true));
+    el.addEventListener('blur', () => setOn(key, false));
+    if (el.classList.contains('spot')) {
+      el.addEventListener('click', () => {
+        const li = document.querySelector('.hints li[data-key="' + key + '"]');
+        li?.scrollIntoView({ block: 'nearest', behavior: 'smooth' });
+        li?.animate([{ background: 'var(--accent-soft)' }, { background: 'transparent' }], { duration: 900 });
+      });
+    }
+  });
+
+  // перемикач підсвітки на кожному скріншоті
+  document.querySelectorAll('.toggle').forEach((btn) => {
+    btn.addEventListener('click', () => {
+      const shot = document.getElementById(btn.dataset.toggle);
+      const bare = shot.classList.toggle('bare');
+      btn.textContent = bare ? 'Показати підсвітку' : 'Прибрати підсвітку';
+    });
+  });
+
+  // чекліст кроків — пам’ять у браузері читача (може бути недоступна)
+  const KEY = 'cyberos-guide-04g';
+  let done = {};
+  try { done = JSON.parse(localStorage.getItem(KEY) || '{}'); } catch (e) { done = {}; }
+  const paint = () => {
+    document.querySelectorAll('.check input').forEach((input) => {
+      const n = input.dataset.step;
+      input.checked = !!done[n];
+      input.closest('.check').classList.toggle('done', !!done[n]);
+      document.querySelector('.rail a[data-rail="' + n + '"]')?.classList.toggle('done', !!done[n]);
+    });
+  };
+  document.querySelectorAll('.check input').forEach((input) => {
+    input.addEventListener('change', () => {
+      done[input.dataset.step] = input.checked;
+      try { localStorage.setItem(KEY, JSON.stringify(done)); } catch (e) { /* приватний режим — просто не запамʼятаємо */ }
+      paint();
+    });
+  });
+  paint();
+
+</script>
+
+</body>
+</html>

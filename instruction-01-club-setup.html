@@ -1,0 +1,566 @@
+<!doctype html>
+<html lang="uk">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="light dark">
+<meta name="description" content="Реєстрація власника, лист із кодом і створення клубу з нуля.">
+<style>
+  html, body { margin: 0; }
+  img { max-width: 100%; }
+  [hidden] { display: none !important; }
+</style>
+<title>Заведення клубу CyberOS</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Manrope:wght@600;800&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+:root {
+    --ink: #0F1425;
+    --ink-2: #2B3450;
+    --muted: #5A6280;
+    --paper: #F7F8FB;
+    --surface: #FFFFFF;
+    --line: #E2E5EE;
+    --accent: #4F46E5;
+    --accent-soft: #EEF0FE;
+    --warn: #B45309;
+    --warn-soft: #FEF6E7;
+    --ok: #047857;
+    --ok-soft: #E9F6F1;
+    --shadow: 0 1px 2px rgba(15, 20, 37, .06), 0 12px 28px -18px rgba(15, 20, 37, .35);
+    --radius: 10px;
+    --step-font: 'Manrope', 'Trebuchet MS', sans-serif;
+    --body-font: 'IBM Plex Sans', 'Helvetica Neue', Arial, sans-serif;
+    --mono-font: 'IBM Plex Mono', ui-monospace, 'SF Mono', Menlo, monospace;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --ink: #EEF1F8;
+      --ink-2: #C6CCDD;
+      --muted: #949CB5;
+      --paper: #0B0F1A;
+      --surface: #131926;
+      --line: #262E42;
+      --accent: #8B85F5;
+      --accent-soft: #1D2237;
+      --warn: #E9A23B;
+      --warn-soft: #2A2113;
+      --ok: #4BC299;
+      --ok-soft: #12261F;
+      --shadow: 0 1px 2px rgba(0, 0, 0, .5), 0 16px 34px -20px rgba(0, 0, 0, .8);
+    }
+  }
+  :root[data-theme="dark"] {
+    --ink: #EEF1F8;
+    --ink-2: #C6CCDD;
+    --muted: #949CB5;
+    --paper: #0B0F1A;
+    --surface: #131926;
+    --line: #262E42;
+    --accent: #8B85F5;
+    --accent-soft: #1D2237;
+    --warn: #E9A23B;
+    --warn-soft: #2A2113;
+    --ok: #4BC299;
+    --ok-soft: #12261F;
+    --shadow: 0 1px 2px rgba(0, 0, 0, .5), 0 16px 34px -20px rgba(0, 0, 0, .8);
+  }
+
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    background: var(--paper);
+    color: var(--ink);
+    font: 400 16px/1.62 var(--body-font);
+    -webkit-font-smoothing: antialiased;
+  }
+  .wrap { max-width: 1120px; margin: 0 auto; padding: 0 24px 96px; }
+
+  /* ── шапка ─────────────────────────────────────────────── */
+  .masthead { padding: 56px 0 28px; border-bottom: 1px solid var(--line); }
+  .kicker {
+    font: 500 12px/1 var(--mono-font);
+    letter-spacing: .14em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin: 0 0 14px;
+  }
+  h1 {
+    font: 800 clamp(32px, 5vw, 46px)/1.08 var(--step-font);
+    letter-spacing: -.02em;
+    margin: 0 0 14px;
+    text-wrap: balance;
+  }
+  .lede { margin: 0; max-width: 62ch; color: var(--ink-2); font-size: 17px; }
+  .facts {
+    display: flex; flex-wrap: wrap; gap: 10px 28px;
+    margin: 26px 0 0; padding: 0; list-style: none;
+  }
+  .facts div { display: flex; flex-direction: column; gap: 2px; }
+  .facts dt { font: 500 11px/1 var(--mono-font); letter-spacing: .1em; text-transform: uppercase; color: var(--muted); }
+  .facts dd { margin: 0; font: 600 15px/1.3 var(--body-font); }
+
+  /* ── навігація кроків ──────────────────────────────────── */
+  .rail {
+    position: sticky; top: 0; z-index: 20;
+    display: flex; gap: 6px; align-items: center;
+    padding: 12px 0; margin-bottom: 8px;
+    background: color-mix(in srgb, var(--paper) 92%, transparent);
+    backdrop-filter: blur(8px);
+    border-bottom: 1px solid var(--line);
+    overflow-x: auto;
+  }
+  .rail a {
+    flex: 0 0 auto;
+    display: inline-flex; align-items: center; gap: 8px;
+    padding: 7px 13px 7px 9px;
+    border-radius: 999px;
+    color: var(--ink-2); text-decoration: none;
+    font: 600 13.5px/1 var(--body-font);
+    border: 1px solid transparent;
+  }
+  .rail a:hover, .rail a:focus-visible { background: var(--accent-soft); color: var(--accent); outline: none; }
+  .rail a.done { color: var(--ok); }
+  .rail a i {
+    display: grid; place-items: center;
+    width: 20px; height: 20px; border-radius: 50%;
+    background: var(--accent-soft); color: var(--accent);
+    font: 600 11px/1 var(--mono-font); font-style: normal;
+  }
+  .rail a.done i { background: var(--ok-soft); color: var(--ok); }
+
+  /* ── крок ──────────────────────────────────────────────── */
+  .step { padding: 52px 0; border-bottom: 1px solid var(--line); }
+  .step:last-of-type { border-bottom: 0; }
+  .step-head { display: grid; grid-template-columns: 54px 1fr; gap: 18px; align-items: start; }
+  .step-num {
+    font: 800 34px/1 var(--step-font);
+    color: var(--accent);
+    letter-spacing: -.03em;
+    font-variant-numeric: tabular-nums;
+  }
+  .step h2 { font: 600 clamp(23px, 3vw, 29px)/1.2 var(--step-font); margin: 0 0 8px; letter-spacing: -.015em; text-wrap: balance; }
+  .step-head p { margin: 0; color: var(--ink-2); max-width: 64ch; }
+  .step-body { margin-top: 28px; display: grid; grid-template-columns: minmax(300px, 380px) 1fr; gap: 28px; align-items: start; }
+  @media (max-width: 900px) { .step-body { grid-template-columns: 1fr; } }
+
+  /* ── підказки ──────────────────────────────────────────── */
+  .hints { margin: 0; padding: 0; list-style: none; display: flex; flex-direction: column; gap: 2px; }
+  .hints li {
+    display: grid; grid-template-columns: 24px 1fr; gap: 12px;
+    padding: 11px 12px; border-radius: 8px;
+    border: 1px solid transparent;
+    cursor: default;
+    transition: background .14s ease, border-color .14s ease;
+  }
+  .hints li:hover, .hints li.on { background: var(--accent-soft); border-color: color-mix(in srgb, var(--accent) 28%, transparent); }
+  .hint-num {
+    display: grid; place-items: center;
+    width: 24px; height: 24px; border-radius: 50%;
+    background: var(--accent); color: #fff;
+    font: 600 12px/1 var(--mono-font);
+  }
+  .hint-text { font-size: 14.6px; color: var(--ink-2); }
+  .hint-text b { color: var(--ink); font-weight: 600; }
+
+  /* ── скріншот з рамками ────────────────────────────────── */
+  figure { margin: 0; }
+  .shot {
+    position: relative;
+    border: 1px solid var(--line); border-radius: var(--radius);
+    background: var(--surface); box-shadow: var(--shadow);
+    overflow: hidden;
+  }
+  .shot img { display: block; width: 100%; height: auto; }
+  .spot {
+    position: absolute;
+    margin: -5px 0 0 -5px; padding: 5px;
+    width: auto; background: transparent;
+    border: 2px solid var(--accent); border-radius: 7px;
+    box-shadow: 0 0 0 3px color-mix(in srgb, var(--accent) 18%, transparent);
+    cursor: pointer; opacity: .95;
+    transition: box-shadow .14s ease, transform .14s ease;
+  }
+  .spot:hover, .spot.on { box-shadow: 0 0 0 6px color-mix(in srgb, var(--accent) 30%, transparent); transform: scale(1.015); }
+  .spot:focus-visible { outline: 3px solid var(--warn); outline-offset: 3px; }
+  .spot-num {
+    position: absolute; top: -12px; left: -12px;
+    display: grid; place-items: center;
+    width: 22px; height: 22px; border-radius: 50%;
+    background: var(--accent); color: #fff;
+    font: 600 12px/1 var(--mono-font);
+    box-shadow: 0 1px 4px rgba(0, 0, 0, .3);
+  }
+  .shot.bare .spot { opacity: 0; pointer-events: none; }
+  .shot-bar {
+    display: flex; align-items: center; justify-content: space-between; gap: 12px;
+    margin-top: 10px;
+  }
+  figcaption { font: 400 13px/1.5 var(--body-font); color: var(--muted); }
+  .toggle {
+    flex: 0 0 auto;
+    display: inline-flex; align-items: center; gap: 7px;
+    font: 500 12.5px/1 var(--body-font); color: var(--ink-2);
+    padding: 7px 11px; border: 1px solid var(--line); border-radius: 999px;
+    background: var(--surface); cursor: pointer;
+  }
+  .toggle:hover { border-color: var(--accent); color: var(--accent); }
+
+  /* ── плашки ────────────────────────────────────────────── */
+  .note {
+    display: grid; grid-template-columns: auto 1fr; gap: 12px;
+    margin: 22px 0 0; padding: 14px 16px;
+    border-radius: 8px; font-size: 14.8px;
+    border-left: 3px solid var(--accent); background: var(--accent-soft); color: var(--ink-2);
+  }
+  .note b { color: var(--ink); }
+  .note--warn { border-left-color: var(--warn); background: var(--warn-soft); }
+  .note--ok { border-left-color: var(--ok); background: var(--ok-soft); }
+  .note-tag { font: 500 11px/1.5 var(--mono-font); letter-spacing: .08em; text-transform: uppercase; color: var(--warn); }
+  .note--ok .note-tag { color: var(--ok); }
+  .note:not(.note--warn):not(.note--ok) .note-tag { color: var(--accent); }
+  code {
+    font: 400 .92em/1.4 var(--mono-font);
+    background: color-mix(in srgb, var(--ink) 7%, transparent);
+    padding: .12em .38em; border-radius: 4px;
+    word-break: break-word;
+  }
+
+  /* ── лист ──────────────────────────────────────────────── */
+  .letter { display: grid; grid-template-columns: minmax(240px, 320px) 1fr; gap: 26px; align-items: start; margin-top: 26px; }
+  @media (max-width: 900px) { .letter { grid-template-columns: 1fr; } }
+  .letter-meta { margin: 0; display: flex; flex-direction: column; gap: 14px; }
+  .letter-meta div { display: grid; gap: 3px; }
+  .letter-meta dt { font: 500 11px/1 var(--mono-font); letter-spacing: .1em; text-transform: uppercase; color: var(--muted); }
+  .letter-meta dd { margin: 0; font: 500 14.5px/1.45 var(--body-font); }
+  .letter-shot { border: 1px solid var(--line); border-radius: var(--radius); overflow: hidden; background: var(--surface); box-shadow: var(--shadow); max-height: 460px; overflow-y: auto; }
+  .letter-shot img { display: block; width: 100%; height: auto; }
+
+  /* ── відео ─────────────────────────────────────────────── */
+  .video-block { margin-top: 44px; padding-top: 34px; border-top: 1px dashed var(--line); }
+  .video-block h3 { font: 600 20px/1.25 var(--step-font); margin: 0 0 6px; }
+  .video-block p { margin: 0 0 16px; color: var(--ink-2); max-width: 62ch; }
+  video { width: 100%; border-radius: var(--radius); border: 1px solid var(--line); background: #000; box-shadow: var(--shadow); }
+
+  /* ── чекліст ───────────────────────────────────────────── */
+  .check {
+    display: flex; align-items: center; gap: 10px;
+    margin-top: 26px; padding: 12px 14px;
+    border: 1px dashed var(--line); border-radius: 8px;
+    font: 500 14.5px/1 var(--body-font); color: var(--ink-2);
+    cursor: pointer; user-select: none;
+    background: var(--surface);
+  }
+  .check input { width: 17px; height: 17px; accent-color: var(--ok); cursor: pointer; }
+  .check.done { border-style: solid; border-color: var(--ok); color: var(--ok); background: var(--ok-soft); }
+
+  /* ── фінал ─────────────────────────────────────────────── */
+  .next { margin-top: 52px; padding: 30px; border: 1px solid var(--line); border-radius: var(--radius); background: var(--surface); box-shadow: var(--shadow); }
+  .next h2 { font: 600 24px/1.2 var(--step-font); margin: 0 0 8px; }
+  .next p { margin: 0 0 18px; color: var(--ink-2); max-width: 64ch; }
+  .next ol { margin: 0; padding-left: 22px; display: grid; gap: 8px; color: var(--ink-2); }
+  .next ol b { color: var(--ink); }
+  footer { margin-top: 44px; padding-top: 20px; border-top: 1px solid var(--line); color: var(--muted); font-size: 13.5px; display: flex; flex-wrap: wrap; gap: 6px 18px; }
+  @media (prefers-reduced-motion: reduce) { * { transition: none !important; animation: none !important; } }
+
+  /* ── навігація між розділами ───────────────────────────── */
+  .chapters { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 40px; }
+  .chapters a {
+    display: inline-flex; align-items: center; gap: 8px;
+    padding: 10px 14px; border: 1px solid var(--line); border-radius: 999px;
+    background: var(--surface); color: var(--ink-2); text-decoration: none;
+    font: 500 14px/1 var(--body-font);
+  }
+  .chapters a:hover, .chapters a:focus-visible { border-color: var(--accent); color: var(--accent); outline: none; }
+  .chapters a.current { background: var(--accent-soft); border-color: color-mix(in srgb, var(--accent) 30%, transparent); color: var(--accent); }
+  .chapters i { font-style: normal; font: 600 11px/1 var(--mono-font); opacity: .7; }
+
+</style>
+
+</head>
+<body>
+<div class="wrap">
+  <header class="masthead">
+    <p class="kicker">CyberOS · інструкція, розділ 1</p>
+    <h1>Заведення клубу: від пошти до кабінету</h1>
+    <p class="lede">
+      Перший розділ проходить шлях власника з нуля: реєстрація, підтвердження пошти й створення клубу.
+      Усі скріншоти зняті на робочій системі — наведіть курсор на пункт списку, і на знімку підсвітиться
+      саме те поле, про яке йдеться.
+    </p>
+    <dl class="facts">
+      <div><dt>Часу</dt><dd>5–7 хвилин</dd></div>
+      <div><dt>Потрібно</dt><dd>Пошта, телефон, назва клубу</dd></div>
+      <div><dt>Результат</dt><dd>Клуб створено, ви — власник</dd></div>
+      <div><dt>Далі</dt><dd>Зони, пристрої, тарифи</dd></div>
+    </dl>
+  </header>
+
+  <nav class="rail" aria-label="Кроки розділу">
+    <a href="#step-1" data-rail="1"><i>1</i>Реєстрація</a>
+    <a href="#step-2" data-rail="2"><i>2</i>Код із пошти</a>
+    <a href="#step-3" data-rail="3"><i>3</i>Клуб і години</a>
+    <a href="#step-4" data-rail="4"><i>4</i>Кабінет</a>
+    <a href="#video"><i>▶</i>Відео проходу</a>
+  </nav>
+
+  <main>
+    <section class="step" id="step-1">
+      <div class="step-head">
+        <span class="step-num">01</span>
+        <div>
+          <h2>Створіть акаунт власника</h2>
+          <p>
+            Відкрийте сторінку реєстрації CyberOS — адресу панелі вам надасть постачальник системи.
+            Пошта, яку ви тут вкажете, стане логіном власника: акаунта з повними правами,
+            який потім запрошує адміністраторів і касирів.
+          </p>
+        </div>
+      </div>
+      <div class="step-body">
+        <ol class="hints" data-shot="01-register-empty"><li data-key="01-register-empty:name"><span class="hint-num">1</span><span class="hint-text"><b>Ваше ім’я</b> — так вас бачитимуть співробітники в логах і на змінах.</span></li>
+<li data-key="01-register-empty:email"><span class="hint-num">2</span><span class="hint-text"><b>Робоча пошта</b> — це логін власника. На неї прийде код підтвердження, тож доступ до скриньки потрібен зараз.</span></li>
+<li data-key="01-register-empty:phone"><span class="hint-num">3</span><span class="hint-text"><b>Телефон</b> — 9 цифр після +380. Один номер = один акаунт, тому для другого власника потрібен інший.</span></li>
+<li data-key="01-register-empty:password"><span class="hint-num">4</span><span class="hint-text"><b>Пароль</b> — мінімум 8 символів. Ним ви заходитимете в кабінет, тому збережіть його в менеджері паролів.</span></li>
+<li data-key="01-register-empty:submit"><span class="hint-num">5</span><span class="hint-text"><b>Розпочати безкоштовно</b> — створює акаунт власника.</span></li></ol>
+        <figure>
+          <div class="shot" id="shot-01-register-empty">
+            <img src="shots/crop-01-register-empty.png" alt="Форма реєстрації CyberOS: ім’я, пошта, телефон, пароль">
+            <button class="spot" data-key="01-register-empty:name" style="left:21.719%;top:34.853%;width:56.563%;height:5.882%" aria-label="<b>Ваше ім’я</b> — так вас бачитимуть співробітники в логах і на змінах."><span class="spot-num">1</span></button>
+<button class="spot" data-key="01-register-empty:email" style="left:21.719%;top:46.765%;width:56.563%;height:5.882%" aria-label="<b>Робоча пошта</b> — це логін власника. На неї прийде код підтвердження, тож доступ до скриньки потрібен зараз."><span class="spot-num">2</span></button>
+<button class="spot" data-key="01-register-empty:phone" style="left:41.094%;top:58.676%;width:37.188%;height:6.176%" aria-label="<b>Телефон</b> — 9 цифр після +380. Один номер = один акаунт, тому для другого власника потрібен інший."><span class="spot-num">3</span></button>
+<button class="spot" data-key="01-register-empty:password" style="left:21.719%;top:70.882%;width:56.563%;height:5.882%" aria-label="<b>Пароль</b> — мінімум 8 символів. Ним ви заходитимете в кабінет, тому збережіть його в менеджері паролів."><span class="spot-num">4</span></button>
+<button class="spot" data-key="01-register-empty:submit" style="left:21.719%;top:78.529%;width:56.563%;height:6.029%" aria-label="<b>Розпочати безкоштовно</b> — створює акаунт власника."><span class="spot-num">5</span></button>
+          </div>
+          <div class="shot-bar">
+            <figcaption>Форма реєстрації. Кнопка «Продовжити з Google» пропускає крок 2.</figcaption>
+            <button class="toggle" type="button" data-toggle="shot-01-register-empty">Прибрати підсвітку</button>
+          </div>
+        </figure>
+      </div>
+      <label class="check"><input type="checkbox" data-step="1"> Акаунт створено, бачу екран «Підтвердіть пошту»</label>
+    </section>
+
+    <section class="step" id="step-2">
+      <div class="step-head">
+        <span class="step-num">02</span>
+        <div>
+          <h2>Підтвердіть пошту кодом із листа</h2>
+          <p>
+            Система надсилає 8-значний код. Лист приходить за 10–20 секунд — але його часто
+            кладе в «Спам», тому перевірте цю теку одразу, не чекаючи повторної відправки.
+          </p>
+        </div>
+      </div>
+      <div class="step-body">
+        <ol class="hints" data-shot="03-verify-empty"><li data-key="03-verify-empty:code"><span class="hint-num">1</span><span class="hint-text"><b>Вісім полів коду</b> — клікніть у перше і наберіть код повністю. Форма підтвердиться сама, кнопку тиснути не обов’язково.</span></li>
+<li data-key="03-verify-empty:confirm"><span class="hint-num">2</span><span class="hint-text"><b>Підтвердити</b> — знадобиться, якщо вставляєте код із буфера.</span></li>
+<li data-key="03-verify-empty:resend"><span class="hint-num">3</span><span class="hint-text"><b>Надіслати знову</b> — активується після відліку. Тисніть, лише якщо листа немає й у «Спамі».</span></li>
+<li data-key="03-verify-empty:change"><span class="hint-num">4</span><span class="hint-text"><b>Змінити адресу пошти</b> — якщо помилилися в адресі; акаунт не доведеться створювати заново.</span></li></ol>
+        <figure>
+          <div class="shot" id="shot-03-verify-empty">
+            <img src="shots/crop-03-verify-empty.png" alt="Екран підтвердження пошти з вісьмома полями коду">
+            <button class="spot" data-key="03-verify-empty:code" style="left:18.750%;top:50.980%;width:6.875%;height:7.843%" aria-label="<b>Вісім полів коду</b> — клікніть у перше і наберіть код повністю. Форма підтвердиться сама, кнопку тиснути не обов’язково."><span class="spot-num">1</span></button>
+<button class="spot" data-key="03-verify-empty:confirm" style="left:21.719%;top:61.176%;width:56.563%;height:8.039%" aria-label="<b>Підтвердити</b> — знадобиться, якщо вставляєте код із буфера."><span class="spot-num">2</span></button>
+<button class="spot" data-key="03-verify-empty:resend" style="left:33.125%;top:76.275%;width:30.625%;height:5.882%" aria-label="<b>Надіслати знову</b> — активується після відліку. Тисніть, лише якщо листа немає й у «Спамі»."><span class="spot-num">3</span></button>
+<button class="spot" data-key="03-verify-empty:change" style="left:33.125%;top:83.333%;width:30.625%;height:5.882%" aria-label="<b>Змінити адресу пошти</b> — якщо помилилися в адресі; акаунт не доведеться створювати заново."><span class="spot-num">4</span></button>
+          </div>
+          <div class="shot-bar">
+            <figcaption>Адреса на екрані — та, яку ви вписали. Помилилися? Тут же «Змінити адресу пошти».</figcaption>
+            <button class="toggle" type="button" data-toggle="shot-03-verify-empty">Прибрати підсвітку</button>
+          </div>
+        </figure>
+      </div>
+
+      <div class="letter">
+        <dl class="letter-meta">
+          <div><dt>Від кого</dt><dd>«CyberOS», службова адреса вашої панелі</dd></div>
+          <div><dt>Тема</dt><dd>Код підтвердження CyberOS</dd></div>
+          <div><dt>Де шукати</dt><dd>«Вхідні», а якщо немає — <b>«Спам»</b>. У нашому проході лист щоразу опинявся у теці [Gmail]/Спам.</dd></div>
+          <div><dt>Формат коду</dt><dd>Чотири цифри, дефіс, чотири: <code>1265-8719</code>. Дефіс не вводьте.</dd></div>
+          <div><dt>Термін дії</dt><dd>24 години</dd></div>
+        </dl>
+        <div class="letter-shot">
+          <img src="shots/04-email-letter.png" alt="Лист CyberOS із кодом підтвердження" width="900" height="1000">
+        </div>
+      </div>
+
+      <div class="note">
+        <span class="note-tag">Порада</span>
+        <span>Позначте лист «Не спам» і додайте адресу відправника в контакти —
+        наступні листи системи (запрошення співробітників, скидання пароля) підуть уже у «Вхідні».</span>
+      </div>
+      <label class="check"><input type="checkbox" data-step="2"> Код введено, відкрився екран «Створіть ваш клуб»</label>
+    </section>
+
+    <section class="step" id="step-3">
+      <div class="step-head">
+        <span class="step-num">03</span>
+        <div>
+          <h2>Назвіть клуб і задайте години роботи</h2>
+          <p>
+            Мінімум, без якого система не запуститься: назва, місто й режим роботи.
+            Решту — зони, пристрої, тарифи — налаштуєте вже всередині кабінету.
+          </p>
+        </div>
+      </div>
+      <div class="step-body">
+        <ol class="hints" data-shot="06-onboarding-empty"><li data-key="06-onboarding-empty:club"><span class="hint-num">1</span><span class="hint-text"><b>Назва клубу</b> — її бачать гості в застосунку й на екранах Shell. Змінити можна потім у налаштуваннях.</span></li>
+<li data-key="06-onboarding-empty:city"><span class="hint-num">2</span><span class="hint-text"><b>Місто</b> — для звітів і мережі клубів.</span></li>
+<li data-key="06-onboarding-empty:timezone"><span class="hint-num">3</span><span class="hint-text"><b>Часовий пояс</b> — у ньому читаються години роботи, розписання тарифів і кожен час у панелі. Для України лишайте Europe/Kyiv.</span></li>
+<li data-key="06-onboarding-empty:open"><span class="hint-num">4</span><span class="hint-text"><b>Час відкриття й закриття</b> — вводиться по цифрах: клікніть у годину, наберіть, потім хвилини.</span></li>
+<li data-key="06-onboarding-empty:always"><span class="hint-num">5</span><span class="hint-text"><b>Цілодобово (24/7)</b> — увімкніть, якщо клуб не закривається. Тоді години сховаються, а тарифи доведеться покрити на всю добу.</span></li>
+<li data-key="06-onboarding-empty:submit"><span class="hint-num">6</span><span class="hint-text"><b>Перейти до клубу</b> — створює клуб і відкриває кабінет.</span></li></ol>
+        <figure>
+          <div class="shot" id="shot-06-onboarding-empty">
+            <img src="shots/crop-06-onboarding-empty.png" alt="Екран створення клубу: назва, місто, часовий пояс, години роботи">
+            <button class="spot" data-key="06-onboarding-empty:club" style="left:21.719%;top:38.235%;width:56.563%;height:5.882%" aria-label="<b>Назва клубу</b> — її бачать гості в застосунку й на екранах Shell. Змінити можна потім у налаштуваннях."><span class="spot-num">1</span></button>
+<button class="spot" data-key="06-onboarding-empty:city" style="left:21.719%;top:50.147%;width:56.563%;height:5.882%" aria-label="<b>Місто</b> — для звітів і мережі клубів."><span class="spot-num">2</span></button>
+<button class="spot" data-key="06-onboarding-empty:timezone" style="left:21.719%;top:62.059%;width:56.563%;height:6.176%" aria-label="<b>Часовий пояс</b> — у ньому читаються години роботи, розписання тарифів і кожен час у панелі. Для України лишайте Europe/Kyiv."><span class="spot-num">3</span></button>
+<button class="spot" data-key="06-onboarding-empty:open" style="left:21.719%;top:75.000%;width:56.563%;height:6.765%" aria-label="<b>Час відкриття й закриття</b> — вводиться по цифрах: клікніть у годину, наберіть, потім хвилини."><span class="spot-num">4</span></button>
+<button class="spot" data-key="06-onboarding-empty:always" style="left:21.719%;top:83.235%;width:56.563%;height:4.412%" aria-label="<b>Цілодобово (24/7)</b> — увімкніть, якщо клуб не закривається. Тоді години сховаються, а тарифи доведеться покрити на всю добу."><span class="spot-num">5</span></button>
+<button class="spot" data-key="06-onboarding-empty:submit" style="left:21.719%;top:86.912%;width:56.563%;height:6.029%" aria-label="<b>Перейти до клубу</b> — створює клуб і відкриває кабінет."><span class="spot-num">6</span></button>
+          </div>
+          <div class="shot-bar">
+            <figcaption>Типово стоїть 10:00–22:00. Нижче — вигляд заповненої форми з увімкненим 24/7.</figcaption>
+            <button class="toggle" type="button" data-toggle="shot-06-onboarding-empty">Прибрати підсвітку</button>
+          </div>
+        </figure>
+      </div>
+
+      <figure style="margin-top:26px">
+        <div class="shot bare">
+          <img src="shots/crop-07-onboarding-filled.png" alt="Заповнена форма клубу: назва «Кібер Арена», місто Київ, режим 24/7">
+        </div>
+        <div class="shot-bar"><figcaption>Заповнено: «Кібер Арена», Київ, цілодобовий режим — години сховались, бо клуб не закривається.</figcaption></div>
+      </figure>
+
+      <div class="note note--warn">
+        <span class="note-tag">Наслідок 24/7</span>
+        <span><b>Цілодобовий режим вимагає тарифів на всю добу.</b> Якщо погодинні тарифи покривають
+        лише день, у непокриті години ПК не дасть почати сесію навіть із грошима на балансі — система
+        попередить про це на сторінці «Тарифи». Нічні тарифи заведемо в наступному розділі.</span>
+      </div>
+      <label class="check"><input type="checkbox" data-step="3"> Клуб створено</label>
+    </section>
+
+    <section class="step" id="step-4">
+      <div class="step-head">
+        <span class="step-num">04</span>
+        <div>
+          <h2>Ви в кабінеті</h2>
+          <p>
+            Після «Перейти до клубу» система відкриває розділ <b>«Співробітники та ролі»</b> — не дашборд.
+            Це нормально: у новому клубі ще немає ні пристроїв, ні продажів, тому першою корисною дією
+            є команда.
+          </p>
+        </div>
+      </div>
+      <figure>
+        <div class="shot bare">
+          <img src="shots/crop-08-club-ready.png" alt="Кабінет нового клубу: розділ «Співробітники та ролі», один власник">
+        </div>
+        <div class="shot-bar">
+          <figcaption>Назва клубу — ліворуч угорі. У списку один рядок: ви, роль «Власник», статус «Активний».</figcaption>
+        </div>
+      </figure>
+      <div class="note note--ok">
+        <span class="note-tag">Готово</span>
+        <span>Клуб існує, ви — власник з повними правами (43 із 43 дозволів). Ліва навігація вже
+        показує всі розділи: обладнання, каса, клієнти, тарифи, лояльність, аналітика.</span>
+      </div>
+      <label class="check"><input type="checkbox" data-step="4"> Бачу кабінет свого клубу</label>
+    </section>
+
+    <section class="video-block" id="video">
+      <h3>Відео: увесь розділ за одну хвилину</h3>
+      <p>
+        Запис реального проходу — від порожньої форми реєстрації до кабінету. Підписи в кадрі
+        повторюють кроки вище; звуку немає, тож дивитись можна без навушників.
+      </p>
+      <video controls preload="metadata" playsinline poster="shots/crop-01-register-empty.png">
+        <source src="videos/uc01-registration.mp4" type="video/mp4">
+        Ваш браузер не показує це відео. Скачайте файл <code>uc01-registration.mp4</code> з репозиторію інструкції.
+      </video>
+    </section>
+
+    <section class="next">
+      <h2>Наступний розділ</h2>
+      <p>Клуб створено, але він поки порожній. Далі — те, без чого не почати продавати час:</p>
+      <ol>
+        <li><b>Зони й пристрої</b> — розбити зал на зони (Стандарт, VIP, PlayStation) і додати комп’ютери.</li>
+        <li><b>Тарифи</b> — погодинні на день і ніч, вихідні, абонементи. Тут же покриття доби для режиму 24/7.</li>
+        <li><b>Команда</b> — запросити адміністраторів і касирів поштою, налаштувати ролі та права.</li>
+        <li><b>Каса й бар</b> — товари, комбо-набори, продажі й зміни.</li>
+      </ol>
+    </section>
+  </main>
+
+  <nav class="chapters" aria-label="Розділи інструкції">
+    <a href="instruction-01-club-setup.html" class="current"><i>01</i>Заведення клубу</a>
+    <a href="instruction-02-zones-devices.html"><i>02</i>Зони і пристрої</a>
+    <a href="instruction-03-tariffs.html"><i>03</i>Тарифи</a>
+    <a href="instruction-04-games.html"><i>04</i>Ігри</a>
+    <a href="instruction-05-shell.html"><i>05</i>Shell</a>
+  </nav>
+
+  <footer>
+    <span>CyberOS · інструкція власника, розділ 1 з 7</span>
+    <span>Скріншоти зняті на робочій системі 9 вересня 2026</span>
+  </footer>
+</div>
+
+<script>
+  // підсвітка: пункт списку ↔ рамка на скріншоті
+  const setOn = (key, on) => {
+    document.querySelectorAll('[data-key="' + key + '"]').forEach((el) => el.classList.toggle('on', on));
+  };
+  document.querySelectorAll('.hints li, .spot').forEach((el) => {
+    const key = el.dataset.key;
+    el.addEventListener('mouseenter', () => setOn(key, true));
+    el.addEventListener('mouseleave', () => setOn(key, false));
+    el.addEventListener('focus', () => setOn(key, true));
+    el.addEventListener('blur', () => setOn(key, false));
+    if (el.classList.contains('spot')) {
+      el.addEventListener('click', () => {
+        const li = document.querySelector('.hints li[data-key="' + key + '"]');
+        li?.scrollIntoView({ block: 'nearest', behavior: 'smooth' });
+        li?.animate([{ background: 'var(--accent-soft)' }, { background: 'transparent' }], { duration: 900 });
+      });
+    }
+  });
+
+  // перемикач підсвітки на кожному скріншоті
+  document.querySelectorAll('.toggle').forEach((btn) => {
+    btn.addEventListener('click', () => {
+      const shot = document.getElementById(btn.dataset.toggle);
+      const bare = shot.classList.toggle('bare');
+      btn.textContent = bare ? 'Показати підсвітку' : 'Прибрати підсвітку';
+    });
+  });
+
+  // чекліст кроків — пам’ять у браузері читача (може бути недоступна)
+  const KEY = 'cyberos-guide-01';
+  let done = {};
+  try { done = JSON.parse(localStorage.getItem(KEY) || '{}'); } catch (e) { done = {}; }
+  const paint = () => {
+    document.querySelectorAll('.check input').forEach((input) => {
+      const n = input.dataset.step;
+      input.checked = !!done[n];
+      input.closest('.check').classList.toggle('done', !!done[n]);
+      document.querySelector('.rail a[data-rail="' + n + '"]')?.classList.toggle('done', !!done[n]);
+    });
+  };
+  document.querySelectorAll('.check input').forEach((input) => {
+    input.addEventListener('change', () => {
+      done[input.dataset.step] = input.checked;
+      try { localStorage.setItem(KEY, JSON.stringify(done)); } catch (e) { /* приватний режим — просто не запамʼятаємо */ }
+      paint();
+    });
+  });
+  paint();
+</script>
+
+</body>
+</html>

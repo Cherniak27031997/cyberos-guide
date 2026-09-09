@@ -1,0 +1,586 @@
+<!doctype html>
+<html lang="uk">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="light dark">
+<meta name="description" content="QR клубу, ручна картка й вхід клієнта в Shell.">
+<style>
+  html, body { margin: 0; }
+  img { max-width: 100%; }
+  [hidden] { display: none !important; }
+</style>
+<title>Клієнти клубу</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Manrope:wght@600;800&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+:root {
+    --ink: #0F1425;
+    --ink-2: #2B3450;
+    --muted: #5A6280;
+    --paper: #F7F8FB;
+    --surface: #FFFFFF;
+    --line: #E2E5EE;
+    --accent: #4F46E5;
+    --accent-soft: #EEF0FE;
+    --warn: #B45309;
+    --warn-soft: #FEF6E7;
+    --ok: #047857;
+    --ok-soft: #E9F6F1;
+    --shadow: 0 1px 2px rgba(15, 20, 37, .06), 0 12px 28px -18px rgba(15, 20, 37, .35);
+    --radius: 10px;
+    --step-font: 'Manrope', 'Trebuchet MS', sans-serif;
+    --body-font: 'IBM Plex Sans', 'Helvetica Neue', Arial, sans-serif;
+    --mono-font: 'IBM Plex Mono', ui-monospace, 'SF Mono', Menlo, monospace;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --ink: #EEF1F8;
+      --ink-2: #C6CCDD;
+      --muted: #949CB5;
+      --paper: #0B0F1A;
+      --surface: #131926;
+      --line: #262E42;
+      --accent: #8B85F5;
+      --accent-soft: #1D2237;
+      --warn: #E9A23B;
+      --warn-soft: #2A2113;
+      --ok: #4BC299;
+      --ok-soft: #12261F;
+      --shadow: 0 1px 2px rgba(0, 0, 0, .5), 0 16px 34px -20px rgba(0, 0, 0, .8);
+    }
+  }
+  :root[data-theme="dark"] {
+    --ink: #EEF1F8;
+    --ink-2: #C6CCDD;
+    --muted: #949CB5;
+    --paper: #0B0F1A;
+    --surface: #131926;
+    --line: #262E42;
+    --accent: #8B85F5;
+    --accent-soft: #1D2237;
+    --warn: #E9A23B;
+    --warn-soft: #2A2113;
+    --ok: #4BC299;
+    --ok-soft: #12261F;
+    --shadow: 0 1px 2px rgba(0, 0, 0, .5), 0 16px 34px -20px rgba(0, 0, 0, .8);
+  }
+
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    background: var(--paper);
+    color: var(--ink);
+    font: 400 16px/1.62 var(--body-font);
+    -webkit-font-smoothing: antialiased;
+  }
+  .wrap { max-width: 1120px; margin: 0 auto; padding: 0 24px 96px; }
+
+  /* ── шапка ─────────────────────────────────────────────── */
+  .masthead { padding: 56px 0 28px; border-bottom: 1px solid var(--line); }
+  .kicker {
+    font: 500 12px/1 var(--mono-font);
+    letter-spacing: .14em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin: 0 0 14px;
+  }
+  h1 {
+    font: 800 clamp(32px, 5vw, 46px)/1.08 var(--step-font);
+    letter-spacing: -.02em;
+    margin: 0 0 14px;
+    text-wrap: balance;
+  }
+  .lede { margin: 0; max-width: 62ch; color: var(--ink-2); font-size: 17px; }
+  .facts {
+    display: flex; flex-wrap: wrap; gap: 10px 28px;
+    margin: 26px 0 0; padding: 0; list-style: none;
+  }
+  .facts div { display: flex; flex-direction: column; gap: 2px; }
+  .facts dt { font: 500 11px/1 var(--mono-font); letter-spacing: .1em; text-transform: uppercase; color: var(--muted); }
+  .facts dd { margin: 0; font: 600 15px/1.3 var(--body-font); }
+
+  /* ── навігація кроків ──────────────────────────────────── */
+  .rail {
+    position: sticky; top: 0; z-index: 20;
+    display: flex; gap: 6px; align-items: center;
+    padding: 12px 0; margin-bottom: 8px;
+    background: color-mix(in srgb, var(--paper) 92%, transparent);
+    backdrop-filter: blur(8px);
+    border-bottom: 1px solid var(--line);
+    overflow-x: auto;
+  }
+  .rail a {
+    flex: 0 0 auto;
+    display: inline-flex; align-items: center; gap: 8px;
+    padding: 7px 13px 7px 9px;
+    border-radius: 999px;
+    color: var(--ink-2); text-decoration: none;
+    font: 600 13.5px/1 var(--body-font);
+    border: 1px solid transparent;
+  }
+  .rail a:hover, .rail a:focus-visible { background: var(--accent-soft); color: var(--accent); outline: none; }
+  .rail a.done { color: var(--ok); }
+  .rail a i {
+    display: grid; place-items: center;
+    width: 20px; height: 20px; border-radius: 50%;
+    background: var(--accent-soft); color: var(--accent);
+    font: 600 11px/1 var(--mono-font); font-style: normal;
+  }
+  .rail a.done i { background: var(--ok-soft); color: var(--ok); }
+
+  /* ── крок ──────────────────────────────────────────────── */
+  .step { padding: 52px 0; border-bottom: 1px solid var(--line); scroll-margin-top: 68px; }
+  .step:last-of-type { border-bottom: 0; }
+  .step-head { display: grid; grid-template-columns: 54px 1fr; gap: 18px; align-items: start; }
+  .step-num {
+    font: 800 34px/1 var(--step-font);
+    color: var(--accent);
+    letter-spacing: -.03em;
+    font-variant-numeric: tabular-nums;
+  }
+  .step h2 { font: 600 clamp(23px, 3vw, 29px)/1.2 var(--step-font); margin: 0 0 8px; letter-spacing: -.015em; text-wrap: balance; }
+  .step-head p { margin: 0; color: var(--ink-2); max-width: 64ch; }
+  .step-body { margin-top: 28px; display: grid; grid-template-columns: minmax(300px, 380px) 1fr; gap: 28px; align-items: start; }
+  @media (max-width: 900px) { .step-body { grid-template-columns: 1fr; } }
+
+  /* ── підказки ──────────────────────────────────────────── */
+  .hints { margin: 0; padding: 0; list-style: none; display: flex; flex-direction: column; gap: 2px; }
+  .hints li {
+    display: grid; grid-template-columns: 24px 1fr; gap: 12px;
+    padding: 11px 12px; border-radius: 8px;
+    border: 1px solid transparent;
+    cursor: default;
+    transition: background .14s ease, border-color .14s ease;
+  }
+  .hints li:hover, .hints li.on { background: var(--accent-soft); border-color: color-mix(in srgb, var(--accent) 28%, transparent); }
+  .hint-num {
+    display: grid; place-items: center;
+    width: 24px; height: 24px; border-radius: 50%;
+    background: var(--accent); color: #fff;
+    font: 600 12px/1 var(--mono-font);
+  }
+  .hint-text { font-size: 14.6px; color: var(--ink-2); }
+  .hint-text b { color: var(--ink); font-weight: 600; }
+
+  /* ── скріншот з рамками ────────────────────────────────── */
+  figure { margin: 0; }
+  .shot {
+    position: relative;
+    border: 1px solid var(--line); border-radius: var(--radius);
+    background: var(--surface); box-shadow: var(--shadow);
+    overflow: hidden;
+  }
+  .shot img { display: block; width: 100%; height: auto; }
+  .spot {
+    position: absolute;
+    margin: -5px 0 0 -5px; padding: 5px;
+    width: auto; background: transparent;
+    border: 2px solid var(--accent); border-radius: 7px;
+    box-shadow: 0 0 0 3px color-mix(in srgb, var(--accent) 18%, transparent);
+    cursor: pointer; opacity: .95;
+    transition: box-shadow .14s ease, transform .14s ease;
+  }
+  .spot:hover, .spot.on { box-shadow: 0 0 0 6px color-mix(in srgb, var(--accent) 30%, transparent); transform: scale(1.015); }
+  .spot:focus-visible { outline: 3px solid var(--warn); outline-offset: 3px; }
+  .spot-num {
+    position: absolute; top: -12px; left: -12px;
+    display: grid; place-items: center;
+    width: 22px; height: 22px; border-radius: 50%;
+    background: var(--accent); color: #fff;
+    font: 600 12px/1 var(--mono-font);
+    box-shadow: 0 1px 4px rgba(0, 0, 0, .3);
+  }
+  .spot-num.tr { left: auto; right: -12px; }
+  .spot-num.bl { top: auto; bottom: -12px; }
+  .spot-num.br { top: auto; bottom: -12px; left: auto; right: -12px; }
+  .shot.bare .spot { opacity: 0; pointer-events: none; }
+  .shot-bar {
+    display: flex; align-items: center; justify-content: space-between; gap: 12px;
+    margin-top: 10px;
+  }
+  figcaption { font: 400 13px/1.5 var(--body-font); color: var(--muted); }
+  .toggle {
+    flex: 0 0 auto;
+    display: inline-flex; align-items: center; gap: 7px;
+    font: 500 12.5px/1 var(--body-font); color: var(--ink-2);
+    padding: 7px 11px; border: 1px solid var(--line); border-radius: 999px;
+    background: var(--surface); cursor: pointer;
+  }
+  .toggle:hover { border-color: var(--accent); color: var(--accent); }
+
+  /* ── плашки ────────────────────────────────────────────── */
+  .note {
+    display: grid; grid-template-columns: auto 1fr; gap: 12px;
+    margin: 22px 0 0; padding: 14px 16px;
+    border-radius: 8px; font-size: 14.8px;
+    border-left: 3px solid var(--accent); background: var(--accent-soft); color: var(--ink-2);
+  }
+  .note b { color: var(--ink); }
+  .note--warn { border-left-color: var(--warn); background: var(--warn-soft); }
+  .note--ok { border-left-color: var(--ok); background: var(--ok-soft); }
+  .note-tag { font: 500 11px/1.5 var(--mono-font); letter-spacing: .08em; text-transform: uppercase; color: var(--warn); }
+  .note--ok .note-tag { color: var(--ok); }
+  .note:not(.note--warn):not(.note--ok) .note-tag { color: var(--accent); }
+  code {
+    font: 400 .92em/1.4 var(--mono-font);
+    background: color-mix(in srgb, var(--ink) 7%, transparent);
+    padding: .12em .38em; border-radius: 4px;
+    word-break: break-word;
+  }
+
+  /* ── лист ──────────────────────────────────────────────── */
+  .letter { display: grid; grid-template-columns: minmax(240px, 320px) 1fr; gap: 26px; align-items: start; margin-top: 26px; }
+  @media (max-width: 900px) { .letter { grid-template-columns: 1fr; } }
+  .letter-meta { margin: 0; display: flex; flex-direction: column; gap: 14px; }
+  .letter-meta div { display: grid; gap: 3px; }
+  .letter-meta dt { font: 500 11px/1 var(--mono-font); letter-spacing: .1em; text-transform: uppercase; color: var(--muted); }
+  .letter-meta dd { margin: 0; font: 500 14.5px/1.45 var(--body-font); }
+  .letter-shot { border: 1px solid var(--line); border-radius: var(--radius); overflow: hidden; background: var(--surface); box-shadow: var(--shadow); max-height: 460px; overflow-y: auto; }
+  .letter-shot img { display: block; width: 100%; height: auto; }
+
+  /* ── відео ─────────────────────────────────────────────── */
+  .video-block { scroll-margin-top: 68px; margin-top: 44px; padding-top: 34px; border-top: 1px dashed var(--line); }
+  .video-block h3 { font: 600 20px/1.25 var(--step-font); margin: 0 0 6px; }
+  .video-block p { margin: 0 0 16px; color: var(--ink-2); max-width: 62ch; }
+  video { width: 100%; border-radius: var(--radius); border: 1px solid var(--line); background: #000; box-shadow: var(--shadow); }
+
+  /* ── чекліст ───────────────────────────────────────────── */
+  .check {
+    display: flex; align-items: center; gap: 10px;
+    margin-top: 26px; padding: 12px 14px;
+    border: 1px dashed var(--line); border-radius: 8px;
+    font: 500 14.5px/1 var(--body-font); color: var(--ink-2);
+    cursor: pointer; user-select: none;
+    background: var(--surface);
+  }
+  .check input { width: 17px; height: 17px; accent-color: var(--ok); cursor: pointer; }
+  .check.done { border-style: solid; border-color: var(--ok); color: var(--ok); background: var(--ok-soft); }
+
+  /* ── фінал ─────────────────────────────────────────────── */
+  .next { margin-top: 52px; padding: 30px; border: 1px solid var(--line); border-radius: var(--radius); background: var(--surface); box-shadow: var(--shadow); }
+  .next h2 { font: 600 24px/1.2 var(--step-font); margin: 0 0 8px; }
+  .next p { margin: 0 0 18px; color: var(--ink-2); max-width: 64ch; }
+  .next ol { margin: 0; padding-left: 22px; display: grid; gap: 8px; color: var(--ink-2); }
+  .next ol b { color: var(--ink); }
+  footer { margin-top: 44px; padding-top: 20px; border-top: 1px solid var(--line); color: var(--muted); font-size: 13.5px; display: flex; flex-wrap: wrap; gap: 6px 18px; }
+  @media (prefers-reduced-motion: reduce) { * { transition: none !important; animation: none !important; } }
+
+  /* ── навігація між розділами ───────────────────────────── */
+  .chapters { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 40px; }
+  .chapters a {
+    display: inline-flex; align-items: center; gap: 8px;
+    padding: 10px 14px; border: 1px solid var(--line); border-radius: 999px;
+    background: var(--surface); color: var(--ink-2); text-decoration: none;
+    font: 500 14px/1 var(--body-font);
+  }
+  .chapters a:hover, .chapters a:focus-visible { border-color: var(--accent); color: var(--accent); outline: none; }
+  .chapters a.current { background: var(--accent-soft); border-color: color-mix(in srgb, var(--accent) 30%, transparent); color: var(--accent); }
+  .chapters i { font-style: normal; font: 600 11px/1 var(--mono-font); opacity: .7; }
+
+</style>
+
+</head>
+<body>
+<div class="wrap">
+  <header class="masthead">
+    <p class="kicker">CyberOS · інструкція, розділ 7</p>
+    <h1>Клієнти: QR і ручне заведення</h1>
+    <p class="lede">Два шляхи, якими гість стає клієнтом: QR клубу, за яким він реєструється сам, і ручна картка з паролем. І перевірка, яка має значення — вхід цього клієнта в Shell на клубному ПК.</p>
+    <dl class="facts">
+      <div><dt>Часу</dt><dd>5 хвилин</dd></div>
+      <div><dt>Потрібно</dt><dd>QR клубу або дані гостя</dd></div>
+      <div><dt>Результат</dt><dd>Клієнт заходить у Shell</dd></div>
+    </dl>
+  </header>
+
+  <nav class="rail" aria-label="Кроки розділу">
+    <a href="#step-1" data-rail=1><i>1</i>Два шляхи</a>
+    <a href="#step-2" data-rail=2><i>2</i>QR клубу</a>
+    <a href="#step-3" data-rail=3><i>3</i>Вручну</a>
+    <a href="#step-4" data-rail=4><i>4</i>Вхід у Shell</a>
+    <a href="#step-5" data-rail=5><i>5</i>Клієнт у Shell</a>
+    <a href="#video"><i>▶</i>Відео проходу</a>
+  </nav>
+
+  <main>
+    <section class="step" id="step-1">
+      <div class="step-head">
+        <span class="step-num">01</span>
+        <div>
+          <h2>Два шляхи, якими гість стає клієнтом</h2>
+          <p>
+            Клієнт у CyberOS — не запис у зошиті, а акаунт: з ним він заходить у Shell на
+            машині, на ньому тримається баланс, час, історія візитів і лояльність.
+            Завести клієнта можна двома способами, і обидва потрібні в житті клубу.
+          </p>
+        </div>
+      </div>
+      <div class="step-body">
+        <ol class="hints" data-shot="71-clients"><li data-key="71-clients:new"><span class="hint-num">1</span><span class="hint-text"><b>Новий клієнт</b> — ручне заведення картки. Потрібне, коли гість уже стоїть біля стійки, а телефона під рукою немає.</span></li>
+<li data-key="71-clients:search"><span class="hint-num">2</span><span class="hint-text"><b>Пошук</b> — за іменем, телефоном або поштою. Так касир знаходить постійного гостя за секунду.</span></li>
+<li data-key="71-clients:filters"><span class="hint-num">3</span><span class="hint-text"><b>Фільтри</b> — рівень лояльності, статус, наявність балансу. Стануть у пригоді, коли клієнтів буде кілька сотень.</span></li></ol>
+        <figure>
+          <div class="shot" id="shot-71-clients">
+            <img src="shots/crop-71-clients.png" alt="Розділ «Клієнти»: пошук, фільтри й кнопка ручного заведення.">
+            <button class="spot" data-key="71-clients:new" style="left:86.402%;top:12.553%;width:11.571%;height:6.809%" aria-label="new"><span class="spot-num br">1</span></button>
+<button class="spot" data-key="71-clients:search" style="left:2.027%;top:12.553%;width:35.473%;height:6.809%" aria-label="search"><span class="spot-num br">2</span></button>
+<button class="spot" data-key="71-clients:filters" style="left:54.899%;top:12.553%;width:8.615%;height:6.809%" aria-label="filters"><span class="spot-num br">3</span></button>
+          </div>
+          <div class="shot-bar"><figcaption>Розділ «Клієнти»: пошук, фільтри й кнопка ручного заведення.</figcaption><button class="toggle" type="button" data-toggle="shot-71-clients">Прибрати підсвітку</button></div>
+        </figure>
+      </div>
+      <div class="note"><span class="note-tag">Що коли</span><span><b>QR</b> — основний спосіб: гість реєструється сам, ви не витрачаєте час персоналу й не робите помилок у пошті. <b>Вручну</b> — коли гість без телефона, коли це дитина з батьками або коли треба видати доступ негайно.</span></div>
+      <label class="check"><input type="checkbox" data-step="1"> Розумію, як клієнт потрапляє в клуб</label>
+    </section>
+
+    <section class="step" id="step-2">
+      <div class="step-head">
+        <span class="step-num">02</span>
+        <div>
+          <h2>QR клубу: гість реєструється сам</h2>
+          <p>
+            QR лежить у <b>Налаштування → Клуб → Реєстрація</b>. Це код саме вашого клубу:
+            хто його сканує, той стає клієнтом саме у вас.
+          </p>
+        </div>
+      </div>
+      <div class="step-body">
+        <ol class="hints" data-shot="72-club-qr"><li data-key="72-club-qr:qr"><span class="hint-num">1</span><span class="hint-text"><b>QR клубу</b> — гість наводить камеру телефона, потрапляє в Telegram-бот CyberOS ID, тисне «Старт» і реєструється сам. Клієнт зʼявляється у вашому списку без участі персоналу.</span></li>
+<li data-key="72-club-qr:link"><span class="hint-num">2</span><span class="hint-text"><b>Те саме посилання текстом</b> — його можна кинути в сторіс, чат клубу або на сайт. Код у посиланні привʼязаний саме до вашого клубу.</span></li>
+<li data-key="72-club-qr:download"><span class="hint-num">3</span><span class="hint-text"><b>Завантажити</b> — картинка QR для друку. Найкраще працює наліпка на стійці й на кожному столі.</span></li>
+<li data-key="72-club-qr:refresh"><span class="hint-num">4</span><span class="hint-text"><b>Оновити код</b> — робить старий QR недійсним. Тисніть, якщо роздруківка загубилась або код потрапив не туди.</span></li></ol>
+        <figure>
+          <div class="shot" id="shot-72-club-qr">
+            <img src="shots/crop-72-club-qr.png" alt="QR для реєстрації: картинка, посилання, завантаження для друку й оновлення коду.">
+            <button class="spot" data-key="72-club-qr:qr" style="left:4.868%;top:25.556%;width:27.368%;height:57.778%" aria-label="qr"><span class="spot-num ">1</span></button>
+<button class="spot" data-key="72-club-qr:link" style="left:35.526%;top:24.167%;width:55.263%;height:15.000%" aria-label="link"><span class="spot-num tr">2</span></button>
+<button class="spot" data-key="72-club-qr:download" style="left:35.526%;top:42.500%;width:15.526%;height:8.889%" aria-label="download"><span class="spot-num bl">3</span></button>
+<button class="spot" data-key="72-club-qr:refresh" style="left:52.105%;top:42.500%;width:15.658%;height:8.889%" aria-label="refresh"><span class="spot-num br">4</span></button>
+          </div>
+          <div class="shot-bar"><figcaption>QR для реєстрації: картинка, посилання, завантаження для друку й оновлення коду.</figcaption><button class="toggle" type="button" data-toggle="shot-72-club-qr">Прибрати підсвітку</button></div>
+        </figure>
+      </div>
+      <h3 style="margin:34px 0 10px">Що це за QR і чому він так працює</h3>
+      <p style="max-width:62ch;color:var(--ink-2);margin:0 0 18px">
+        Це не посилання на сайт із формою реєстрації. У коді зашите посилання на
+        Telegram-бот <b>CyberOS ID</b> разом із кодом вашого клубу. Тому гість не
+        заповнює анкету й не вигадує пароль: у нього вже є Telegram, і акаунт
+        створюється в ньому за хвилину — а клуб, у який він потрапив, система
+        визначає з коду в посиланні.
+      </p>
+      <div style="max-width:380px">
+        <figure>
+          <div class="shot bare" id="shot-81-bot-app">
+            <img src="shots/crop-81-bot-app.png" alt="Те, що відкривається після сканування: бот CyberOS ID. Кнопка «OPEN APP» замість звичайного «START BOT» — бо в коді є код клубу.">
+            
+          </div>
+          <div class="shot-bar"><figcaption>Те, що відкривається після сканування: бот CyberOS ID. Кнопка «OPEN APP» замість звичайного «START BOT» — бо в коді є код клубу.</figcaption></div>
+        </figure>
+      </div>
+      <div class="note"><span class="note-tag">Як це виглядає для гостя</span><span>Камера телефона → бот <b>CyberOS ID</b> → кнопка <b>«Старт»</b> → коротка реєстрація. Далі він уже у вашому списку клієнтів, а на клубному ПК заходить за QR — без пароля. Той самий акаунт працює в будь-якому клубі на CyberOS, тому постійному гравцю не треба реєструватися заново.</span></div>
+      <div class="note note--warn"><span class="note-tag">Код варто берегти</span><span>QR у посиланні — це запрошення у ваш клуб. Якщо роздруківка пішла не туди або ви публікували код, натисніть «Оновити код»: старий перестане працювати, а новий треба буде передрукувати.</span></div>
+      <label class="check"><input type="checkbox" data-step="2"> QR роздрукований і лежить на стійці</label>
+    </section>
+
+    <section class="step" id="step-3">
+      <div class="step-head">
+        <span class="step-num">03</span>
+        <div>
+          <h2>Клієнт вручну</h2>
+          <p>
+            Кнопка <b>«Новий клієнт»</b> на сторінці «Клієнти». Обовʼязкових полів пʼять,
+            і головне з них — пароль: саме з ним гість зайде в Shell.
+          </p>
+        </div>
+      </div>
+      <div class="step-body">
+        <ol class="hints" data-shot="73-client-form"><li data-key="73-client-form:email"><span class="hint-num">1</span><span class="hint-text"><b>Email</b> — логін клієнта. З ним він заходить у Shell на клубному ПК.</span></li>
+<li data-key="73-client-form:first"><span class="hint-num">2</span><span class="hint-text"><b>Імʼя</b> — його бачить касир у чеку й Shell на екрані машини.</span></li>
+<li data-key="73-client-form:last"><span class="hint-num">3</span><span class="hint-text"><b>Прізвище</b> — обовʼязкове, як і імʼя.</span></li>
+<li data-key="73-client-form:phone"><span class="hint-num">4</span><span class="hint-text"><b>Телефон</b> — обовʼязковий і має бути унікальним: двом клієнтам той самий номер система не дасть.</span></li>
+<li data-key="73-client-form:password"><span class="hint-num">5</span><span class="hint-text"><b>Пароль</b> — мінімум 8 символів. Його задаєте ви, тому одразу скажіть гостю або запропонуйте змінити після входу.</span></li></ol>
+        <figure>
+          <div class="shot" id="shot-73-client-form">
+            <img src="shots/crop-73-client-form.png" alt="Форма «Новий клієнт»: пошта, імʼя, прізвище, телефон і пароль.">
+            <button class="spot" data-key="73-client-form:email" style="left:4.098%;top:17.308%;width:90.164%;height:8.077%" aria-label="email"><span class="spot-num ">1</span></button>
+<button class="spot" data-key="73-client-form:first" style="left:4.098%;top:32.885%;width:43.770%;height:8.077%" aria-label="first"><span class="spot-num ">2</span></button>
+<button class="spot" data-key="73-client-form:last" style="left:50.492%;top:32.885%;width:43.770%;height:8.077%" aria-label="last"><span class="spot-num ">3</span></button>
+<button class="spot" data-key="73-client-form:phone" style="left:24.426%;top:48.462%;width:69.836%;height:8.077%" aria-label="phone"><span class="spot-num ">4</span></button>
+<button class="spot" data-key="73-client-form:password" style="left:4.098%;top:64.038%;width:35.574%;height:8.077%" aria-label="password"><span class="spot-num ">5</span></button>
+          </div>
+          <div class="shot-bar"><figcaption>Форма «Новий клієнт»: пошта, імʼя, прізвище, телефон і пароль.</figcaption><button class="toggle" type="button" data-toggle="shot-73-client-form">Прибрати підсвітку</button></div>
+        </figure>
+      </div>
+      <figure>
+          <div class="shot bare" id="shot-74-client-filled">
+            <img src="shots/crop-74-client-filled.png" alt="Заповнена картка перед створенням. Нижче — необовʼязкові поля: нік, дата народження, знижка, звідки дізнався.">
+            
+          </div>
+          <div class="shot-bar"><figcaption>Заповнена картка перед створенням. Нижче — необовʼязкові поля: нік, дата народження, знижка, звідки дізнався.</figcaption></div>
+        </figure>
+      <figure>
+          <div class="shot bare" id="shot-75-client-created">
+            <img src="shots/crop-75-client-created.png" alt="Клієнт у списку одразу після створення. Клік по рядку відкриває картку з балансом, рівнем і історією.">
+            
+          </div>
+          <div class="shot-bar"><figcaption>Клієнт у списку одразу після створення. Клік по рядку відкриває картку з балансом, рівнем і історією.</figcaption></div>
+        </figure>
+      <div class="note note--warn"><span class="note-tag">Телефон унікальний</span><span>Система не дасть завести двох клієнтів з тим самим номером. Якщо форма скаржиться на телефон — такий гість, найімовірніше, у вас уже є: пошукайте його в списку.</span></div>
+      <label class="check"><input type="checkbox" data-step="3"> Клієнта заведено вручну</label>
+    </section>
+
+    <section class="step" id="step-4">
+      <div class="step-head">
+        <span class="step-num">04</span>
+        <div>
+          <h2>Перевірка: клієнт заходить у Shell</h2>
+          <p>
+            Тепер найважливіше — переконатися, що логін працює на самій машині.
+            Ось екран входу Shell на клубному ПК.
+          </p>
+        </div>
+      </div>
+      <div class="step-body">
+        <ol class="hints" data-shot="77-shell-login"><li data-key="77-shell-login:login"><span class="hint-num">1</span><span class="hint-text"><b>Email або нікнейм</b> — те, що ви ввели в картці клієнта.</span></li>
+<li data-key="77-shell-login:password"><span class="hint-num">2</span><span class="hint-text"><b>Пароль</b> — той, що ви задали при створенні.</span></li>
+<li data-key="77-shell-login:signin"><span class="hint-num">3</span><span class="hint-text"><b>Увійти</b> — і сесія починається.</span></li>
+<li data-key="77-shell-login:mode_phone"><span class="hint-num">4</span><span class="hint-text"><b>Телефон</b> — той самий вхід, але за номером. Гостю зручніше, ніж диктувати пошту.</span></li>
+<li data-key="77-shell-login:qr"><span class="hint-num">5</span><span class="hint-text"><b>Вхід за QR</b> — для тих, хто вже реєструвався через бот: наводить телефон і заходить без пароля.</span></li></ol>
+        <figure>
+          <div class="shot" id="shot-77-shell-login">
+            <img src="shots/crop-77-shell-login.png" alt="Картка входу Shell на PC-02: пошта або телефон, пароль і вхід за QR.">
+            <button class="spot" data-key="77-shell-login:login" style="left:7.935%;top:43.898%;width:42.609%;height:8.814%" aria-label="login"><span class="spot-num ">1</span></button>
+<button class="spot" data-key="77-shell-login:password" style="left:7.935%;top:54.915%;width:42.609%;height:8.814%" aria-label="password"><span class="spot-num ">2</span></button>
+<button class="spot" data-key="77-shell-login:signin" style="left:7.935%;top:70.169%;width:42.609%;height:9.492%" aria-label="signin"><span class="spot-num ">3</span></button>
+<button class="spot" data-key="77-shell-login:mode_phone" style="left:36.522%;top:35.424%;width:6.630%;height:5.085%" aria-label="mode_phone"><span class="spot-num ">4</span></button>
+<button class="spot" data-key="77-shell-login:qr" style="left:68.370%;top:26.271%;width:24.457%;height:49.153%" aria-label="qr"><span class="spot-num ">5</span></button>
+          </div>
+          <div class="shot-bar"><figcaption>Картка входу Shell на PC-02: пошта або телефон, пароль і вхід за QR.</figcaption><button class="toggle" type="button" data-toggle="shot-77-shell-login">Прибрати підсвітку</button></div>
+        </figure>
+      </div>
+      <figure>
+          <div class="shot bare" id="shot-78-shell-typed">
+            <img src="shots/crop-78-shell-typed.png" alt="Введені пошта й пароль створеного клієнта. Пошта в кадрі розмита.">
+            
+          </div>
+          <div class="shot-bar"><figcaption>Введені пошта й пароль створеного клієнта. Пошта в кадрі розмита.</figcaption></div>
+        </figure>
+      <label class="check"><input type="checkbox" data-step="4"> Логін клієнта введено на клубному ПК</label>
+    </section>
+
+    <section class="step" id="step-5">
+      <div class="step-head">
+        <span class="step-num">05</span>
+        <div>
+          <h2>Клієнт у Shell</h2>
+          <p>
+            Вхід удався: Shell вітає клієнта імʼям і одразу каже, чого не хватає — часу.
+            Це нормальний стан нового гостя, поки касир не продав години.
+          </p>
+        </div>
+      </div>
+      <div class="step-body">
+        <ol class="hints" data-shot="79-shell-logged"><li data-key="79-shell-logged:pill"><span class="hint-num">1</span><span class="hint-text"><b>Імʼя клієнта</b> у Shell — вхід удався, машина знає, хто за нею сидить.</span></li>
+<li data-key="79-shell-logged:balance"><span class="hint-num">2</span><span class="hint-text"><b>Залишок часу й баланс</b> — у нового клієнта порожні, поки касир не продасть години.</span></li>
+<li data-key="79-shell-logged:topup"><span class="hint-num">3</span><span class="hint-text"><b>«Немає оплаченого часу»</b> — Shell сам просить поповнити баланс у касира й чекає. Гостю не треба перезаходити: час зʼявиться в цьому ж вікні.</span></li></ol>
+        <figure>
+          <div class="shot" id="shot-79-shell-logged">
+            <img src="shots/crop-79-shell-logged.png" alt="Shell після входу клієнта: імʼя у верхньому куті, нульовий баланс і запит на поповнення.">
+            <button class="spot" data-key="79-shell-logged:pill" style="left:86.667%;top:4.343%;width:11.765%;height:5.253%" aria-label="pill"><span class="spot-num bl">1</span></button>
+<button class="spot" data-key="79-shell-logged:balance" style="left:70.980%;top:4.040%;width:10.539%;height:5.556%" aria-label="balance"><span class="spot-num bl">2</span></button>
+<button class="spot" data-key="79-shell-logged:topup" style="left:3.431%;top:47.980%;width:24.510%;height:44.949%" aria-label="topup"><span class="spot-num ">3</span></button>
+          </div>
+          <div class="shot-bar"><figcaption>Shell після входу клієнта: імʼя у верхньому куті, нульовий баланс і запит на поповнення.</figcaption><button class="toggle" type="button" data-toggle="shot-79-shell-logged">Прибрати підсвітку</button></div>
+        </figure>
+      </div>
+      <div class="note"><span class="note-tag">Далі час зʼявиться сам</span><span>Коли касир продасть години, Shell підхопить їх у цьому ж вікні — гостю не треба виходити й заходити знову. Продаж часу й балансу — наступний розділ.</span></div>
+      <label class="check"><input type="checkbox" data-step="5"> Клієнт залогінений у Shell на клубному ПК</label>
+    </section>
+
+    <section class="video-block" id="video">
+      <h3>Відео: QR клубу і клієнт вручну</h3>
+      <p>
+        Прохід панеллю: список клієнтів, QR для реєстрації в налаштуваннях клубу,
+        заведення клієнта руками й його картка. Пошта й телефон у кадрі розмиті.
+      </p>
+      <video controls preload="metadata" playsinline poster="shots/crop-71-clients.png">
+        <source src="videos/uc07-clients.mp4" type="video/mp4">
+        Ваш браузер не показує це відео.
+      </video>
+    </section>
+
+
+  </main>
+
+  <nav class="chapters" aria-label="Розділи інструкції">
+    <a href="instruction-01-club-setup.html"><i>01</i>Заведення клубу</a>
+    <a href="instruction-02-zones-devices.html"><i>02</i>Зони і пристрої</a>
+    <a href="instruction-03-tariffs.html"><i>03</i>Тарифи</a>
+    <a href="instruction-04-games.html"><i>04</i>Ігри</a>
+    <a href="instruction-05-shell.html"><i>05</i>Shell</a>
+    <a href="instruction-06-install.html"><i>06</i>Встановлення на ПК</a>
+    <a href="instruction-07-clients.html" class="current"><i>07</i>Клієнти</a>
+  </nav>
+
+  <footer>
+    <span>CyberOS · інструкція власника, розділ 7 з 7</span>
+    <span>Знімки зроблені в демо-клубі й на живому клубному ПК 9 вересня 2026</span>
+  </footer>
+</div>
+
+<script>
+// підсвітка: пункт списку ↔ рамка на скріншоті
+  const setOn = (key, on) => {
+    document.querySelectorAll('[data-key="' + key + '"]').forEach((el) => el.classList.toggle('on', on));
+  };
+  document.querySelectorAll('.hints li, .spot').forEach((el) => {
+    const key = el.dataset.key;
+    el.addEventListener('mouseenter', () => setOn(key, true));
+    el.addEventListener('mouseleave', () => setOn(key, false));
+    el.addEventListener('focus', () => setOn(key, true));
+    el.addEventListener('blur', () => setOn(key, false));
+    if (el.classList.contains('spot')) {
+      el.addEventListener('click', () => {
+        const li = document.querySelector('.hints li[data-key="' + key + '"]');
+        li?.scrollIntoView({ block: 'nearest', behavior: 'smooth' });
+        li?.animate([{ background: 'var(--accent-soft)' }, { background: 'transparent' }], { duration: 900 });
+      });
+    }
+  });
+
+  // перемикач підсвітки на кожному скріншоті
+  document.querySelectorAll('.toggle').forEach((btn) => {
+    btn.addEventListener('click', () => {
+      const shot = document.getElementById(btn.dataset.toggle);
+      const bare = shot.classList.toggle('bare');
+      btn.textContent = bare ? 'Показати підсвітку' : 'Прибрати підсвітку';
+    });
+  });
+
+  // чекліст кроків — пам’ять у браузері читача (може бути недоступна)
+  const KEY = 'cyberos-guide-07';
+  let done = {};
+  try { done = JSON.parse(localStorage.getItem(KEY) || '{}'); } catch (e) { done = {}; }
+  const paint = () => {
+    document.querySelectorAll('.check input').forEach((input) => {
+      const n = input.dataset.step;
+      input.checked = !!done[n];
+      input.closest('.check').classList.toggle('done', !!done[n]);
+      document.querySelector('.rail a[data-rail="' + n + '"]')?.classList.toggle('done', !!done[n]);
+    });
+  };
+  document.querySelectorAll('.check input').forEach((input) => {
+    input.addEventListener('change', () => {
+      done[input.dataset.step] = input.checked;
+      try { localStorage.setItem(KEY, JSON.stringify(done)); } catch (e) { /* приватний режим — просто не запамʼятаємо */ }
+      paint();
+    });
+  });
+  paint();
+
+</script>
+
+</body>
+</html>

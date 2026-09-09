@@ -1,0 +1,516 @@
+<!doctype html>
+<html lang="uk">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="light dark">
+<meta name="description" content="Денні й нічні тарифи, розписання по днях, ціна за годину.">
+<style>
+  html, body { margin: 0; }
+  img { max-width: 100%; }
+  [hidden] { display: none !important; }
+</style>
+<title>Тарифи CyberOS</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Manrope:wght@600;800&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+:root {
+    --ink: #0F1425;
+    --ink-2: #2B3450;
+    --muted: #5A6280;
+    --paper: #F7F8FB;
+    --surface: #FFFFFF;
+    --line: #E2E5EE;
+    --accent: #4F46E5;
+    --accent-soft: #EEF0FE;
+    --warn: #B45309;
+    --warn-soft: #FEF6E7;
+    --ok: #047857;
+    --ok-soft: #E9F6F1;
+    --shadow: 0 1px 2px rgba(15, 20, 37, .06), 0 12px 28px -18px rgba(15, 20, 37, .35);
+    --radius: 10px;
+    --step-font: 'Manrope', 'Trebuchet MS', sans-serif;
+    --body-font: 'IBM Plex Sans', 'Helvetica Neue', Arial, sans-serif;
+    --mono-font: 'IBM Plex Mono', ui-monospace, 'SF Mono', Menlo, monospace;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --ink: #EEF1F8;
+      --ink-2: #C6CCDD;
+      --muted: #949CB5;
+      --paper: #0B0F1A;
+      --surface: #131926;
+      --line: #262E42;
+      --accent: #8B85F5;
+      --accent-soft: #1D2237;
+      --warn: #E9A23B;
+      --warn-soft: #2A2113;
+      --ok: #4BC299;
+      --ok-soft: #12261F;
+      --shadow: 0 1px 2px rgba(0, 0, 0, .5), 0 16px 34px -20px rgba(0, 0, 0, .8);
+    }
+  }
+  :root[data-theme="dark"] {
+    --ink: #EEF1F8;
+    --ink-2: #C6CCDD;
+    --muted: #949CB5;
+    --paper: #0B0F1A;
+    --surface: #131926;
+    --line: #262E42;
+    --accent: #8B85F5;
+    --accent-soft: #1D2237;
+    --warn: #E9A23B;
+    --warn-soft: #2A2113;
+    --ok: #4BC299;
+    --ok-soft: #12261F;
+    --shadow: 0 1px 2px rgba(0, 0, 0, .5), 0 16px 34px -20px rgba(0, 0, 0, .8);
+  }
+
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    background: var(--paper);
+    color: var(--ink);
+    font: 400 16px/1.62 var(--body-font);
+    -webkit-font-smoothing: antialiased;
+  }
+  .wrap { max-width: 1120px; margin: 0 auto; padding: 0 24px 96px; }
+
+  /* ── шапка ─────────────────────────────────────────────── */
+  .masthead { padding: 56px 0 28px; border-bottom: 1px solid var(--line); }
+  .kicker {
+    font: 500 12px/1 var(--mono-font);
+    letter-spacing: .14em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin: 0 0 14px;
+  }
+  h1 {
+    font: 800 clamp(32px, 5vw, 46px)/1.08 var(--step-font);
+    letter-spacing: -.02em;
+    margin: 0 0 14px;
+    text-wrap: balance;
+  }
+  .lede { margin: 0; max-width: 62ch; color: var(--ink-2); font-size: 17px; }
+  .facts {
+    display: flex; flex-wrap: wrap; gap: 10px 28px;
+    margin: 26px 0 0; padding: 0; list-style: none;
+  }
+  .facts div { display: flex; flex-direction: column; gap: 2px; }
+  .facts dt { font: 500 11px/1 var(--mono-font); letter-spacing: .1em; text-transform: uppercase; color: var(--muted); }
+  .facts dd { margin: 0; font: 600 15px/1.3 var(--body-font); }
+
+  /* ── навігація кроків ──────────────────────────────────── */
+  .rail {
+    position: sticky; top: 0; z-index: 20;
+    display: flex; gap: 6px; align-items: center;
+    padding: 12px 0; margin-bottom: 8px;
+    background: color-mix(in srgb, var(--paper) 92%, transparent);
+    backdrop-filter: blur(8px);
+    border-bottom: 1px solid var(--line);
+    overflow-x: auto;
+  }
+  .rail a {
+    flex: 0 0 auto;
+    display: inline-flex; align-items: center; gap: 8px;
+    padding: 7px 13px 7px 9px;
+    border-radius: 999px;
+    color: var(--ink-2); text-decoration: none;
+    font: 600 13.5px/1 var(--body-font);
+    border: 1px solid transparent;
+  }
+  .rail a:hover, .rail a:focus-visible { background: var(--accent-soft); color: var(--accent); outline: none; }
+  .rail a.done { color: var(--ok); }
+  .rail a i {
+    display: grid; place-items: center;
+    width: 20px; height: 20px; border-radius: 50%;
+    background: var(--accent-soft); color: var(--accent);
+    font: 600 11px/1 var(--mono-font); font-style: normal;
+  }
+  .rail a.done i { background: var(--ok-soft); color: var(--ok); }
+
+  /* ── крок ──────────────────────────────────────────────── */
+  .step { padding: 52px 0; border-bottom: 1px solid var(--line); scroll-margin-top: 68px; }
+  .step:last-of-type { border-bottom: 0; }
+  .step-head { display: grid; grid-template-columns: 54px 1fr; gap: 18px; align-items: start; }
+  .step-num {
+    font: 800 34px/1 var(--step-font);
+    color: var(--accent);
+    letter-spacing: -.03em;
+    font-variant-numeric: tabular-nums;
+  }
+  .step h2 { font: 600 clamp(23px, 3vw, 29px)/1.2 var(--step-font); margin: 0 0 8px; letter-spacing: -.015em; text-wrap: balance; }
+  .step-head p { margin: 0; color: var(--ink-2); max-width: 64ch; }
+  .step-body { margin-top: 28px; display: grid; grid-template-columns: minmax(300px, 380px) 1fr; gap: 28px; align-items: start; }
+  @media (max-width: 900px) { .step-body { grid-template-columns: 1fr; } }
+
+  /* ── підказки ──────────────────────────────────────────── */
+  .hints { margin: 0; padding: 0; list-style: none; display: flex; flex-direction: column; gap: 2px; }
+  .hints li {
+    display: grid; grid-template-columns: 24px 1fr; gap: 12px;
+    padding: 11px 12px; border-radius: 8px;
+    border: 1px solid transparent;
+    cursor: default;
+    transition: background .14s ease, border-color .14s ease;
+  }
+  .hints li:hover, .hints li.on { background: var(--accent-soft); border-color: color-mix(in srgb, var(--accent) 28%, transparent); }
+  .hint-num {
+    display: grid; place-items: center;
+    width: 24px; height: 24px; border-radius: 50%;
+    background: var(--accent); color: #fff;
+    font: 600 12px/1 var(--mono-font);
+  }
+  .hint-text { font-size: 14.6px; color: var(--ink-2); }
+  .hint-text b { color: var(--ink); font-weight: 600; }
+
+  /* ── скріншот з рамками ────────────────────────────────── */
+  figure { margin: 0; }
+  .shot {
+    position: relative;
+    border: 1px solid var(--line); border-radius: var(--radius);
+    background: var(--surface); box-shadow: var(--shadow);
+    overflow: hidden;
+  }
+  .shot img { display: block; width: 100%; height: auto; }
+  .spot {
+    position: absolute;
+    margin: -5px 0 0 -5px; padding: 5px;
+    width: auto; background: transparent;
+    border: 2px solid var(--accent); border-radius: 7px;
+    box-shadow: 0 0 0 3px color-mix(in srgb, var(--accent) 18%, transparent);
+    cursor: pointer; opacity: .95;
+    transition: box-shadow .14s ease, transform .14s ease;
+  }
+  .spot:hover, .spot.on { box-shadow: 0 0 0 6px color-mix(in srgb, var(--accent) 30%, transparent); transform: scale(1.015); }
+  .spot:focus-visible { outline: 3px solid var(--warn); outline-offset: 3px; }
+  .spot-num {
+    position: absolute; top: -12px; left: -12px;
+    display: grid; place-items: center;
+    width: 22px; height: 22px; border-radius: 50%;
+    background: var(--accent); color: #fff;
+    font: 600 12px/1 var(--mono-font);
+    box-shadow: 0 1px 4px rgba(0, 0, 0, .3);
+  }
+  .spot-num.tr { left: auto; right: -12px; }
+  .spot-num.bl { top: auto; bottom: -12px; }
+  .spot-num.br { top: auto; bottom: -12px; left: auto; right: -12px; }
+  .shot.bare .spot { opacity: 0; pointer-events: none; }
+  .shot-bar {
+    display: flex; align-items: center; justify-content: space-between; gap: 12px;
+    margin-top: 10px;
+  }
+  figcaption { font: 400 13px/1.5 var(--body-font); color: var(--muted); }
+  .toggle {
+    flex: 0 0 auto;
+    display: inline-flex; align-items: center; gap: 7px;
+    font: 500 12.5px/1 var(--body-font); color: var(--ink-2);
+    padding: 7px 11px; border: 1px solid var(--line); border-radius: 999px;
+    background: var(--surface); cursor: pointer;
+  }
+  .toggle:hover { border-color: var(--accent); color: var(--accent); }
+
+  /* ── плашки ────────────────────────────────────────────── */
+  .note {
+    display: grid; grid-template-columns: auto 1fr; gap: 12px;
+    margin: 22px 0 0; padding: 14px 16px;
+    border-radius: 8px; font-size: 14.8px;
+    border-left: 3px solid var(--accent); background: var(--accent-soft); color: var(--ink-2);
+  }
+  .note b { color: var(--ink); }
+  .note--warn { border-left-color: var(--warn); background: var(--warn-soft); }
+  .note--ok { border-left-color: var(--ok); background: var(--ok-soft); }
+  .note-tag { font: 500 11px/1.5 var(--mono-font); letter-spacing: .08em; text-transform: uppercase; color: var(--warn); }
+  .note--ok .note-tag { color: var(--ok); }
+  .note:not(.note--warn):not(.note--ok) .note-tag { color: var(--accent); }
+  code {
+    font: 400 .92em/1.4 var(--mono-font);
+    background: color-mix(in srgb, var(--ink) 7%, transparent);
+    padding: .12em .38em; border-radius: 4px;
+    word-break: break-word;
+  }
+
+  /* ── лист ──────────────────────────────────────────────── */
+  .letter { display: grid; grid-template-columns: minmax(240px, 320px) 1fr; gap: 26px; align-items: start; margin-top: 26px; }
+  @media (max-width: 900px) { .letter { grid-template-columns: 1fr; } }
+  .letter-meta { margin: 0; display: flex; flex-direction: column; gap: 14px; }
+  .letter-meta div { display: grid; gap: 3px; }
+  .letter-meta dt { font: 500 11px/1 var(--mono-font); letter-spacing: .1em; text-transform: uppercase; color: var(--muted); }
+  .letter-meta dd { margin: 0; font: 500 14.5px/1.45 var(--body-font); }
+  .letter-shot { border: 1px solid var(--line); border-radius: var(--radius); overflow: hidden; background: var(--surface); box-shadow: var(--shadow); max-height: 460px; overflow-y: auto; }
+  .letter-shot img { display: block; width: 100%; height: auto; }
+
+  /* ── відео ─────────────────────────────────────────────── */
+  .video-block { scroll-margin-top: 68px; margin-top: 44px; padding-top: 34px; border-top: 1px dashed var(--line); }
+  .video-block h3 { font: 600 20px/1.25 var(--step-font); margin: 0 0 6px; }
+  .video-block p { margin: 0 0 16px; color: var(--ink-2); max-width: 62ch; }
+  video { width: 100%; border-radius: var(--radius); border: 1px solid var(--line); background: #000; box-shadow: var(--shadow); }
+
+  /* ── чекліст ───────────────────────────────────────────── */
+  .check {
+    display: flex; align-items: center; gap: 10px;
+    margin-top: 26px; padding: 12px 14px;
+    border: 1px dashed var(--line); border-radius: 8px;
+    font: 500 14.5px/1 var(--body-font); color: var(--ink-2);
+    cursor: pointer; user-select: none;
+    background: var(--surface);
+  }
+  .check input { width: 17px; height: 17px; accent-color: var(--ok); cursor: pointer; }
+  .check.done { border-style: solid; border-color: var(--ok); color: var(--ok); background: var(--ok-soft); }
+
+  /* ── фінал ─────────────────────────────────────────────── */
+  .next { margin-top: 52px; padding: 30px; border: 1px solid var(--line); border-radius: var(--radius); background: var(--surface); box-shadow: var(--shadow); }
+  .next h2 { font: 600 24px/1.2 var(--step-font); margin: 0 0 8px; }
+  .next p { margin: 0 0 18px; color: var(--ink-2); max-width: 64ch; }
+  .next ol { margin: 0; padding-left: 22px; display: grid; gap: 8px; color: var(--ink-2); }
+  .next ol b { color: var(--ink); }
+  footer { margin-top: 44px; padding-top: 20px; border-top: 1px solid var(--line); color: var(--muted); font-size: 13.5px; display: flex; flex-wrap: wrap; gap: 6px 18px; }
+  @media (prefers-reduced-motion: reduce) { * { transition: none !important; animation: none !important; } }
+
+  /* ── навігація між розділами ───────────────────────────── */
+  .chapters { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 40px; }
+  .chapters a {
+    display: inline-flex; align-items: center; gap: 8px;
+    padding: 10px 14px; border: 1px solid var(--line); border-radius: 999px;
+    background: var(--surface); color: var(--ink-2); text-decoration: none;
+    font: 500 14px/1 var(--body-font);
+  }
+  .chapters a:hover, .chapters a:focus-visible { border-color: var(--accent); color: var(--accent); outline: none; }
+  .chapters a.current { background: var(--accent-soft); border-color: color-mix(in srgb, var(--accent) 30%, transparent); color: var(--accent); }
+  .chapters i { font-style: normal; font: 600 11px/1 var(--mono-font); opacity: .7; }
+
+</style>
+
+</head>
+<body>
+<div class="wrap">
+  <header class="masthead">
+    <p class="kicker">CyberOS · інструкція, розділ 3</p>
+    <h1>Тарифи: ціна за годину для кожної зони</h1>
+    <p class="lede">Третій розділ вчить систему брати гроші за час: денні й нічні тарифи, покриття цілої доби і що робити, коли тариф не зберігається. Наведіть курсор на пункт списку — на знімку підсвітиться те саме поле.</p>
+    <dl class="facts">
+      <div><dt>Часу</dt><dd>15 хвилин</dd></div>
+      <div><dt>Потрібно</dt><dd>Зони з розділу 2 і ваш прайс</dd></div>
+      <div><dt>Результат</dt><dd>Доба покрита цінами</dd></div>
+      <div><dt>Далі</dt><dd>Ігри та лаунчери</dd></div>
+    </dl>
+  </header>
+
+  <nav class="rail" aria-label="Кроки розділу">
+    <a href="#step-1" data-rail=1><i>1</i>Непокриті години</a>
+    <a href="#step-2" data-rail=2><i>2</i>Денний тариф</a>
+    <a href="#step-3" data-rail=3><i>3</i>Ніч і решта зон</a>
+    <a href="#step-4" data-rail=4><i>4</i>Колізії</a>
+    <a href="#video"><i>▶</i>Відео проходу</a>
+  </nav>
+
+  <main>
+    <section class="step" id="step-1">
+      <div class="step-head">
+        <span class="step-num">01</span>
+        <div>
+          <h2>Подивіться, які години не покриті</h2>
+          <p>
+            Тариф — це ціна за годину для зони у певні години й дні. Поки тарифів немає,
+            сторінка одразу показує, чого бракує: перелік зон і вікна без ціни.
+          </p>
+        </div>
+      </div>
+      <div class="step-body">
+        <ol class="hints" data-shot="31-tariffs-empty"><li data-key="31-tariffs-empty:warning"><span class="hint-num">1</span><span class="hint-text"><b>Попередження про непокриті години</b> — система перелічує зони й вікна, у яких ціни немає. Поки вікно не закрите, сесія в цей час не почнеться.</span></li></ol>
+        <figure>
+          <div class="shot" id="shot-31-tariffs-empty">
+            <img src="shots/crop-31-tariffs-empty.png" alt="Тарифів ще немає: усі зони працюють цілодобово й жодна година не має ціни.">
+            <button class="spot" data-key="31-tariffs-empty:warning" style="left:5.411%;top:36.087%;width:71.861%;height:22.609%" aria-label="warning"><span class="spot-num ">1</span></button>
+          </div>
+          <div class="shot-bar"><figcaption>Тарифів ще немає: усі зони працюють цілодобово й жодна година не має ціни.</figcaption><button class="toggle" type="button" data-toggle="shot-31-tariffs-empty">Прибрати підсвітку</button></div>
+        </figure>
+      </div>
+      <div class="note"><span class="note-tag">Чому це важливо</span><span>Ціну бере не пристрій і не тип, а <b>зона</b>. Тому тарифів потрібно стільки, скільки у вас зон — помножити на кількість різних цін (день, ніч, вихідні).</span></div>
+      <label class="check"><input type="checkbox" data-step="1"> Бачу список непокритих годин</label>
+    </section>
+
+    <section class="step" id="step-2">
+      <div class="step-head">
+        <span class="step-num">02</span>
+        <div>
+          <h2>Створіть денний тариф</h2>
+          <p>
+            Почніть з основного: базова зона, звичайні години, щодня. Решту тарифів
+            робитимете за цим самим зразком.
+          </p>
+        </div>
+      </div>
+      <div class="step-body">
+        <ol class="hints" data-shot="32-tariff-form"><li data-key="32-tariff-form:name"><span class="hint-num">1</span><span class="hint-text"><b>Назва</b> — її бачить адміністратор у касі й гість у Shell. Пишіть так, щоб було зрозуміло без пояснень: «Стандарт · день», «VIP · ніч».</span></li>
+<li data-key="32-tariff-form:type"><span class="hint-num">2</span><span class="hint-text"><b>Тип</b> — «Погодинний» (ціна за годину) або «Абонемент» (пакет годин зі своїм терміном дії).</span></li>
+<li data-key="32-tariff-form:zones"><span class="hint-num">3</span><span class="hint-text"><b>Прайслист</b> — обираєте зону, і поруч задаєте ціну саме для неї. Один тариф може покривати кілька зон з різними цінами.</span></li>
+<li data-key="32-tariff-form:price"><span class="hint-num">4</span><span class="hint-text"><b>Ціна</b> — за годину, у гривнях.</span></li>
+<li data-key="32-tariff-form:time_from"><span class="hint-num">5</span><span class="hint-text"><b>Розклад</b> — вікно дії тарифу. Години вводяться по цифрах: клік у годину, набрали, потім хвилини.</span></li>
+<li data-key="32-tariff-form:days"><span class="hint-num">6</span><span class="hint-text"><b>Дні тижня</b> — типово ввімкнені Пн–Пт. Для щоденного тарифу додайте Сб і Нд, для «вихідного» — лишіть тільки їх.</span></li>
+<li data-key="32-tariff-form:status"><span class="hint-num">7</span><span class="hint-text"><b>Статус</b> — «Активний» означає, що тариф уже продається.</span></li></ol>
+        <figure>
+          <div class="shot" id="shot-32-tariff-form">
+            <img src="shots/crop-32-tariff-form.png" alt="Форма тарифу: назва, тип, прайслист, розклад, статус.">
+            <button class="spot" data-key="32-tariff-form:name" style="left:6.081%;top:5.366%;width:44.324%;height:5.122%" aria-label="name"><span class="spot-num ">1</span></button>
+<button class="spot" data-key="32-tariff-form:type" style="left:52.432%;top:5.366%;width:44.324%;height:5.122%" aria-label="type"><span class="spot-num ">2</span></button>
+<button class="spot" data-key="32-tariff-form:zones" style="left:8.243%;top:19.878%;width:66.351%;height:5.122%" aria-label="zones"><span class="spot-num ">3</span></button>
+<button class="spot" data-key="32-tariff-form:price" style="left:75.676%;top:19.878%;width:18.919%;height:5.122%" aria-label="price"><span class="spot-num ">4</span></button>
+<button class="spot" data-key="32-tariff-form:time_from" style="left:8.243%;top:43.293%;width:43.243%;height:6.098%" aria-label="time_from"><span class="spot-num ">5</span></button>
+<button class="spot" data-key="32-tariff-form:days" style="left:7.432%;top:54.268%;width:44.595%;height:5.610%" aria-label="days"><span class="spot-num ">6</span></button>
+<button class="spot" data-key="32-tariff-form:status" style="left:6.081%;top:90.244%;width:90.676%;height:5.122%" aria-label="status"><span class="spot-num ">7</span></button>
+          </div>
+          <div class="shot-bar"><figcaption>Форма тарифу: назва, тип, прайслист, розклад, статус.</figcaption><button class="toggle" type="button" data-toggle="shot-32-tariff-form">Прибрати підсвітку</button></div>
+        </figure>
+      </div>
+      <figure>
+          <div class="shot bare" id="shot-34-tariff-schedule">
+            <img src="shots/34-tariff-schedule.png" alt="Заповнено: «Стандарт · день», 60 ₴/год, 08:00–22:00, усі сім днів.">
+            
+          </div>
+          <div class="shot-bar"><figcaption>Заповнено: «Стандарт · день», 60 ₴/год, 08:00–22:00, усі сім днів.</figcaption></div>
+        </figure>
+      <div class="note"><span class="note-tag">Про час</span><span>Поле часу — не текстове: клікніть у години й наберіть цифри, потім у хвилини. Так само вводиться нічне вікно <b>22:00 → 08:00</b>: система розуміє, що воно переходить через полуніч.</span></div>
+      <label class="check"><input type="checkbox" data-step="2"> Денний тариф створено</label>
+    </section>
+
+    <section class="step" id="step-3">
+      <div class="step-head">
+        <span class="step-num">03</span>
+        <div>
+          <h2>Закрийте добу: ніч і решта зон</h2>
+          <p>
+            Далі — нічний тариф на ту саму зону (22:00–08:00, дешевше) і по парі
+            «день + ніч» на кожну іншу зону. Коли всі години покриті, попередження зникає.
+          </p>
+        </div>
+      </div>
+      <figure>
+          <div class="shot bare" id="shot-35-tariffs-ready">
+            <img src="shots/35-tariffs-ready.png" alt="Шість тарифів: день і ніч для кожної з трьох зон. Червоного блоку вгорі більше немає — доба покрита.">
+            
+          </div>
+          <div class="shot-bar"><figcaption>Шість тарифів: день і ніч для кожної з трьох зон. Червоного блоку вгорі більше немає — доба покрита.</figcaption></div>
+        </figure>
+      <div class="note note--ok"><span class="note-tag">Орієнтир цін</span><span>У демо-клубі: Стандарт 60 ₴ вдень і 45 ₴ вночі, VIP 120 і 90, PlayStation 100 і 70. Ніч роблять дешевшою, щоб заповнити порожні години.</span></div>
+      <label class="check"><input type="checkbox" data-step="3"> Доба покрита, попередження зникло</label>
+    </section>
+
+    <section class="step" id="step-4">
+      <div class="step-head">
+        <span class="step-num">04</span>
+        <div>
+          <h2>Якщо тариф не зберігається</h2>
+          <p>
+            Дві ціни на ту саму зону в ті самі години — суперечність, і система її не
+            пропустить. Замість «щось пішло не так» вона пише, з чим саме конфлікт.
+          </p>
+        </div>
+      </div>
+      <div class="step-body">
+        <ol class="hints" data-shot="36-tariff-collision"><li data-key="36-tariff-collision:banner"><span class="hint-num">1</span><span class="hint-text"><b>Повідомлення про колізію</b> — система називає тариф, зону, дні й інтервал, який перетинається. Виправте години, дні або зону — і збереження пройде.</span></li></ol>
+        <figure>
+          <div class="shot" id="shot-36-tariff-collision">
+            <img src="shots/crop-36-tariff-collision.png" alt="Спроба зробити другий тариф на «Стандарт» у ті самі години.">
+            <button class="spot" data-key="36-tariff-collision:banner" style="left:11.465%;top:24.290%;width:85.478%;height:20.505%" aria-label="banner"><span class="spot-num ">1</span></button>
+          </div>
+          <div class="shot-bar"><figcaption>Спроба зробити другий тариф на «Стандарт» у ті самі години.</figcaption><button class="toggle" type="button" data-toggle="shot-36-tariff-collision">Прибрати підсвітку</button></div>
+        </figure>
+      </div>
+      <div class="note"><span class="note-tag">Як розводити тарифи</span><span>Три способи не перетинатись: <b>інші години</b> (день і ніч), <b>інші дні</b> (будні та вихідні) або <b>інша зона</b>. Комбінація «зона + дні + години» має бути унікальною.</span></div>
+      <label class="check"><input type="checkbox" data-step="4"> Розумію, як читати повідомлення про колізію</label>
+    </section>
+
+    <section class="video-block" id="video">
+      <h3>Відео: тарифи від нуля до покритої доби</h3>
+      <p>
+        Запис у демо-клубі: порожні тарифи → денний → нічний → решта зон → перевірка колізії.
+      </p>
+      <video controls preload="metadata" playsinline poster="shots/35-tariffs-ready.png">
+        <source src="videos/uc03-tariffs.mp4" type="video/mp4">
+        Ваш браузер не показує це відео.
+      </video>
+    </section>
+
+    <section class="next">
+      <h2>Наступний розділ</h2>
+      <p>Ціни готові. Далі — ігри, і тут вас чекає приємна новина:</p>
+      <ol>
+        <li><b>Бібліотека вже наповнена</b> — популярні ігри приходять з обкладинками, категоріями й віком.</li>
+        <li><b>Лаунчери</b> — Steam, Epic, Battle.net, Riot та інші: Shell знає, як запускати гру.</li>
+        <li><b>Своя гра</b> — якщо чогось немає, додаєте за назвою, лаунчером та ID.</li>
+      </ol>
+    </section>
+
+  </main>
+
+  <nav class="chapters" aria-label="Розділи інструкції">
+    <a href="instruction-01-club-setup.html"><i>01</i>Заведення клубу</a>
+    <a href="instruction-02-zones-devices.html"><i>02</i>Зони і пристрої</a>
+    <a href="instruction-03-tariffs.html" class="current"><i>03</i>Тарифи</a>
+    <a href="instruction-04-games.html"><i>04</i>Ігри</a>
+    <a href="instruction-05-shell.html"><i>05</i>Shell</a>
+    <a href="instruction-06-install.html"><i>06</i>Встановлення на ПК</a>
+    <a href="instruction-07-clients.html"><i>07</i>Клієнти</a>
+  </nav>
+
+  <footer>
+    <span>CyberOS · інструкція власника, розділ 3 з 7</span>
+    <span>Знімки зроблені в демо-клубі 9 вересня 2026</span>
+  </footer>
+</div>
+
+<script>
+// підсвітка: пункт списку ↔ рамка на скріншоті
+  const setOn = (key, on) => {
+    document.querySelectorAll('[data-key="' + key + '"]').forEach((el) => el.classList.toggle('on', on));
+  };
+  document.querySelectorAll('.hints li, .spot').forEach((el) => {
+    const key = el.dataset.key;
+    el.addEventListener('mouseenter', () => setOn(key, true));
+    el.addEventListener('mouseleave', () => setOn(key, false));
+    el.addEventListener('focus', () => setOn(key, true));
+    el.addEventListener('blur', () => setOn(key, false));
+    if (el.classList.contains('spot')) {
+      el.addEventListener('click', () => {
+        const li = document.querySelector('.hints li[data-key="' + key + '"]');
+        li?.scrollIntoView({ block: 'nearest', behavior: 'smooth' });
+        li?.animate([{ background: 'var(--accent-soft)' }, { background: 'transparent' }], { duration: 900 });
+      });
+    }
+  });
+
+  // перемикач підсвітки на кожному скріншоті
+  document.querySelectorAll('.toggle').forEach((btn) => {
+    btn.addEventListener('click', () => {
+      const shot = document.getElementById(btn.dataset.toggle);
+      const bare = shot.classList.toggle('bare');
+      btn.textContent = bare ? 'Показати підсвітку' : 'Прибрати підсвітку';
+    });
+  });
+
+  // чекліст кроків — пам’ять у браузері читача (може бути недоступна)
+  const KEY = 'cyberos-guide-03';
+  let done = {};
+  try { done = JSON.parse(localStorage.getItem(KEY) || '{}'); } catch (e) { done = {}; }
+  const paint = () => {
+    document.querySelectorAll('.check input').forEach((input) => {
+      const n = input.dataset.step;
+      input.checked = !!done[n];
+      input.closest('.check').classList.toggle('done', !!done[n]);
+      document.querySelector('.rail a[data-rail="' + n + '"]')?.classList.toggle('done', !!done[n]);
+    });
+  };
+  document.querySelectorAll('.check input').forEach((input) => {
+    input.addEventListener('change', () => {
+      done[input.dataset.step] = input.checked;
+      try { localStorage.setItem(KEY, JSON.stringify(done)); } catch (e) { /* приватний режим — просто не запамʼятаємо */ }
+      paint();
+    });
+  });
+  paint();
+
+</script>
+
+</body>
+</html>

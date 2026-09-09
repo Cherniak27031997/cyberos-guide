@@ -1,0 +1,46 @@
+{
+ "chapters": [
+  {
+   "num": 1,
+   "title": "Заведення клубу",
+   "file": "instruction-01-club-setup.html",
+   "lede": "Реєстрація власника, лист із кодом і створення клубу з нуля."
+  },
+  {
+   "num": 2,
+   "title": "Зони і пристрої",
+   "file": "instruction-02-zones-devices.html",
+   "lede": "Зали з різними кольорами, картки ПК, PlayStation і VR."
+  },
+  {
+   "num": 3,
+   "title": "Тарифи",
+   "file": "instruction-03-tariffs.html",
+   "lede": "Денні й нічні тарифи, розписання по днях, ціна за годину."
+  },
+  {
+   "num": 4,
+   "title": "Ігри та застосунки",
+   "file": "instruction-04-games.html",
+   "lede": "Готова бібліотека, лаунчери, своя гра й база застосунків."
+  },
+  {
+   "num": 5,
+   "title": "Shell у панелі",
+   "file": "instruction-05-shell.html",
+   "lede": "Ключ, пароль вищого доступу, екран гостя й оновлення."
+  },
+  {
+   "num": 6,
+   "title": "Встановлення на ПК",
+   "file": "instruction-06-install.html",
+   "lede": "П’ять екранів інсталятора на живій Windows-машині."
+  },
+  {
+   "num": 7,
+   "title": "Клієнти",
+   "file": "instruction-07-clients.html",
+   "lede": "QR клубу, ручна картка й вхід клієнта в Shell."
+  }
+ ]
+}

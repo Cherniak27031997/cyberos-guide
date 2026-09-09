@@ -1,0 +1,640 @@
+<!doctype html>
+<html lang="uk">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="light dark">
+<meta name="description" content="П’ять екранів інсталятора на живій Windows-машині.">
+<style>
+  html, body { margin: 0; }
+  img { max-width: 100%; }
+  [hidden] { display: none !important; }
+</style>
+<title>Встановлення Shell на ПК</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Manrope:wght@600;800&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+:root {
+    --ink: #0F1425;
+    --ink-2: #2B3450;
+    --muted: #5A6280;
+    --paper: #F7F8FB;
+    --surface: #FFFFFF;
+    --line: #E2E5EE;
+    --accent: #4F46E5;
+    --accent-soft: #EEF0FE;
+    --warn: #B45309;
+    --warn-soft: #FEF6E7;
+    --ok: #047857;
+    --ok-soft: #E9F6F1;
+    --shadow: 0 1px 2px rgba(15, 20, 37, .06), 0 12px 28px -18px rgba(15, 20, 37, .35);
+    --radius: 10px;
+    --step-font: 'Manrope', 'Trebuchet MS', sans-serif;
+    --body-font: 'IBM Plex Sans', 'Helvetica Neue', Arial, sans-serif;
+    --mono-font: 'IBM Plex Mono', ui-monospace, 'SF Mono', Menlo, monospace;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --ink: #EEF1F8;
+      --ink-2: #C6CCDD;
+      --muted: #949CB5;
+      --paper: #0B0F1A;
+      --surface: #131926;
+      --line: #262E42;
+      --accent: #8B85F5;
+      --accent-soft: #1D2237;
+      --warn: #E9A23B;
+      --warn-soft: #2A2113;
+      --ok: #4BC299;
+      --ok-soft: #12261F;
+      --shadow: 0 1px 2px rgba(0, 0, 0, .5), 0 16px 34px -20px rgba(0, 0, 0, .8);
+    }
+  }
+  :root[data-theme="dark"] {
+    --ink: #EEF1F8;
+    --ink-2: #C6CCDD;
+    --muted: #949CB5;
+    --paper: #0B0F1A;
+    --surface: #131926;
+    --line: #262E42;
+    --accent: #8B85F5;
+    --accent-soft: #1D2237;
+    --warn: #E9A23B;
+    --warn-soft: #2A2113;
+    --ok: #4BC299;
+    --ok-soft: #12261F;
+    --shadow: 0 1px 2px rgba(0, 0, 0, .5), 0 16px 34px -20px rgba(0, 0, 0, .8);
+  }
+
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    background: var(--paper);
+    color: var(--ink);
+    font: 400 16px/1.62 var(--body-font);
+    -webkit-font-smoothing: antialiased;
+  }
+  .wrap { max-width: 1120px; margin: 0 auto; padding: 0 24px 96px; }
+
+  /* ── шапка ─────────────────────────────────────────────── */
+  .masthead { padding: 56px 0 28px; border-bottom: 1px solid var(--line); }
+  .kicker {
+    font: 500 12px/1 var(--mono-font);
+    letter-spacing: .14em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin: 0 0 14px;
+  }
+  h1 {
+    font: 800 clamp(32px, 5vw, 46px)/1.08 var(--step-font);
+    letter-spacing: -.02em;
+    margin: 0 0 14px;
+    text-wrap: balance;
+  }
+  .lede { margin: 0; max-width: 62ch; color: var(--ink-2); font-size: 17px; }
+  .facts {
+    display: flex; flex-wrap: wrap; gap: 10px 28px;
+    margin: 26px 0 0; padding: 0; list-style: none;
+  }
+  .facts div { display: flex; flex-direction: column; gap: 2px; }
+  .facts dt { font: 500 11px/1 var(--mono-font); letter-spacing: .1em; text-transform: uppercase; color: var(--muted); }
+  .facts dd { margin: 0; font: 600 15px/1.3 var(--body-font); }
+
+  /* ── навігація кроків ──────────────────────────────────── */
+  .rail {
+    position: sticky; top: 0; z-index: 20;
+    display: flex; gap: 6px; align-items: center;
+    padding: 12px 0; margin-bottom: 8px;
+    background: color-mix(in srgb, var(--paper) 92%, transparent);
+    backdrop-filter: blur(8px);
+    border-bottom: 1px solid var(--line);
+    overflow-x: auto;
+  }
+  .rail a {
+    flex: 0 0 auto;
+    display: inline-flex; align-items: center; gap: 8px;
+    padding: 7px 13px 7px 9px;
+    border-radius: 999px;
+    color: var(--ink-2); text-decoration: none;
+    font: 600 13.5px/1 var(--body-font);
+    border: 1px solid transparent;
+  }
+  .rail a:hover, .rail a:focus-visible { background: var(--accent-soft); color: var(--accent); outline: none; }
+  .rail a.done { color: var(--ok); }
+  .rail a i {
+    display: grid; place-items: center;
+    width: 20px; height: 20px; border-radius: 50%;
+    background: var(--accent-soft); color: var(--accent);
+    font: 600 11px/1 var(--mono-font); font-style: normal;
+  }
+  .rail a.done i { background: var(--ok-soft); color: var(--ok); }
+
+  /* ── крок ──────────────────────────────────────────────── */
+  .step { padding: 52px 0; border-bottom: 1px solid var(--line); scroll-margin-top: 68px; }
+  .step:last-of-type { border-bottom: 0; }
+  .step-head { display: grid; grid-template-columns: 54px 1fr; gap: 18px; align-items: start; }
+  .step-num {
+    font: 800 34px/1 var(--step-font);
+    color: var(--accent);
+    letter-spacing: -.03em;
+    font-variant-numeric: tabular-nums;
+  }
+  .step h2 { font: 600 clamp(23px, 3vw, 29px)/1.2 var(--step-font); margin: 0 0 8px; letter-spacing: -.015em; text-wrap: balance; }
+  .step-head p { margin: 0; color: var(--ink-2); max-width: 64ch; }
+  .step-body { margin-top: 28px; display: grid; grid-template-columns: minmax(300px, 380px) 1fr; gap: 28px; align-items: start; }
+  @media (max-width: 900px) { .step-body { grid-template-columns: 1fr; } }
+
+  /* ── підказки ──────────────────────────────────────────── */
+  .hints { margin: 0; padding: 0; list-style: none; display: flex; flex-direction: column; gap: 2px; }
+  .hints li {
+    display: grid; grid-template-columns: 24px 1fr; gap: 12px;
+    padding: 11px 12px; border-radius: 8px;
+    border: 1px solid transparent;
+    cursor: default;
+    transition: background .14s ease, border-color .14s ease;
+  }
+  .hints li:hover, .hints li.on { background: var(--accent-soft); border-color: color-mix(in srgb, var(--accent) 28%, transparent); }
+  .hint-num {
+    display: grid; place-items: center;
+    width: 24px; height: 24px; border-radius: 50%;
+    background: var(--accent); color: #fff;
+    font: 600 12px/1 var(--mono-font);
+  }
+  .hint-text { font-size: 14.6px; color: var(--ink-2); }
+  .hint-text b { color: var(--ink); font-weight: 600; }
+
+  /* ── скріншот з рамками ────────────────────────────────── */
+  figure { margin: 0; }
+  .shot {
+    position: relative;
+    border: 1px solid var(--line); border-radius: var(--radius);
+    background: var(--surface); box-shadow: var(--shadow);
+    overflow: hidden;
+  }
+  .shot img { display: block; width: 100%; height: auto; }
+  .spot {
+    position: absolute;
+    margin: -5px 0 0 -5px; padding: 5px;
+    width: auto; background: transparent;
+    border: 2px solid var(--accent); border-radius: 7px;
+    box-shadow: 0 0 0 3px color-mix(in srgb, var(--accent) 18%, transparent);
+    cursor: pointer; opacity: .95;
+    transition: box-shadow .14s ease, transform .14s ease;
+  }
+  .spot:hover, .spot.on { box-shadow: 0 0 0 6px color-mix(in srgb, var(--accent) 30%, transparent); transform: scale(1.015); }
+  .spot:focus-visible { outline: 3px solid var(--warn); outline-offset: 3px; }
+  .spot-num {
+    position: absolute; top: -12px; left: -12px;
+    display: grid; place-items: center;
+    width: 22px; height: 22px; border-radius: 50%;
+    background: var(--accent); color: #fff;
+    font: 600 12px/1 var(--mono-font);
+    box-shadow: 0 1px 4px rgba(0, 0, 0, .3);
+  }
+  .spot-num.tr { left: auto; right: -12px; }
+  .spot-num.bl { top: auto; bottom: -12px; }
+  .spot-num.br { top: auto; bottom: -12px; left: auto; right: -12px; }
+  .shot.bare .spot { opacity: 0; pointer-events: none; }
+  .shot-bar {
+    display: flex; align-items: center; justify-content: space-between; gap: 12px;
+    margin-top: 10px;
+  }
+  figcaption { font: 400 13px/1.5 var(--body-font); color: var(--muted); }
+  .toggle {
+    flex: 0 0 auto;
+    display: inline-flex; align-items: center; gap: 7px;
+    font: 500 12.5px/1 var(--body-font); color: var(--ink-2);
+    padding: 7px 11px; border: 1px solid var(--line); border-radius: 999px;
+    background: var(--surface); cursor: pointer;
+  }
+  .toggle:hover { border-color: var(--accent); color: var(--accent); }
+
+  /* ── плашки ────────────────────────────────────────────── */
+  .note {
+    display: grid; grid-template-columns: auto 1fr; gap: 12px;
+    margin: 22px 0 0; padding: 14px 16px;
+    border-radius: 8px; font-size: 14.8px;
+    border-left: 3px solid var(--accent); background: var(--accent-soft); color: var(--ink-2);
+  }
+  .note b { color: var(--ink); }
+  .note--warn { border-left-color: var(--warn); background: var(--warn-soft); }
+  .note--ok { border-left-color: var(--ok); background: var(--ok-soft); }
+  .note-tag { font: 500 11px/1.5 var(--mono-font); letter-spacing: .08em; text-transform: uppercase; color: var(--warn); }
+  .note--ok .note-tag { color: var(--ok); }
+  .note:not(.note--warn):not(.note--ok) .note-tag { color: var(--accent); }
+  code {
+    font: 400 .92em/1.4 var(--mono-font);
+    background: color-mix(in srgb, var(--ink) 7%, transparent);
+    padding: .12em .38em; border-radius: 4px;
+    word-break: break-word;
+  }
+
+  /* ── лист ──────────────────────────────────────────────── */
+  .letter { display: grid; grid-template-columns: minmax(240px, 320px) 1fr; gap: 26px; align-items: start; margin-top: 26px; }
+  @media (max-width: 900px) { .letter { grid-template-columns: 1fr; } }
+  .letter-meta { margin: 0; display: flex; flex-direction: column; gap: 14px; }
+  .letter-meta div { display: grid; gap: 3px; }
+  .letter-meta dt { font: 500 11px/1 var(--mono-font); letter-spacing: .1em; text-transform: uppercase; color: var(--muted); }
+  .letter-meta dd { margin: 0; font: 500 14.5px/1.45 var(--body-font); }
+  .letter-shot { border: 1px solid var(--line); border-radius: var(--radius); overflow: hidden; background: var(--surface); box-shadow: var(--shadow); max-height: 460px; overflow-y: auto; }
+  .letter-shot img { display: block; width: 100%; height: auto; }
+
+  /* ── відео ─────────────────────────────────────────────── */
+  .video-block { scroll-margin-top: 68px; margin-top: 44px; padding-top: 34px; border-top: 1px dashed var(--line); }
+  .video-block h3 { font: 600 20px/1.25 var(--step-font); margin: 0 0 6px; }
+  .video-block p { margin: 0 0 16px; color: var(--ink-2); max-width: 62ch; }
+  video { width: 100%; border-radius: var(--radius); border: 1px solid var(--line); background: #000; box-shadow: var(--shadow); }
+
+  /* ── чекліст ───────────────────────────────────────────── */
+  .check {
+    display: flex; align-items: center; gap: 10px;
+    margin-top: 26px; padding: 12px 14px;
+    border: 1px dashed var(--line); border-radius: 8px;
+    font: 500 14.5px/1 var(--body-font); color: var(--ink-2);
+    cursor: pointer; user-select: none;
+    background: var(--surface);
+  }
+  .check input { width: 17px; height: 17px; accent-color: var(--ok); cursor: pointer; }
+  .check.done { border-style: solid; border-color: var(--ok); color: var(--ok); background: var(--ok-soft); }
+
+  /* ── фінал ─────────────────────────────────────────────── */
+  .next { margin-top: 52px; padding: 30px; border: 1px solid var(--line); border-radius: var(--radius); background: var(--surface); box-shadow: var(--shadow); }
+  .next h2 { font: 600 24px/1.2 var(--step-font); margin: 0 0 8px; }
+  .next p { margin: 0 0 18px; color: var(--ink-2); max-width: 64ch; }
+  .next ol { margin: 0; padding-left: 22px; display: grid; gap: 8px; color: var(--ink-2); }
+  .next ol b { color: var(--ink); }
+  footer { margin-top: 44px; padding-top: 20px; border-top: 1px solid var(--line); color: var(--muted); font-size: 13.5px; display: flex; flex-wrap: wrap; gap: 6px 18px; }
+  @media (prefers-reduced-motion: reduce) { * { transition: none !important; animation: none !important; } }
+
+  /* ── навігація між розділами ───────────────────────────── */
+  .chapters { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 40px; }
+  .chapters a {
+    display: inline-flex; align-items: center; gap: 8px;
+    padding: 10px 14px; border: 1px solid var(--line); border-radius: 999px;
+    background: var(--surface); color: var(--ink-2); text-decoration: none;
+    font: 500 14px/1 var(--body-font);
+  }
+  .chapters a:hover, .chapters a:focus-visible { border-color: var(--accent); color: var(--accent); outline: none; }
+  .chapters a.current { background: var(--accent-soft); border-color: color-mix(in srgb, var(--accent) 30%, transparent); color: var(--accent); }
+  .chapters i { font-style: normal; font: 600 11px/1 var(--mono-font); opacity: .7; }
+
+</style>
+
+</head>
+<body>
+<div class="wrap">
+  <header class="masthead">
+    <p class="kicker">CyberOS · інструкція, розділ 6</p>
+    <h1>Встановлення на клубному ПК</h1>
+    <p class="lede">Пʼять екранів інсталятора на живій машині: ключ, підтвердження клубу, прив’язка до пристрою, встановлення й перезавантаження — і дві перевірки, що все зійшлося: Shell на ПК і «Онлайн» у панелі.</p>
+    <dl class="facts">
+      <div><dt>Часу</dt><dd>5 хвилин на машину</dd></div>
+      <div><dt>Потрібно</dt><dd>Ключ клубу й пароль персоналу</dd></div>
+      <div><dt>Результат</dt><dd>ПК онлайн у панелі</dd></div>
+      <div><dt>Далі</dt><dd>Клієнти клубу</dd></div>
+    </dl>
+  </header>
+
+  <nav class="rail" aria-label="Кроки розділу">
+    <a href="#step-1" data-rail=1><i>1</i>Підготовка</a>
+    <a href="#step-2" data-rail=2><i>2</i>Ключ</a>
+    <a href="#step-3" data-rail=3><i>3</i>Клуб</a>
+    <a href="#step-4" data-rail=4><i>4</i>Прив’язка</a>
+    <a href="#step-5" data-rail=5><i>5</i>Перезапуск</a>
+    <a href="#step-6" data-rail=6><i>6</i>Shell на ПК</a>
+    <a href="#step-7" data-rail=7><i>7</i>Онлайн у панелі</a>
+    <a href="#video"><i>▶</i>Відео проходу</a>
+  </nav>
+
+  <main>
+    <section class="step" id="step-1">
+      <div class="step-head">
+        <span class="step-num">01</span>
+        <div>
+          <h2>Перед запуском інсталятора</h2>
+          <p>
+            Це вже не браузер, а сама ігрова машина. До запуску інсталятора потрібні
+            три речі з розділу 5: <b>файл</b> <code>Shell-Setup-…exe</code>,
+            <b>ключ клубу</b> й <b>пароль вищого доступу</b>, заданий у панелі.
+            Пароль без встановлення задати можна, а от вийти з кіоску без нього — ні.
+          </p>
+        </div>
+      </div>
+      <div class="step-body">
+        <ol class="hints" data-shot="41-shell-install"><li data-key="41-shell-install:key"><span class="hint-num">1</span><span class="hint-text"><b>Скопіювати ключ</b> — ключ клубу в буфер. Саме його інсталятор питає на першому екрані. Ключ один на весь клуб і показувати його стороннім не варто.</span></li>
+<li data-key="41-shell-install:license"><span class="hint-num">2</span><span class="hint-text"><b>Ліцензійна угода</b> — те саме, що інсталятор попросить прийняти на клубному ПК.</span></li></ol>
+        <figure>
+          <div class="shot" id="shot-41-shell-install">
+            <img src="shots/crop-41-shell-install.png" alt="Панель: <b>Налаштування → Shell → «Основне»</b> — тут і завантаження інсталятора, і кнопка копіювання ключа клубу.">
+            <button class="spot" data-key="41-shell-install:key" style="left:4.211%;top:31.000%;width:72.763%;height:14.000%" aria-label="key"><span class="spot-num tr">1</span></button>
+<button class="spot" data-key="41-shell-install:license" style="left:4.211%;top:77.667%;width:31.184%;height:10.000%" aria-label="license"><span class="spot-num ">2</span></button>
+          </div>
+          <div class="shot-bar"><figcaption>Панель: <b>Налаштування → Shell → «Основне»</b> — тут і завантаження інсталятора, і кнопка копіювання ключа клубу.</figcaption><button class="toggle" type="button" data-toggle="shot-41-shell-install">Прибрати підсвітку</button></div>
+        </figure>
+      </div>
+      <div class="note"><span class="note-tag">Як донести файл до машин</span><span>Інсталятор один і той самий для всіх ПК клубу. Найпростіше — завантажити його раз і покласти у спільну папку або на флешку, а не качати на кожній машині окремо.</span></div>
+      <label class="check"><input type="checkbox" data-step="1"> Інсталятор, ключ і пароль персоналу під рукою</label>
+    </section>
+
+    <section class="step" id="step-2">
+      <div class="step-head">
+        <span class="step-num">02</span>
+        <div>
+          <h2>Крок 1 з 5: ключ і папка</h2>
+          <p>
+            Перший екран інсталятора. Вставляєте ключ клубу, лишаєте папку за
+            замовчуванням і приймаєте ліцензію.
+          </p>
+        </div>
+      </div>
+      <div class="step-body">
+        <ol class="hints" data-shot="501-win"><li data-key="501-win:key"><span class="hint-num">1</span><span class="hint-text"><b>Ключ клубу</b> — той самий, що ви скопіювали в панелі: <b>Налаштування → Shell → «Основне»</b>. Вставляється з буфера, вводити руками не треба.</span></li>
+<li data-key="501-win:where_key"><span class="hint-num">2</span><span class="hint-text"><b>«Де взяти ключ?»</b> — інсталятор сам підказує шлях у веб-панелі, якщо ключа немає під рукою.</span></li>
+<li data-key="501-win:folder"><span class="hint-num">3</span><span class="hint-text"><b>Папка встановлення</b> — лишайте як є. Змінюйте лише за потреби.</span></li>
+<li data-key="501-win:license"><span class="hint-num">4</span><span class="hint-text"><b>Ліцензійна угода</b> — поки галочки немає, кнопка «Далі» неактивна.</span></li>
+<li data-key="501-win:lang"><span class="hint-num">5</span><span class="hint-text"><b>Мова інсталятора</b> — не мова екрана гостя. Мови для гостя ви вже вибрали в панелі.</span></li></ol>
+        <figure>
+          <div class="shot" id="shot-501-win">
+            <img src="shots/crop-501-win.png" alt="Перший екран: ключ клубу, папка встановлення, ліцензія.">
+            <button class="spot" data-key="501-win:key" style="left:7.014%;top:50.787%;width:85.072%;height:6.562%" aria-label="key"><span class="spot-num ">1</span></button>
+<button class="spot" data-key="501-win:where_key" style="left:75.899%;top:46.588%;width:16.187%;height:3.937%" aria-label="where_key"><span class="spot-num tr">2</span></button>
+<button class="spot" data-key="501-win:folder" style="left:7.014%;top:63.255%;width:62.230%;height:6.562%" aria-label="folder"><span class="spot-num ">3</span></button>
+<button class="spot" data-key="501-win:license" style="left:7.014%;top:71.260%;width:48.201%;height:3.937%" aria-label="license"><span class="spot-num ">4</span></button>
+<button class="spot" data-key="501-win:lang" style="left:62.410%;top:9.055%;width:29.676%;height:3.937%" aria-label="lang"><span class="spot-num ">5</span></button>
+          </div>
+          <div class="shot-bar"><figcaption>Перший екран: ключ клубу, папка встановлення, ліцензія.</figcaption><button class="toggle" type="button" data-toggle="shot-501-win">Прибрати підсвітку</button></div>
+        </figure>
+      </div>
+      <figure>
+          <div class="shot bare" id="shot-502-win">
+            <img src="shots/crop-502-win.png" alt="Ключ вставлено, галочку поставлено — кнопка «Далі» стала активною. Ключ у кадрі розмитий.">
+            
+          </div>
+          <div class="shot-bar"><figcaption>Ключ вставлено, галочку поставлено — кнопка «Далі» стала активною. Ключ у кадрі розмитий.</figcaption></div>
+        </figure>
+      <div class="note note--warn"><span class="note-tag">Ключ — це пароль</span><span>З ключем будь-яка машина може приєднатися до вашого клубу. Не пересилайте його в загальних чатах і не диктуйте вголос у залі.</span></div>
+      <label class="check"><input type="checkbox" data-step="2"> Ключ прийнято, перейшов на другий крок</label>
+    </section>
+
+    <section class="step" id="step-3">
+      <div class="step-head">
+        <span class="step-num">03</span>
+        <div>
+          <h2>Крок 2 з 5: це ваш клуб?</h2>
+          <p>
+            Інсталятор показує, якому клубу належить ключ. Це ваша страховка від
+            чужого ключа й від встановлення в чужий клуб.
+          </p>
+        </div>
+      </div>
+      <div class="step-body">
+        <ol class="hints" data-shot="503-win"><li data-key="503-win:club"><span class="hint-num">1</span><span class="hint-text"><b>Картка вашого клубу</b> — назва, місто й зони. Це перевірка, що ключ від правильного клубу: якщо тут чужа назва, ви вставили не той ключ.</span></li>
+<li data-key="503-win:yes"><span class="hint-num">2</span><span class="hint-text"><b>«Так, це наш клуб»</b> — підтверджуєте й ідете далі.</span></li>
+<li data-key="503-win:other_key"><span class="hint-num">3</span><span class="hint-text"><b>«Інший ключ»</b> — повертає на перший крок, щоб вставити інший.</span></li></ol>
+        <figure>
+          <div class="shot" id="shot-503-win">
+            <img src="shots/crop-503-win.png" alt="Картка клубу: назва, місто й зони, які ви створили в розділі 2.">
+            <button class="spot" data-key="503-win:club" style="left:7.014%;top:22.572%;width:85.432%;height:14.436%" aria-label="club"><span class="spot-num ">1</span></button>
+<button class="spot" data-key="503-win:yes" style="left:39.928%;top:88.845%;width:52.518%;height:6.824%" aria-label="yes"><span class="spot-num ">2</span></button>
+<button class="spot" data-key="503-win:other_key" style="left:7.014%;top:88.845%;width:30.755%;height:6.824%" aria-label="other_key"><span class="spot-num ">3</span></button>
+          </div>
+          <div class="shot-bar"><figcaption>Картка клубу: назва, місто й зони, які ви створили в розділі 2.</figcaption><button class="toggle" type="button" data-toggle="shot-503-win">Прибрати підсвітку</button></div>
+        </figure>
+      </div>
+      <label class="check"><input type="checkbox" data-step="3"> Клуб на екрані — мій</label>
+    </section>
+
+    <section class="step" id="step-4">
+      <div class="step-head">
+        <span class="step-num">04</span>
+        <div>
+          <h2>Крок 3 з 5: прив’язка до пристрою</h2>
+          <p>
+            Тут інсталятор питає, ким саме є ця машина у вашому клубі. Два шляхи —
+            і саме тут стає видно, для чого в розділі 2 ми створювали пристрої.
+          </p>
+        </div>
+      </div>
+      <div class="step-body">
+        <ol class="hints" data-shot="504-win"><li data-key="504-win:occupy"><span class="hint-num">1</span><span class="hint-text"><b>Зайняти готовий слот</b> — коли пристрої вже створені у веб-панелі (розділ 2). Інсталятор покаже список вільних ПК, ви оберете, яким саме є ця машина.</span></li>
+<li data-key="504-win:create"><span class="hint-num">2</span><span class="hint-text"><b>Створити новий ПК</b> — коли в панелі пристроїв ще немає. ПК зʼявиться у веб-інтерфейсі сам, а назву й зону ви призначите вже там.</span></li></ol>
+        <figure>
+          <div class="shot" id="shot-504-win">
+            <img src="shots/crop-504-win.png" alt="«Зайняти готовий слот» або «Створити новий ПК».">
+            <button class="spot" data-key="504-win:occupy" style="left:7.014%;top:20.866%;width:85.432%;height:15.486%" aria-label="occupy"><span class="spot-num ">1</span></button>
+<button class="spot" data-key="504-win:create" style="left:7.014%;top:38.320%;width:85.432%;height:15.748%" aria-label="create"><span class="spot-num ">2</span></button>
+          </div>
+          <div class="shot-bar"><figcaption>«Зайняти готовий слот» або «Створити новий ПК».</figcaption><button class="toggle" type="button" data-toggle="shot-504-win">Прибрати підсвітку</button></div>
+        </figure>
+      </div>
+      <div class="step-body" style="margin-top:28px">
+        <ol class="hints" data-shot="506-win"><li data-key="506-win:slot"><span class="hint-num">1</span><span class="hint-text"><b>Вільний слот</b> — обираєте той, що відповідає цій машині. Тут PC-02 із зони «Стандарт».</span></li>
+<li data-key="506-win:refresh"><span class="hint-num">2</span><span class="hint-text"><b>«Оновити»</b> — якщо ви щойно додали пристрій у панелі й він ще не зʼявився у списку.</span></li>
+<li data-key="506-win:next"><span class="hint-num">3</span><span class="hint-text"><b>«Далі»</b> — прив’язує машину до слота й починає встановлення.</span></li></ol>
+        <figure>
+          <div class="shot" id="shot-506-win">
+            <img src="shots/crop-506-win.png" alt="Список вільних слотів: VIP-01, PS5-01 і PC-02 — саме ті, що створені у веб-панелі.">
+            <button class="spot" data-key="506-win:slot" style="left:7.014%;top:46.850%;width:85.432%;height:9.580%" aria-label="slot"><span class="spot-num ">1</span></button>
+<button class="spot" data-key="506-win:refresh" style="left:75.540%;top:22.113%;width:16.547%;height:3.937%" aria-label="refresh"><span class="spot-num ">2</span></button>
+<button class="spot" data-key="506-win:next" style="left:36.331%;top:88.845%;width:56.115%;height:6.824%" aria-label="next"><span class="spot-num ">3</span></button>
+          </div>
+          <div class="shot-bar"><figcaption>Список вільних слотів: VIP-01, PS5-01 і PC-02 — саме ті, що створені у веб-панелі.</figcaption><button class="toggle" type="button" data-toggle="shot-506-win">Прибрати підсвітку</button></div>
+        </figure>
+      </div>
+      <div class="note"><span class="note-tag">Обидва шляхи робочі</span><span>Пристрої можна створити заздалегідь у панелі й тут просто зайняти слот, а можна не створювати нічого — тоді ПК зʼявиться в панелі сам, і назву з зоною ви даєте йому вже там. Для великого залу перший шлях зручніший: обходите машини за готовим списком.</span></div>
+      <label class="check"><input type="checkbox" data-step="4"> Машину прив’язано до свого пристрою</label>
+    </section>
+
+    <section class="step" id="step-5">
+      <div class="step-head">
+        <span class="step-num">05</span>
+        <div>
+          <h2>Кроки 4 і 5: встановлення й перезавантаження</h2>
+          <p>
+            Четвертий крок проходить сам — інсталятор копіює файли й налаштовує службу.
+            На пʼятому лишається два рішення.
+          </p>
+        </div>
+      </div>
+      <div class="step-body">
+        <ol class="hints" data-shot="507-win"><li data-key="507-win:exit"><span class="hint-num">1</span><span class="hint-text"><b>Вихід із кіоску: Ctrl+Alt+P</b> — і пароль персоналу, який ви задали в панелі. Запишіть цю комбінацію: без неї з екрана гостя не вийти.</span></li>
+<li data-key="507-win:autologin"><span class="hint-num">2</span><span class="hint-text"><b>Автовхід Windows</b> — рекомендовано. Windows заходить в акаунт сам після перезавантаження, тож ПК повертається в Shell без адміністратора.</span></li>
+<li data-key="507-win:reboot"><span class="hint-num">3</span><span class="hint-text"><b>«Перезавантажити»</b> — після нього машина стартує вже в Shell.</span></li></ol>
+        <figure>
+          <div class="shot" id="shot-507-win">
+            <img src="shots/crop-507-win.png" alt="Останній екран: комбінація виходу з кіоску, автовхід Windows і перезавантаження.">
+            <button class="spot" data-key="507-win:exit" style="left:7.014%;top:32.152%;width:85.432%;height:5.512%" aria-label="exit"><span class="spot-num ">1</span></button>
+<button class="spot" data-key="507-win:autologin" style="left:9.712%;top:62.598%;width:80.576%;height:4.987%" aria-label="autologin"><span class="spot-num ">2</span></button>
+<button class="spot" data-key="507-win:reboot" style="left:7.014%;top:88.845%;width:85.432%;height:6.824%" aria-label="reboot"><span class="spot-num ">3</span></button>
+          </div>
+          <div class="shot-bar"><figcaption>Останній екран: комбінація виходу з кіоску, автовхід Windows і перезавантаження.</figcaption><button class="toggle" type="button" data-toggle="shot-507-win">Прибрати підсвітку</button></div>
+        </figure>
+      </div>
+      <div class="note note--warn"><span class="note-tag">Ctrl+Alt+P</span><span>Це єдиний вихід із кіоску. Пароль — той, що ви задали в панелі як пароль вищого доступу. Не знаєте пароля — не виходите з екрана гостя, і налаштувати Windows на цій машині не вийде.</span></div>
+      <div class="step-body" style="margin-top:28px">
+        <ol class="hints" data-shot="42-shell-service"><li data-key="42-shell-service:password"><span class="hint-num">1</span><span class="hint-text"><b>Пароль вищого доступу</b> — та сама сторінка панелі, <b>Налаштування → Shell</b>, нижче блоку встановлення. Це пароль, який Shell питає після Ctrl+Alt+P на клубному ПК.</span></li>
+<li data-key="42-shell-service:lock"><span class="hint-num">2</span><span class="hint-text"><b>Рівень блокування</b> — «Максимальний» ховає від гостя все, крім Shell. Саме тому вихід і потрібен.</span></li></ol>
+        <figure>
+          <div class="shot" id="shot-42-shell-service">
+            <img src="shots/crop-42-shell-service.png" alt="Де цей пароль живе у панелі: <b>Налаштування → Shell</b>, блок «Сервісний доступ».">
+            <button class="spot" data-key="42-shell-service:password" style="left:4.211%;top:25.833%;width:75.000%;height:11.667%" aria-label="password"><span class="spot-num ">1</span></button>
+<button class="spot" data-key="42-shell-service:lock" style="left:4.211%;top:76.111%;width:43.158%;height:11.667%" aria-label="lock"><span class="spot-num ">2</span></button>
+          </div>
+          <div class="shot-bar"><figcaption>Де цей пароль живе у панелі: <b>Налаштування → Shell</b>, блок «Сервісний доступ».</figcaption><button class="toggle" type="button" data-toggle="shot-42-shell-service">Прибрати підсвітку</button></div>
+        </figure>
+      </div>
+      <label class="check"><input type="checkbox" data-step="5"> Комбінація виходу записана, автовхід налаштований</label>
+    </section>
+
+    <section class="step" id="step-6">
+      <div class="step-head">
+        <span class="step-num">06</span>
+        <div>
+          <h2>Перевірка: Shell працює</h2>
+          <p>
+            Після перезавантаження машина стартує вже не в Windows, а в екрані входу
+            Shell. Ось так це виглядає на живому ПК.
+          </p>
+        </div>
+      </div>
+      <div class="step-body">
+        <ol class="hints" data-shot="59-shell-running"><li data-key="59-shell-running:pcname"><span class="hint-num">1</span><span class="hint-text"><b>Назва ПК</b> — те саме імʼя й зона, що у веб-панелі. Якщо назва не та, ви прив’язали машину до чужого слота.</span></li>
+<li data-key="59-shell-running:club"><span class="hint-num">2</span><span class="hint-text"><b>Ваш клуб</b> на екрані входу — той, що ви підтвердили на другому кроці.</span></li>
+<li data-key="59-shell-running:qr"><span class="hint-num">3</span><span class="hint-text"><b>Вхід за QR</b> — гість сканує код телефоном або через Telegram-бот CyberOS ID. Пароль вводити не обовʼязково.</span></li></ol>
+        <figure>
+          <div class="shot" id="shot-59-shell-running">
+            <img src="shots/crop-59-shell-running.png" alt="Увесь екран клубного ПК після перезавантаження: назва машини, ваш клуб, вхід за паролем або QR.">
+            <button class="spot" data-key="59-shell-running:pcname" style="left:1.395%;top:2.361%;width:8.808%;height:12.431%" aria-label="pcname"><span class="spot-num ">1</span></button>
+<button class="spot" data-key="59-shell-running:club" style="left:37.994%;top:32.778%;width:5.000%;height:2.083%" aria-label="club"><span class="spot-num ">2</span></button>
+<button class="spot" data-key="59-shell-running:qr" style="left:53.401%;top:40.625%;width:8.285%;height:19.097%" aria-label="qr"><span class="spot-num ">3</span></button>
+          </div>
+          <div class="shot-bar"><figcaption>Увесь екран клубного ПК після перезавантаження: назва машини, ваш клуб, вхід за паролем або QR.</figcaption><button class="toggle" type="button" data-toggle="shot-59-shell-running">Прибрати підсвітку</button></div>
+        </figure>
+      </div>
+      <label class="check"><input type="checkbox" data-step="6"> ПК стартує в Shell</label>
+    </section>
+
+    <section class="step" id="step-7">
+      <div class="step-head">
+        <span class="step-num">07</span>
+        <div>
+          <h2>Той самий ПК у веб-панелі</h2>
+          <p>
+            Остання перевірка — з боку панелі. <b>Обладнання</b> має показати цю машину
+            онлайн. Це і є та зв’язка, за якою ви далі керуєте залом з одного екрана.
+          </p>
+        </div>
+      </div>
+      <div class="step-body">
+        <ol class="hints" data-shot="60-panel-online"><li data-key="60-panel-online:status"><span class="hint-num">1</span><span class="hint-text"><b>Онлайн</b> — Shell на цій машині звʼязався з системою. Це і є підтвердження, що встановлення вдалося.</span></li>
+<li data-key="60-panel-online:session"><span class="hint-num">2</span><span class="hint-text"><b>«Очікує входу»</b> — ПК готовий, але гість ще не зайшов.</span></li>
+<li data-key="60-panel-online:not_shell"><span class="hint-num">3</span><span class="hint-text"><b>«Не підключено до Shell»</b> — так виглядають пристрої, на які Shell ще не ставили. Порівняйте з рядком PC-02.</span></li></ol>
+        <figure>
+          <div class="shot" id="shot-60-panel-online">
+            <img src="shots/crop-60-panel-online.png" alt="Стовпці «Статус» і «Сесія» в «Обладнанні»: PC-02 — «Онлайн · Очікує входу», інші ще «Не підключено до Shell».">
+            <button class="spot" data-key="60-panel-online:status" style="left:58.072%;top:81.507%;width:7.952%;height:10.274%" aria-label="status"><span class="spot-num ">1</span></button>
+<button class="spot" data-key="60-panel-online:session" style="left:83.373%;top:81.678%;width:12.771%;height:10.274%" aria-label="session"><span class="spot-num ">2</span></button>
+<button class="spot" data-key="60-panel-online:not_shell" style="left:57.831%;top:16.438%;width:20.602%;height:10.274%" aria-label="not_shell"><span class="spot-num ">3</span></button>
+          </div>
+          <div class="shot-bar"><figcaption>Стовпці «Статус» і «Сесія» в «Обладнанні»: PC-02 — «Онлайн · Очікує входу», інші ще «Не підключено до Shell».</figcaption><button class="toggle" type="button" data-toggle="shot-60-panel-online">Прибрати підсвітку</button></div>
+        </figure>
+      </div>
+      <div class="note"><span class="note-tag">Якщо ПК не зʼявився</span><span>Дайте машині хвилину — статус приходить з першим звʼязком. Далі перевірте інтернет на ПК і що ви прив’язали його до слота свого клубу. У «Налаштування → Shell → Оновлення» біля кожного ПК видно версію: «Ще не повідомлено» означає, що звʼязку не було зовсім.</span></div>
+      <label class="check"><input type="checkbox" data-step="7"> Пристрій онлайн у панелі</label>
+    </section>
+
+    <section class="video-block" id="video">
+      <h3>Відео: встановлення покроково</h3>
+      <p>
+        Прохід усіма екранами інсталятора на живій Windows-машині — до фінального
+        екрана Shell на ПК і рядка «Онлайн» у панелі. Ключ клубу в кадрі розмитий.
+      </p>
+      <video controls preload="metadata" playsinline poster="shots/crop-501-win.png">
+        <source src="videos/uc06-install.mp4" type="video/mp4">
+        Ваш браузер не показує це відео.
+      </video>
+    </section>
+
+    <section class="next">
+      <h2>Далі</h2>
+      <p>Машини в Shell — тепер потрібні ті, хто за ними сидить. <a href="instruction-07-clients.html">Розділ 7: клієнти клубу</a>.</p>
+      <ol>
+        <li><b>QR клубу</b> — гість реєструється сам і сам зʼявляється у ваших клієнтах.</li>
+        <li><b>Клієнт вручну</b> — картка з паролем, коли гість без телефона.</li>
+        <li><b>Перевірка</b> — цей клієнт заходить у Shell на клубному ПК.</li>
+      </ol>
+    </section>
+
+  </main>
+
+  <nav class="chapters" aria-label="Розділи інструкції">
+    <a href="instruction-01-club-setup.html"><i>01</i>Заведення клубу</a>
+    <a href="instruction-02-zones-devices.html"><i>02</i>Зони і пристрої</a>
+    <a href="instruction-03-tariffs.html"><i>03</i>Тарифи</a>
+    <a href="instruction-04-games.html"><i>04</i>Ігри</a>
+    <a href="instruction-05-shell.html"><i>05</i>Shell</a>
+    <a href="instruction-06-install.html" class="current"><i>06</i>Встановлення на ПК</a>
+    <a href="instruction-07-clients.html"><i>07</i>Клієнти</a>
+  </nav>
+
+  <footer>
+    <span>CyberOS · інструкція власника, розділ 6 з 7</span>
+    <span>Знімки зроблені на живій Windows-машині 9 вересня 2026</span>
+  </footer>
+</div>
+
+<script>
+// підсвітка: пункт списку ↔ рамка на скріншоті
+  const setOn = (key, on) => {
+    document.querySelectorAll('[data-key="' + key + '"]').forEach((el) => el.classList.toggle('on', on));
+  };
+  document.querySelectorAll('.hints li, .spot').forEach((el) => {
+    const key = el.dataset.key;
+    el.addEventListener('mouseenter', () => setOn(key, true));
+    el.addEventListener('mouseleave', () => setOn(key, false));
+    el.addEventListener('focus', () => setOn(key, true));
+    el.addEventListener('blur', () => setOn(key, false));
+    if (el.classList.contains('spot')) {
+      el.addEventListener('click', () => {
+        const li = document.querySelector('.hints li[data-key="' + key + '"]');
+        li?.scrollIntoView({ block: 'nearest', behavior: 'smooth' });
+        li?.animate([{ background: 'var(--accent-soft)' }, { background: 'transparent' }], { duration: 900 });
+      });
+    }
+  });
+
+  // перемикач підсвітки на кожному скріншоті
+  document.querySelectorAll('.toggle').forEach((btn) => {
+    btn.addEventListener('click', () => {
+      const shot = document.getElementById(btn.dataset.toggle);
+      const bare = shot.classList.toggle('bare');
+      btn.textContent = bare ? 'Показати підсвітку' : 'Прибрати підсвітку';
+    });
+  });
+
+  // чекліст кроків — пам’ять у браузері читача (може бути недоступна)
+  const KEY = 'cyberos-guide-06';
+  let done = {};
+  try { done = JSON.parse(localStorage.getItem(KEY) || '{}'); } catch (e) { done = {}; }
+  const paint = () => {
+    document.querySelectorAll('.check input').forEach((input) => {
+      const n = input.dataset.step;
+      input.checked = !!done[n];
+      input.closest('.check').classList.toggle('done', !!done[n]);
+      document.querySelector('.rail a[data-rail="' + n + '"]')?.classList.toggle('done', !!done[n]);
+    });
+  };
+  document.querySelectorAll('.check input').forEach((input) => {
+    input.addEventListener('change', () => {
+      done[input.dataset.step] = input.checked;
+      try { localStorage.setItem(KEY, JSON.stringify(done)); } catch (e) { /* приватний режим — просто не запамʼятаємо */ }
+      paint();
+    });
+  });
+  paint();
+
+</script>
+
+</body>
+</html>
