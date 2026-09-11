@@ -490,14 +490,15 @@
         <div>
           <h2>Клієнт у Shell</h2>
           <p>
-            Вхід удався: Shell вітає клієнта імʼям і одразу каже, чого не хватає — часу.
-            Це нормальний стан нового гостя, поки касир не продав години.
+            Вхід удався: Shell вітає клієнта імʼям і одразу каже, чого не хватає —
+            оплаченого часу. Це нормальний стан нового гостя: баланс нульовий, а час
+            Shell бере саме з балансу за тарифом зони.
           </p>
         </div>
       </div>
       <div class="step-body">
         <ol class="hints" data-shot="79-shell-logged"><li data-key="79-shell-logged:pill"><span class="hint-num">1</span><span class="hint-text"><b>Імʼя клієнта</b> у Shell — вхід удався, машина знає, хто за нею сидить.</span></li>
-<li data-key="79-shell-logged:balance"><span class="hint-num">2</span><span class="hint-text"><b>Залишок часу й баланс</b> — у нового клієнта порожні, поки касир не продасть години.</span></li>
+<li data-key="79-shell-logged:balance"><span class="hint-num">2</span><span class="hint-text"><b>Баланс і залишок часу</b> — у нового клієнта нулі. Касир поповнює <b>баланс у гривнях</b>, а час Shell рахує сам: скільки грошей на балансі, стільки й часу за погодинним тарифом зони.</span></li>
 <li data-key="79-shell-logged:topup"><span class="hint-num">3</span><span class="hint-text"><b>«Немає оплаченого часу»</b> — Shell сам просить поповнити баланс у касира й чекає. Гостю не треба перезаходити: час зʼявиться в цьому ж вікні.</span></li></ol>
         <figure>
           <div class="shot" id="shot-79-shell-logged">
@@ -509,7 +510,7 @@
           <div class="shot-bar"><figcaption>Shell після входу клієнта: імʼя у верхньому куті, нульовий баланс і запит на поповнення.</figcaption><button class="toggle" type="button" data-toggle="shot-79-shell-logged">Прибрати підсвітку</button></div>
         </figure>
       </div>
-      <div class="note"><span class="note-tag">Далі час зʼявиться сам</span><span>Коли касир продасть години, Shell підхопить їх у цьому ж вікні — гостю не треба виходити й заходити знову. Продаж часу й балансу — наступний розділ.</span></div>
+      <div class="note"><span class="note-tag">Касир поповнює баланс, а не години</span><span>Окремої кнопки «продати години» немає: адміністратор приймає оплату <b>на баланс клієнта в гривнях</b>, а Shell списує з нього гроші за погодинним тарифом зони. Приклад: гість хоче 2 години в зоні «Стандарт», де година коштує 200 ₴ — касир проводить <b>400 ₴</b> на баланс (або клієнт поповнює сам), і Shell показує 2 години. Час підхоплюється в тому ж вікні, виходити й заходити знову не треба.</span></div>
       <label class="check"><input type="checkbox" data-step="5"> Клієнт залогінений у Shell на клубному ПК</label>
     </section>
 
