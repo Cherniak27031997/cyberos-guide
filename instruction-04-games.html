@@ -300,20 +300,20 @@
   <header class="masthead">
     <p class="kicker">CyberOS · інструкція, розділ 4</p>
     <h1>Ігри та застосунки клубу</h1>
-    <p class="lede">У клубі одразу 89 ігор з обкладинками, категоріями й віковими рейтингами — додавати треба лише те, чого в бібліотеці немає. Наведіть курсор на пункт списку — на знімку підсвітиться те саме поле.</p>
+    <p class="lede">Бібліотека CyberOS — це каталог на 89 ігор: клуб не отримує їх автоматично, ви вмикаєте потрібні одним кліком. Але спершу треба прописати шляхи до лаунчерів — без них Steam-ігри не запустяться. Наведіть курсор на пункт списку — на знімку підсвітиться те саме поле.</p>
     <dl class="facts">
-      <div><dt>Часу</dt><dd>5 хвилин</dd></div>
-      <div><dt>Потрібно</dt><dd>Список ігор вашого клубу</dd></div>
-      <div><dt>Результат</dt><dd>89 ігор готові до запуску</dd></div>
+      <div><dt>Часу</dt><dd>10 хвилин</dd></div>
+      <div><dt>Потрібно</dt><dd>Шляхи до лаунчерів на клубному ПК</dd></div>
+      <div><dt>Результат</dt><dd>Ігри вмикаються одним кліком</dd></div>
       <div><dt>Далі</dt><dd>Shell на клубних ПК</dd></div>
     </dl>
   </header>
 
   <nav class="rail" aria-label="Кроки розділу">
     <a class="rail-home" href="index.html"><i>&#9666;</i>Розділи</a>
-    <a href="#step-1" data-rail=1><i>1</i>Бібліотека</a>
-    <a href="#step-2" data-rail=2><i>2</i>Увімкнути гру</a>
-    <a href="#step-3" data-rail=3><i>3</i>Лаунчери</a>
+    <a href="#step-1" data-rail=1><i>1</i>Каталог</a>
+    <a href="#step-2" data-rail=2><i>2</i>Лаунчери</a>
+    <a href="#step-3" data-rail=3><i>3</i>Увімкнути гру</a>
     <a href="#step-4" data-rail=4><i>4</i>Своя гра</a>
     <a href="#video"><i>▶</i>Відео проходу</a>
   </nav>
@@ -323,34 +323,70 @@
       <div class="step-head">
         <span class="step-num">01</span>
         <div>
-          <h2>Бібліотека вже наповнена</h2>
+          <h2>Бібліотека — це спільний каталог, а не ваш список</h2>
           <p>
-            Найприємніше в цьому розділі — здебільшого робити нічого не треба.
-            У клубі одразу <b>89 ігор</b>, і в 88 з них уже є обкладинка,
-            категорія, віковий рейтинг і ID у лаунчері. Ви не заводите їх руками —
-            вони приходять із бібліотекою CyberOS.
+            У бібліотеці CyberOS уже 89 ігор і 23 застосунків: у кожного
+            запису є обкладинка, категорія, віковий рейтинг і — головне — лаунчер
+            та ID гри в ньому. Але <b>клуб не отримує їх автоматично</b>: поки ви
+            не увімкнули гру, на екрані гостя її немає. Бібліотека — це полиця, з
+            якої ви берете, а не ваш готовий зал.
           </p>
         </div>
       </div>
       <figure>
           <div class="shot bare" id="shot-41-games-cards">
-            <img src="shots/crop-41-games-cards.png" alt="Вигляд «Картки»: 88 ігор з обкладинками — саме так їх бачить гість у Shell.">
+            <img src="shots/crop-41-games-cards.png" alt="Каталог у вигляді «Картки»: 88 ігор з обкладинками. «ВИМКНЕНО» на картці означає, що в клубі цієї гри ще немає.">
             
           </div>
-          <div class="shot-bar"><figcaption>Вигляд «Картки»: 88 ігор з обкладинками — саме так їх бачить гість у Shell.</figcaption></div>
+          <div class="shot-bar"><figcaption>Каталог у вигляді «Картки»: 88 ігор з обкладинками. «ВИМКНЕНО» на картці означає, що в клубі цієї гри ще немає.</figcaption></div>
         </figure>
-      <label class="check"><input type="checkbox" data-step="1"> Подивився, що вже є в бібліотеці</label>
+      <label class="check"><input type="checkbox" data-step="1"> Подивився, що є в каталозі</label>
     </section>
 
     <section class="step" id="step-2">
       <div class="step-head">
         <span class="step-num">02</span>
         <div>
-          <h2>Додати гру з бібліотеки — це один перемикач</h2>
+          <h2>Спершу — шляхи до лаунчерів</h2>
           <p>
-            Гру, яка вже є в бібліотеці, не потрібно «створювати». Знаходите її пошуком
-            і вмикаєте перемикачем <b>«Активний»</b> — вона одразу зʼявляється на екрані
-            машини. Вимкнули — зникла з екрана, але лишилась у списку.
+            Це найперше, що треба зробити, і саме тут найчастіше застрягають.
+            Ігри з каталогу запускаються <b>через лаунчер</b>: вони не знають шляху
+            до себе, вони знають лише свій ID у Steam, Epic чи Battle.net. Тому
+            шлях треба вказати <b>один раз для самого лаунчера</b> — і всі його
+            ігри запускатимуться.
+          </p>
+        </div>
+      </div>
+      <div class="step-body">
+        <ol class="hints" data-shot="40-launchers"><li data-key="40-launchers:tab"><span class="hint-num">1</span><span class="hint-text"><b>Вкладка «Застосунки»</b> — лаунчери живуть тут, не серед ігор.</span></li>
+<li data-key="40-launchers:cat"><span class="hint-num">2</span><span class="hint-text"><b>Категорія «Лаунчери»</b> — Steam, Epic, Battle.net та решта платформ.</span></li>
+<li data-key="40-launchers:row"><span class="hint-num">3</span><span class="hint-text"><b>Жовтий трикутник біля назви</b> — шлях до цього лаунчера ще не вказаний. Саме його треба заповнити першим.</span></li></ol>
+        <figure>
+          <div class="shot" id="shot-40-launchers">
+            <img src="shots/crop-40-launchers.png" alt="Вкладка «Застосунки»: лаунчери з режимом «Локально». Жовтий трикутник — шлях ще не вказаний.">
+            <button class="spot" data-key="40-launchers:tab" style="left:6.926%;top:0.296%;width:8.953%;height:5.630%" aria-label="tab"><span class="spot-num ">1</span></button>
+<button class="spot" data-key="40-launchers:cat" style="left:18.750%;top:14.519%;width:14.865%;height:4.741%" aria-label="cat"><span class="spot-num ">2</span></button>
+<button class="spot" data-key="40-launchers:row" style="left:1.774%;top:33.630%;width:96.453%;height:9.037%" aria-label="row"><span class="spot-num ">3</span></button>
+          </div>
+          <div class="shot-bar"><figcaption>Вкладка «Застосунки»: лаунчери з режимом «Локально». Жовтий трикутник — шлях ще не вказаний.</figcaption><button class="toggle" type="button" data-toggle="shot-40-launchers">Прибрати підсвітку</button></div>
+        </figure>
+      </div>
+      <div class="note note--warn"><span class="note-tag">Без шляху до Steam не запуститься жодна Steam-гра</span><span>Counter-Strike 2, Dota 2, PUBG — усі вони запускаються командою до Steam. Якщо в застосунку <b>Steam</b> не заповнений шлях до <code>Steam.exe</code>, Shell не зможе запустити ні одну з них, хоча в панелі вони будуть увімкнені. У самій грі шлях вказувати <b>не треба</b> — тільки в лаунчері.</span></div>
+      <div class="note"><span class="note-tag">Які лаунчери є в каталозі</span><span>EA App · Battle.net · Epic Games Launcher · HoYoPlay · Minecraft Launcher · Riot Client · Roblox Player · Rockstar Games Launcher · Steam · Ubisoft Connect · Wargaming Game Center. Кожен — окремий запис на вкладці «Застосунки», режим запуску «Локально», поле шляху до <code>.exe</code>. Якщо в залах різні диски, можна вказати до трьох шляхів.</span></div>
+      <label class="check"><input type="checkbox" data-step="2"> Прописав шляхи до лаунчерів, якими користується клуб</label>
+    </section>
+
+    <section class="step" id="step-3">
+      <div class="step-head">
+        <span class="step-num">03</span>
+        <div>
+          <h2>Додати гру з каталогу — один клік</h2>
+          <p>
+            Гру з бібліотеки не потрібно «створювати». Пишете в пошуку
+            <b>«counter»</b> — каталог одразу показує <b>Counter-Strike 2</b>, і ви
+            вмикаєте перемикач <b>«Активний»</b>. Усе: гра зʼявилась на екрані
+            гостя. Лаунчер та ID уже прописані в каталозі, заповнювати нічого не
+            треба. Вимкнули — зникла з екрана, але лишилась у каталозі.
           </p>
         </div>
       </div>
@@ -361,49 +397,30 @@
 <li data-key="42-games-table:filter_age"><span class="hint-num">4</span><span class="hint-text"><b>Віковий рейтинг</b> — 12+, 16+, 18+. Знадобиться, якщо у вас є дитячі години або зона.</span></li></ol>
         <figure>
           <div class="shot" id="shot-42-games-table">
-            <img src="shots/crop-42-games-table.png" alt="Вигляд «Таблиця»: назва, категорія, лаунчер, вік і перемикач «Активний».">
+            <img src="shots/crop-42-games-table.png" alt="Вигляд «Таблиця»: назва, категорія, лаунчер, вік і перемикач «Активний» — саме ним гра додається в клуб.">
             <button class="spot" data-key="42-games-table:toggle" style="left:88.007%;top:45.500%;width:3.716%;height:7.500%" aria-label="toggle"><span class="spot-num tr">1</span></button>
 <button class="spot" data-key="42-games-table:search" style="left:1.689%;top:10.250%;width:31.926%;height:8.000%" aria-label="search"><span class="spot-num br">2</span></button>
 <button class="spot" data-key="42-games-table:filter_launcher" style="left:18.750%;top:20.750%;width:14.865%;height:8.000%" aria-label="filter_launcher"><span class="spot-num ">3</span></button>
 <button class="spot" data-key="42-games-table:filter_age" style="left:48.818%;top:20.750%;width:13.514%;height:8.000%" aria-label="filter_age"><span class="spot-num ">4</span></button>
           </div>
-          <div class="shot-bar"><figcaption>Вигляд «Таблиця»: назва, категорія, лаунчер, вік і перемикач «Активний».</figcaption><button class="toggle" type="button" data-toggle="shot-42-games-table">Прибрати підсвітку</button></div>
+          <div class="shot-bar"><figcaption>Вигляд «Таблиця»: назва, категорія, лаунчер, вік і перемикач «Активний» — саме ним гра додається в клуб.</figcaption><button class="toggle" type="button" data-toggle="shot-42-games-table">Прибрати підсвітку</button></div>
         </figure>
       </div>
-      <div class="note"><span class="note-tag">Два вигляди</span><span>«Картки» — щоб побачити зал очима гостя, «Таблиця» — щоб швидко правити багато ігор. Перемикач у правому верхньому куті.</span></div>
-      <div class="note"><span class="note-tag">Застосунки — окрема база</span><span>Поруч із «Іграми» є вкладка <b>«Застосунки»</b>, і вона теж уже наповнена: у клубі 23 записів — Google Chrome, Opera GX, FACEIT, EA App, Battle.net, Epic Games Launcher та інші. Вмикаються так само перемикачем. Для застосунку зазвичай потрібен лише <b>шлях до .exe</b> на клубному ПК — його вказують у режимі «Локальний шлях».</span></div>
-      <label class="check"><input type="checkbox" data-step="2"> Увімкнув ігри, які потрібні в клубі</label>
-    </section>
-
-    <section class="step" id="step-3">
-      <div class="step-head">
-        <span class="step-num">03</span>
-        <div>
-          <h2>Які лаунчери підтримуються</h2>
-          <p>
-            Гра прив’язується не до ярлика на робочому столі, а до <b>лаунчера</b> — тому
-            Shell знає, як її запустити на будь-якій машині клубу.
-          </p>
-        </div>
-      </div>
-      <figure>
-          <div class="shot bare" id="shot-43-launchers">
-            <img src="shots/43-launchers.png" alt="Список лаунчерів у фільтрі: Steam · Epic Games · Battle.net · Riot Games · HoYoPlay · Minecraft Launcher · Roblox Player · Standalone.">
-            
-          </div>
-          <div class="shot-bar"><figcaption>Список лаунчерів у фільтрі: Steam · Epic Games · Battle.net · Riot Games · HoYoPlay · Minecraft Launcher · Roblox Player · Standalone.</figcaption></div>
-        </figure>
-      <label class="check"><input type="checkbox" data-step="3"> Знаю, з яких лаунчерів запускаються ігри</label>
+      <div class="note"><span class="note-tag">Два вигляди</span><span>«Картки» — щоб побачити зал очима гостя, «Таблиця» — щоб швидко вмикати багато ігор поспіль. Перемикач у правому верхньому куті.</span></div>
+      <div class="note"><span class="note-tag">Застосунки — так само</span><span>Поруч із «Іграми» є вкладка <b>«Застосунки»</b>: 23 записів — Google Chrome, Opera GX, FACEIT, Discord, OBS та інші. Вмикаються тим самим перемикачем, але для застосунку потрібен <b>шлях до .exe</b> на клубному ПК — лаунчера в нього немає.</span></div>
+      <label class="check"><input type="checkbox" data-step="3"> Увімкнув ігри, які потрібні в клубі</label>
     </section>
 
     <section class="step" id="step-4">
       <div class="step-head">
         <span class="step-num">04</span>
         <div>
-          <h2>Додати гру, якої немає в бібліотеці</h2>
+          <h2>Гра не з лаунчера — потрібен шлях до .exe</h2>
           <p>
-            Тут доведеться заповнити самому: назву, спосіб запуску й картинки.
-            Обкладинки для своєї гри не підтягуються — на відміну від бібліотечних.
+            Якщо гри немає в каталозі або вона запускається без лаунчера
+            (власна збірка, портативна версія, інді), додаєте її самі — і ось тут
+            шлях до <code>.exe</code> обовʼязковий. Обкладинку для такої гри теж
+            ставите самі: у бібліотечних вона підтягується, у своєї — ні.
           </p>
         </div>
       </div>
@@ -415,14 +432,14 @@
 <li data-key="44-game-form:logo"><span class="hint-num">5</span><span class="hint-text"><b>Логотип</b> — PNG або SVG, необовʼязково; ставиться поверх фону.</span></li></ol>
         <figure>
           <div class="shot" id="shot-44-game-form">
-            <img src="shots/crop-44-game-form.png" alt="Верх форми «Нова гра»: тип, назва, постер, фон, логотип.">
+            <img src="shots/crop-44-game-form.png" alt="Верх форми «Нова картка»: тип, назва, постер, фон, логотип.">
             <button class="spot" data-key="44-game-form:type" style="left:26.310%;top:6.027%;width:70.833%;height:5.753%" aria-label="type"><span class="spot-num ">1</span></button>
 <button class="spot" data-key="44-game-form:name" style="left:26.310%;top:17.671%;width:70.833%;height:5.753%" aria-label="name"><span class="spot-num ">2</span></button>
 <button class="spot" data-key="44-game-form:poster" style="left:9.167%;top:35.890%;width:14.762%;height:4.110%" aria-label="poster"><span class="spot-num ">3</span></button>
 <button class="spot" data-key="44-game-form:bg" style="left:16.667%;top:91.370%;width:12.619%;height:4.110%" aria-label="bg"><span class="spot-num ">4</span></button>
 <button class="spot" data-key="44-game-form:logo" style="left:45.119%;top:91.370%;width:15.476%;height:4.110%" aria-label="logo"><span class="spot-num ">5</span></button>
           </div>
-          <div class="shot-bar"><figcaption>Верх форми «Нова гра»: тип, назва, постер, фон, логотип.</figcaption><button class="toggle" type="button" data-toggle="shot-44-game-form">Прибрати підсвітку</button></div>
+          <div class="shot-bar"><figcaption>Верх форми «Нова картка»: тип, назва, постер, фон, логотип.</figcaption><button class="toggle" type="button" data-toggle="shot-44-game-form">Прибрати підсвітку</button></div>
         </figure>
       </div>
       <div class="step-body" style="margin-top:28px">
@@ -450,16 +467,9 @@
           </div>
           <div class="shot-bar"><figcaption>Режим «Локальний шлях»: до трьох шляхів до .exe (для різних залів), аргументи запуску й робоча папка.</figcaption></div>
         </figure>
-      <div class="note"><span class="note-tag">Два способи запуску</span><span><b>Через лаунчер</b> — коли гра є у Steam, Epic, Battle.net тощо: вказуєте платформу й ID. <b>Локальний шлях</b> — коли лаунчера немає: вказуєте <code>.exe</code> на клубному ПК, за потреби аргументи й робочу папку. Другий спосіб підходить і для застосунків, і для власних збірок.</span></div>
-      <div class="note note--warn"><span class="note-tag">Три поля обовʼязкові</span><span>Однієї назви не достатньо: без <b>способу запуску</b> (лаунчер + ID або шлях до .exe) гра не збережеться — форма просто залишиться відкритою.</span></div>
-      <figure>
-          <div class="shot bare" id="shot-46-game-created">
-            <img src="shots/46-game-created.png" alt="Гра у списку. Картинку для своєї гри треба завантажити самому — інакше вона буде без обкладинки.">
-            
-          </div>
-          <div class="shot-bar"><figcaption>Гра у списку. Картинку для своєї гри треба завантажити самому — інакше вона буде без обкладинки.</figcaption></div>
-        </figure>
-      <label class="check"><input type="checkbox" data-step="4"> Додав гру, якої не було в бібліотеці</label>
+      <div class="note"><span class="note-tag">Коли який режим</span><span><b>Через лаунчер</b> — гра є у Steam, Epic, Battle.net: вказуєте платформу й ID гри, шлях не потрібен (він уже в лаунчера). <b>Локальний шлях</b> — лаунчера немає: вказуєте <code>.exe</code> на клубному ПК, за потреби аргументи й робочу папку.</span></div>
+      <div class="note note--warn"><span class="note-tag">Без способу запуску гра не збережеться</span><span>Однієї назви не достатньо: потрібен або лаунчер + ID, або шлях до <code>.exe</code> — інакше форма просто залишиться відкритою.</span></div>
+      <label class="check"><input type="checkbox" data-step="4"> Додав гру, якої не було в каталозі</label>
     </section>
 
     <section class="video-block" id="video">
