@@ -41,6 +41,12 @@
    "title": "Клієнти",
    "file": "instruction-07-clients.html",
    "lede": "QR клубу, ручна картка й вхід клієнта в Shell."
+  },
+  {
+   "num": 8,
+   "title": "Поповнення балансу",
+   "file": "instruction-08-balance.html",
+   "lede": "Каса, відкрита зміна, сума на баланс і історія поповнень."
   }
  ]
 }

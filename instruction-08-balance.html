@@ -4,13 +4,13 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="color-scheme" content="light dark">
-<meta name="description" content="Зали з різними кольорами, картки ПК, PlayStation і VR.">
+<meta name="description" content="Каса, відкрита зміна, сума на баланс і історія поповнень.">
 <style>
   html, body { margin: 0; }
   img { max-width: 100%; }
   [hidden] { display: none !important; }
 </style>
-<title>Зони і пристрої CyberOS</title>
+<title>Поповнення балансу клієнта</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Manrope:wght@600;800&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
@@ -298,23 +298,23 @@
 <div class="wrap">
   <a class="home-link" href="index.html"><span>&#8592;</span>Усі розділи інструкції</a>
   <header class="masthead">
-    <p class="kicker">CyberOS · інструкція, розділ 2</p>
-    <h1>Зал у системі: зони, пристрої та Shell</h1>
-    <p class="lede">Другий розділ описує зал: групуємо місця в зони й заводимо машини. Наведіть курсор на пункт списку — на знімку підсвітиться те саме поле.</p>
+    <p class="kicker">CyberOS · інструкція, розділ 8</p>
+    <h1>Поповнення балансу клієнта</h1>
+    <p class="lede">Гроші на баланс кладе адміністратор через касу — сам гравець цього поки не може. Обовʼязкова умова: відкрита зміна, інакше фінанси нікуди не запишуться. Наведіть курсор на пункт списку — на знімку підсвітиться те саме поле.</p>
     <dl class="facts">
-      <div><dt>Часу</dt><dd>10 хвилин</dd></div>
-      <div><dt>Потрібно</dt><dd>Список машин і план залу</dd></div>
-      <div><dt>Результат</dt><dd>Зал описаний, машини в системі</dd></div>
-      <div><dt>Далі</dt><dd>Тарифи й покриття доби</dd></div>
+      <div><dt>Часу</dt><dd>1 хвилина</dd></div>
+      <div><dt>Потрібно</dt><dd>Відкрита зміна</dd></div>
+      <div><dt>Результат</dt><dd>Баланс у клієнта</dd></div>
+      <div><dt>Далі</dt><dd>Гість сідає за ПК</dd></div>
     </dl>
   </header>
 
   <nav class="rail" aria-label="Кроки розділу">
     <a class="rail-home" href="index.html"><i>&#9666;</i>Розділи</a>
-    <a href="#step-1" data-rail=1><i>1</i>Обладнання</a>
-    <a href="#step-2" data-rail=2><i>2</i>Зони</a>
-    <a href="#step-3" data-rail=3><i>3</i>Пристрої</a>
-    <a href="#video"><i>▶</i>Відео проходу</a>
+    <a href="#step-1" data-rail=1><i>1</i>Зміна</a>
+    <a href="#step-2" data-rail=2><i>2</i>Клієнт</a>
+    <a href="#step-3" data-rail=3><i>3</i>Сума</a>
+    <a href="#step-4" data-rail=4><i>4</i>Перевірка</a>
   </nav>
 
   <main>
@@ -322,129 +322,126 @@
       <div class="step-head">
         <span class="step-num">01</span>
         <div>
-          <h2>Відкрийте «Обладнання»</h2>
+          <h2>Спершу відкрийте зміну</h2>
           <p>
-            Тут живуть зони й пристрої — те, що система продає годинами. У новому клубі
-            обидва списки порожні, тому дашборд поки нічого й не показує.
+            Це обовʼязкова умова: усі гроші каса записує <b>у зміну</b>, тому без
+            відкритої зміни поповнити баланс не вийде. Порядок такий: відчинили клуб →
+            відкрили зміну → і вже з того акаунта, який її відкрив, проводите поповнення.
           </p>
         </div>
       </div>
-      <div class="step-body">
-        <ol class="hints" data-shot="21-equipment-empty"><li data-key="21-equipment-empty:tab_devices"><span class="hint-num">1</span><span class="hint-text"><b>Пристрої</b> — список машин зі статусами й поточними сесіями.</span></li>
-<li data-key="21-equipment-empty:tab_zones"><span class="hint-num">2</span><span class="hint-text"><b>Зони</b> — почніть звідси: пристрій без зони не створиться.</span></li></ol>
-        <figure>
-          <div class="shot" id="shot-21-equipment-empty">
-            <img src="shots/crop-21-equipment-empty.png" alt="«Обладнання» має дві вкладки: «Пристрої» і «Зони».">
-            <button class="spot" data-key="21-equipment-empty:tab_devices" style="left:3.183%;top:30.278%;width:12.732%;height:10.556%" aria-label="tab_devices"><span class="spot-num tl">1</span></button>
-<button class="spot" data-key="21-equipment-empty:tab_zones" style="left:16.446%;top:30.278%;width:8.886%;height:10.556%" aria-label="tab_zones"><span class="spot-num tr">2</span></button>
-          </div>
-          <div class="shot-bar"><figcaption>«Обладнання» має дві вкладки: «Пристрої» і «Зони».</figcaption><button class="toggle" type="button" data-toggle="shot-21-equipment-empty">Прибрати підсвітку</button></div>
-        </figure>
-      </div>
-      <div class="note"><span class="note-tag">Порядок</span><span>Спершу <b>зони</b>, потім <b>пристрої</b>: у формі пристрою зона — обовʼязкове поле, і поки зон немає, там висить «Поки немає зон».</span></div>
-      <label class="check"><input type="checkbox" data-step="1"> Бачу «Обладнання» і вкладку «Зони»</label>
+      <div class="note note--warn"><span class="note-tag">Зміна — це не формальність</span><span>Поповнення, продажі й повернення падають у звіт саме тієї зміни, у якій вони зроблені. Якщо зміна закрита, каса покаже екран «зачекайте, поки зміну відкриють» — це не помилка.</span></div>
+      <label class="check"><input type="checkbox" data-step="1"> Зміна відкрита</label>
     </section>
 
     <section class="step" id="step-2">
       <div class="step-head">
         <span class="step-num">02</span>
         <div>
-          <h2>Створіть зони</h2>
+          <h2>Знайдіть клієнта</h2>
           <p>
-            Зона — це група місць з однаковою ціною й однаковим призначенням. Найчастіше
-            беруть три: «Стандарт» для більшості машин, «VIP» для потужніших, «PlayStation»
-            для консолей. Тарифи потім задаються саме на зону.
+            Два шляхи, обидва ведуть в одне місце. Перший — <b>Каса</b>, і там у полі
+            «Клієнт» почати вводити імʼя, нікнейм, телефон або пошту. Другий, зручніший —
+            <b>Клієнти</b> → клік по клієнту → кнопка <b>«Поповнити»</b>: каса відкриється
+            з уже підставленим клієнтом.
           </p>
         </div>
       </div>
       <div class="step-body">
-        <ol class="hints" data-shot="23-zone-form"><li data-key="23-zone-form:name"><span class="hint-num">1</span><span class="hint-text"><b>Назва зони</b> — так її бачитимуть адміністратор і гість: «Стандарт», «VIP», «PlayStation».</span></li>
-<li data-key="23-zone-form:priority"><span class="hint-num">2</span><span class="hint-text"><b>Пріоритет</b> — куди пересаджувати гравця, якщо його місце звільняють. Чим більше число, тим «дорожча» зона: VIP вище за Стандарт.</span></li>
-<li data-key="23-zone-form:order"><span class="hint-num">3</span><span class="hint-text"><b>Порядок сортування</b> — місце зони в таблиці. Менше число — вище в списку.</span></li>
-<li data-key="23-zone-form:color"><span class="hint-num">4</span><span class="hint-text"><b>Колір</b> — мітка зони на карті клубу й у таблицях. Беріть контрастні, щоб зал читався з першого погляду.</span></li>
-<li data-key="23-zone-form:submit"><span class="hint-num">5</span><span class="hint-text"><b>Додати</b> — зона зʼявляється в списку одразу.</span></li></ol>
+        <ol class="hints" data-shot="81-client-balance"><li data-key="81-client-balance:main"><span class="hint-num">1</span><span class="hint-text"><b>Основний баланс</b> — гроші, з яких списується час. Саме його ви поповнюєте.</span></li>
+<li data-key="81-client-balance:topup"><span class="hint-num">2</span><span class="hint-text"><b>«Поповнити»</b> — перекидає в касу з уже підставленим клієнтом, шукати його вдруге не треба.</span></li>
+<li data-key="81-client-balance:bonus"><span class="hint-num">3</span><span class="hint-text"><b>«Нарахувати»</b> — це бонусний баланс, окрема історія: бонусами можна платити частково, але час вони не купують.</span></li></ol>
         <figure>
-          <div class="shot" id="shot-23-zone-form">
-            <img src="shots/crop-23-zone-form.png" alt="Форма зони: назва, пріоритет, порядок сортування, колір.">
-            <button class="spot" data-key="23-zone-form:name" style="left:13.846%;top:17.308%;width:72.308%;height:8.077%" aria-label="name"><span class="spot-num ">1</span></button>
-<button class="spot" data-key="23-zone-form:priority" style="left:13.846%;top:32.885%;width:34.923%;height:8.077%" aria-label="priority"><span class="spot-num ">2</span></button>
-<button class="spot" data-key="23-zone-form:order" style="left:51.231%;top:32.885%;width:34.923%;height:8.077%" aria-label="order"><span class="spot-num ">3</span></button>
-<button class="spot" data-key="23-zone-form:color" style="left:13.846%;top:57.885%;width:22.154%;height:8.462%" aria-label="color"><span class="spot-num ">4</span></button>
-<button class="spot" data-key="23-zone-form:submit" style="left:73.692%;top:76.538%;width:12.462%;height:6.154%" aria-label="submit"><span class="spot-num ">5</span></button>
+          <div class="shot" id="shot-81-client-balance">
+            <img src="shots/crop-81-client-balance.png" alt="Картка клієнта, вкладка «Баланси»: основний баланс, «Поповнити» і бонусне «Нарахувати».">
+            <button class="spot" data-key="81-client-balance:main" style="left:57.763%;top:3.846%;width:14.079%;height:6.154%" aria-label="main"><span class="spot-num ">1</span></button>
+<button class="spot" data-key="81-client-balance:topup" style="left:57.763%;top:3.846%;width:14.079%;height:6.154%" aria-label="topup"><span class="spot-num ">2</span></button>
+<button class="spot" data-key="81-client-balance:bonus" style="left:80.132%;top:59.615%;width:14.605%;height:6.154%" aria-label="bonus"><span class="spot-num ">3</span></button>
           </div>
-          <div class="shot-bar"><figcaption>Форма зони: назва, пріоритет, порядок сортування, колір.</figcaption><button class="toggle" type="button" data-toggle="shot-23-zone-form">Прибрати підсвітку</button></div>
+          <div class="shot-bar"><figcaption>Картка клієнта, вкладка «Баланси»: основний баланс, «Поповнити» і бонусне «Нарахувати».</figcaption><button class="toggle" type="button" data-toggle="shot-81-client-balance">Прибрати підсвітку</button></div>
         </figure>
       </div>
-      <figure>
-          <div class="shot bare" id="shot-25-zones-ready">
-            <img src="shots/25-zones-ready.png" alt="Три зони готові. Колонки «Пристрої» і «Зайнято / вільно» поки нульові — машини додамо далі.">
-            
-          </div>
-          <div class="shot-bar"><figcaption>Три зони готові. Колонки «Пристрої» і «Зайнято / вільно» поки нульові — машини додамо далі.</figcaption></div>
-        </figure>
-      <div class="note"><span class="note-tag">Про пріоритет</span><span>Він потрібен рідко, але в потрібний момент рятує: коли гостя пересаджують, система підказує зону з вищим пріоритетом. Поставте VIP вище за Стандарт — і пересадка «на краще місце» працюватиме сама.</span></div>
-      <label class="check"><input type="checkbox" data-step="2"> Зони створені</label>
+      <label class="check"><input type="checkbox" data-step="2"> Клієнт відкритий у касі</label>
     </section>
 
     <section class="step" id="step-3">
       <div class="step-head">
         <span class="step-num">03</span>
         <div>
-          <h2>Додайте пристрої</h2>
+          <h2>Проведіть суму</h2>
           <p>
-            Пристрій — конкретна машина в залі. Тримайтеся одного формату назв: так
-            адміністратору легше шукати, а вам — читати звіти.
+            У касі виберіть категорію <b>«Поповнити»</b>, потім позицію — готову суму
+            або «Своя сума», додайте її в кошик кнопкою <b>«+»</b>, виберіть спосіб
+            оплати й натисніть <b>«Оплатити»</b>. Це весь шлях, він займає менше хвилини.
           </p>
         </div>
       </div>
       <div class="step-body">
-        <ol class="hints" data-shot="26-device-form"><li data-key="26-device-form:name"><span class="hint-num">1</span><span class="hint-text"><b>Назва</b> — коротка й однакова за форматом: PC-01, PC-02, VIP-01. Її називає адміністратор, коли садить гостя.</span></li>
-<li data-key="26-device-form:type"><span class="hint-num">2</span><span class="hint-text"><b>Тип</b> — ПК, PS, Xbox або VR. Впливає на іконку й фільтри; ціну задає зона, а не тип.</span></li>
-<li data-key="26-device-form:zone"><span class="hint-num">3</span><span class="hint-text"><b>Зона</b> — обовʼязкова, тому зони й створюємо першими. Тут же видно, чому важливий порядок сортування.</span></li>
-<li data-key="26-device-form:note"><span class="hint-num">4</span><span class="hint-text"><b>Примітка</b> — необовʼязкова: модель відеокарти, «крісло біля вікна», що завгодно для себе.</span></li>
-<li data-key="26-device-form:submit"><span class="hint-num">5</span><span class="hint-text"><b>Додати</b> — пристрій зʼявиться у списку своєї зони.</span></li></ol>
+        <ol class="hints" data-shot="82-pos-topup"><li data-key="82-pos-topup:shift"><span class="hint-num">1</span><span class="hint-text"><b>«Зміна відкрита»</b> — без цього напису в шапці каса нічого не проведе.</span></li>
+<li data-key="82-pos-topup:client"><span class="hint-num">2</span><span class="hint-text"><b>Клієнт</b> — підставився сам, якщо ви прийшли з картки. Інакше почніть вводити імʼя, нікнейм, телефон або пошту.</span></li>
+<li data-key="82-pos-topup:category"><span class="hint-num">3</span><span class="hint-text"><b>Категорія «Поповнити»</b> — не товар і не послуга, а саме гроші на баланс.</span></li>
+<li data-key="82-pos-topup:position"><span class="hint-num">4</span><span class="hint-text"><b>Позиція</b> — готові суми +50, +100, +200, +500, +1000 або «Своя сума» для будь-якої іншої.</span></li></ol>
         <figure>
-          <div class="shot" id="shot-26-device-form">
-            <img src="shots/crop-26-device-form.png" alt="Форма пристрою: назва, тип, зона, примітка.">
-            <button class="spot" data-key="26-device-form:name" style="left:13.846%;top:18.219%;width:72.308%;height:8.502%" aria-label="name"><span class="spot-num ">1</span></button>
-<button class="spot" data-key="26-device-form:type" style="left:13.846%;top:34.615%;width:34.923%;height:8.502%" aria-label="type"><span class="spot-num ">2</span></button>
-<button class="spot" data-key="26-device-form:zone" style="left:51.231%;top:34.615%;width:34.923%;height:8.502%" aria-label="zone"><span class="spot-num ">3</span></button>
-<button class="spot" data-key="26-device-form:note" style="left:13.846%;top:56.073%;width:72.308%;height:8.502%" aria-label="note"><span class="spot-num ">4</span></button>
-<button class="spot" data-key="26-device-form:submit" style="left:73.692%;top:75.304%;width:12.462%;height:6.478%" aria-label="submit"><span class="spot-num ">5</span></button>
+          <div class="shot" id="shot-82-pos-topup">
+            <img src="shots/crop-82-pos-topup.png" alt="Каса: клієнт підставлений, категорія «Поповнити», у списку позицій — готові суми й «Своя сума».">
+            <button class="spot" data-key="82-pos-topup:shift" style="left:75.338%;top:1.607%;width:11.655%;height:5.357%" aria-label="shift"><span class="spot-num ">1</span></button>
+<button class="spot" data-key="82-pos-topup:client" style="left:3.463%;top:48.571%;width:93.074%;height:7.500%" aria-label="client"><span class="spot-num ">2</span></button>
+<button class="spot" data-key="82-pos-topup:category" style="left:3.463%;top:62.321%;width:10.980%;height:7.500%" aria-label="category"><span class="spot-num ">3</span></button>
+<button class="spot" data-key="82-pos-topup:position" style="left:15.118%;top:62.321%;width:35.473%;height:7.500%" aria-label="position"><span class="spot-num ">4</span></button>
           </div>
-          <div class="shot-bar"><figcaption>Форма пристрою: назва, тип, зона, примітка.</figcaption><button class="toggle" type="button" data-toggle="shot-26-device-form">Прибрати підсвітку</button></div>
+          <div class="shot-bar"><figcaption>Каса: клієнт підставлений, категорія «Поповнити», у списку позицій — готові суми й «Своя сума».</figcaption><button class="toggle" type="button" data-toggle="shot-82-pos-topup">Прибрати підсвітку</button></div>
         </figure>
       </div>
-      <figure>
-          <div class="shot bare" id="shot-28-devices-ready">
-            <img src="shots/28-devices-ready.png" alt="Чотири пристрої, згруповані за зонами. Статус у всіх — «Не підключено до Shell»: програму на самих машинах ще не встановлено.">
-            
+      <div class="step-body" style="margin-top:28px">
+        <ol class="hints" data-shot="83-pos-cart"><li data-key="83-pos-cart:total"><span class="hint-num">1</span><span class="hint-text"><b>Разом</b> — перевірте суму перед оплатою: саме стільки зайде на баланс клієнта.</span></li>
+<li data-key="83-pos-cart:method"><span class="hint-num">2</span><span class="hint-text"><b>Спосіб оплати</b> — готівка або картка. Від цього залежить, куди сума ляже у звіті зміни.</span></li>
+<li data-key="83-pos-cart:pay"><span class="hint-num">3</span><span class="hint-text"><b>«Оплатити»</b> — після цього гроші на балансі, і клієнт може сідати за ПК.</span></li></ol>
+        <figure>
+          <div class="shot" id="shot-83-pos-cart">
+            <img src="shots/crop-83-pos-cart.png" alt="Кошик перед оплатою: сума, спосіб оплати й «Оплатити».">
+            <button class="spot" data-key="83-pos-cart:total" style="left:85.938%;top:36.625%;width:3.716%;height:7.500%" aria-label="total"><span class="spot-num ">1</span></button>
+<button class="spot" data-key="83-pos-cart:method" style="left:29.814%;top:46.500%;width:18.581%;height:10.500%" aria-label="method"><span class="spot-num ">2</span></button>
+<button class="spot" data-key="83-pos-cart:pay" style="left:3.463%;top:59.000%;width:93.074%;height:10.000%" aria-label="pay"><span class="spot-num ">3</span></button>
           </div>
-          <div class="shot-bar"><figcaption>Чотири пристрої, згруповані за зонами. Статус у всіх — «Не підключено до Shell»: програму на самих машинах ще не встановлено.</figcaption></div>
+          <div class="shot-bar"><figcaption>Кошик перед оплатою: сума, спосіб оплати й «Оплатити».</figcaption><button class="toggle" type="button" data-toggle="shot-83-pos-cart">Прибрати підсвітку</button></div>
         </figure>
-      <div class="note note--ok"><span class="note-tag">Коротший шлях</span><span>Пристрої можна <b>не заводити руками</b>: коли на клубному ПК встановлюють Shell, машина зʼявляється в «Обладнання» сама. Зручно, якщо ви налаштовуєте зал по одному комп’ютеру. Зони все одно потрібні заздалегідь.</span></div>
-      <label class="check"><input type="checkbox" data-step="3"> Пристрої додані й розкладені по зонах</label>
+      </div>
+      <div class="note"><span class="note-tag">Скільки це годин</span><span>Гроші на балансі перетворюються на час автоматично, за погодинним тарифом зони, де сидить гість. Якщо година в зоні коштує 200 ₴, то 400 ₴ на балансі — це 2 години. Окремої «продажі годин» у системі немає.</span></div>
+      <label class="check"><input type="checkbox" data-step="3"> Сума проведена</label>
     </section>
 
-    <section class="video-block" id="video">
-      <h3>Відео: зони і пристрої за хвилину</h3>
-      <p>
-        Запис у демо-клубі: порожнє «Обладнання» → три зони → чотири пристрої.
-      </p>
-      <video controls preload="metadata" playsinline poster="shots/25-zones-ready.png">
-        <source src="videos/uc02-zones.mp4" type="video/mp4">
-        Ваш браузер не показує це відео.
-      </video>
+    <section class="step" id="step-4">
+      <div class="step-head">
+        <span class="step-num">04</span>
+        <div>
+          <h2>Перевірте баланс і історію</h2>
+          <p>
+            Повернітесь у <b>Клієнти</b> — баланс у рядку вже новий. А вся картина по
+            грошах клієнта живе в його картці, на вкладці <b>«Історія балансу»</b>: там
+            видно і ваші поповнення, і автоматичні списання за сесії.
+          </p>
+        </div>
+      </div>
+      <figure>
+          <div class="shot bare" id="shot-85-balance-history">
+            <img src="shots/crop-85-balance-history.png" alt="«Історія балансу»: поповнення через касу («+100 ₴, Каса, Готівка») і списання за гру («−12 ₴, 12 хв гри, PC-02»).">
+            
+          </div>
+          <div class="shot-bar"><figcaption>«Історія балансу»: поповнення через касу («+100 ₴, Каса, Готівка») і списання за гру («−12 ₴, 12 хв гри, PC-02»).</figcaption></div>
+        </figure>
+      <div class="note"><span class="note-tag">Далі гість сідає за компʼютер</span><span>Вхід на машині — через Telegram (сканує QR з екрана) або нік і пароль. Баланс уже на місці, і тарифікація починає списувати гроші за погодинним тарифом зони того ПК.</span></div>
+      <div class="note note--warn"><span class="note-tag">Іншого способу поповнити поки немає</span><span>Гравець не може покласти собі гроші сам: тільки адміністратор через касу. У Shell на екрані є QR для поповнення, але в бойовій версії він відповідає «поповнення тимчасово не працює, зверніться до адміністратора» — щоб ніхто не малював собі баланс. Самостійні оплати зʼявляться разом із платіжною системою.</span></div>
+      <label class="check"><input type="checkbox" data-step="4"> Баланс на місці, історія видна</label>
     </section>
 
     <section class="next">
-      <h2>Наступний розділ</h2>
-      <p>Зал описаний — час навчити систему брати за нього гроші:</p>
+      <h2>Це кінець інструкції</h2>
+      <p>Клуб описаний, ціни виставлені, ігри увімкнені, Shell стоїть, клієнти заходять і платять. Що варто тримати під рукою:</p>
       <ol>
-        <li><b>Погодинні тарифи</b> — на кожну зону, окремо на день і на ніч, окремо на вихідні.</li>
-        <li><b>Покриття доби</b> — якщо клуб працює 24/7, у непокриті години сесія не почнеться.</li>
-        <li><b>Абонементи</b> — пакети годин зі своїм терміном дії.</li>
-        <li><b>Бар і комбо</b> — товари, набори «години + напій», продажі через касу.</li>
+        <li><b>Зміна</b> — відкривається на початку дня, звіт друкується в кінці.</li>
+        <li><b>Каса</b> — поповнення, товари, повернення. Усе пише в зміну.</li>
+        <li><b>Клієнти</b> — баланс, історія, повідомлення на екран.</li>
+        <li><b>Обладнання</b> — стан машин і команди: заблокувати, перезавантажити, написати гостю.</li>
       </ol>
     </section>
 
@@ -452,7 +449,7 @@
 
   <nav class="chapters" aria-label="Розділи інструкції">
     <a href="index.html"><i>◂</i>Усі розділи</a>
-    <a href="instruction-01-club-setup.html" class="current"><i>01</i>Заведення клубу</a>
+    <a href="instruction-01-club-setup.html"><i>01</i>Заведення клубу</a>
     <a href="instruction-02-zones-devices.html"><i>02</i>Зони і пристрої</a>
     <a href="instruction-03-tariffs.html"><i>03</i>Тарифи</a>
     <a href="instruction-04-games.html"><i>04</i>Ігри</a>
@@ -462,8 +459,8 @@
   </nav>
 
   <footer>
-    <span>CyberOS · інструкція власника, розділ 2 з 8</span>
-    <span>Знімки зроблені в демо-клубі 9 вересня 2026</span>
+    <span>CyberOS · інструкція власника, розділ 8 з 8</span>
+    <span>Знімки зроблені на проді 11 вересня 2026</span>
   </footer>
 </div>
 
@@ -497,7 +494,7 @@
   });
 
   // чекліст кроків — пам’ять у браузері читача (може бути недоступна)
-  const KEY = 'cyberos-guide-02';
+  const KEY = 'cyberos-guide-08';
   let done = {};
   try { done = JSON.parse(localStorage.getItem(KEY) || '{}'); } catch (e) { done = {}; }
   const paint = () => {
