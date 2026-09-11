@@ -300,7 +300,7 @@
   <header class="masthead">
     <p class="kicker">CyberOS · інструкція, розділ 5</p>
     <h1>Shell: програма на ігровій машині</h1>
-    <p class="lede">Четвертий розділ — про програму, яка стоїть на самих комп’ютерах: де взяти інсталятор і ключ, який пароль задати до встановлення, що побачить гість і як Shell оновлюється.</p>
+    <p class="lede">Розділ про програму, яка стоїть на самих компʼютерах. Порядок важливий: спершу задайте пароль вищого доступу, і лише потім беріть інсталятор — без пароля адміністратор не вийде з кіоску на клубному ПК.</p>
     <dl class="facts">
       <div><dt>Часу</dt><dd>10 хвилин у панелі</dd></div>
       <div><dt>Потрібно</dt><dd>Доступ до клубних ПК</dd></div>
@@ -311,8 +311,8 @@
 
   <nav class="rail" aria-label="Кроки розділу">
     <a class="rail-home" href="index.html"><i>&#9666;</i>Розділи</a>
-    <a href="#step-1" data-rail=1><i>1</i>Де взяти</a>
-    <a href="#step-2" data-rail=2><i>2</i>Сервісний доступ</a>
+    <a href="#step-1" data-rail=1><i>1</i>Пароль доступу</a>
+    <a href="#step-2" data-rail=2><i>2</i>Інсталятор і ключ</a>
     <a href="#step-3" data-rail=3><i>3</i>Сесія</a>
     <a href="#step-4" data-rail=4><i>4</i>Екран гостя</a>
     <a href="#step-5" data-rail=5><i>5</i>Оновлення</a>
@@ -324,11 +324,45 @@
       <div class="step-head">
         <span class="step-num">01</span>
         <div>
-          <h2>Де взяти Shell</h2>
+          <h2>Спершу задайте пароль вищого доступу</h2>
           <p>
-            Shell — програма, яка стоїть на самій ігровій машині: показує гостю екран входу,
-            рахує сесію й слухає команди адміністратора. Інсталятор і ключ лежать у
-            налаштуваннях клубу — <b>Налаштування → Shell → «Основне»</b>.
+            Це найперший крок, ще до завантаження інсталятора. Shell працює в режимі
+            кіоску: гість бачить лише ваш екран і нічого більше. Вийти з кіоску на
+            клубному ПК можна тільько за <b>паролем вищого доступу</b> — і задається
+            він тут, у панелі: <b>Налаштування → Shell → «Основне»</b>, блок
+            «Сервісний доступ».
+          </p>
+        </div>
+      </div>
+      <div class="step-body">
+        <ol class="hints" data-shot="42-shell-service"><li data-key="42-shell-service:password"><span class="hint-num">1</span><span class="hint-text"><b>Пароль вищого доступу</b> — задайте одразу. Поки його немає, адміністратор не зможе вийти з кіоску на клубному ПК: ні до робочого столу, ні до налаштувань Windows.</span></li>
+<li data-key="42-shell-service:save"><span class="hint-num">2</span><span class="hint-text"><b>Зберегти</b> — пароль застосовується одразу, окремої кнопки внизу сторінки немає.</span></li>
+<li data-key="42-shell-service:bind"><span class="hint-num">3</span><span class="hint-text"><b>Режим прив’язки</b> — «Автоматично» дозволяє новій машині зайняти вільний слот сама. Ручний режим — коли хочете підтверджувати кожен ПК.</span></li>
+<li data-key="42-shell-service:lock"><span class="hint-num">4</span><span class="hint-text"><b>Рівень блокування</b> — «Максимальний» ховає від гостя все, крім Shell. Знижуйте лише якщо гостям потрібен доступ до системи.</span></li></ol>
+        <figure>
+          <div class="shot" id="shot-42-shell-service">
+            <img src="shots/crop-42-shell-service.png" alt="Блок «Сервісний доступ»: пароль вищого доступу, режим привʼязки й рівень блокування.">
+            <button class="spot" data-key="42-shell-service:password" style="left:10.563%;top:22.333%;width:66.901%;height:10.422%" aria-label="password"><span class="spot-num ">1</span></button>
+<button class="spot" data-key="42-shell-service:save" style="left:78.404%;top:22.333%;width:11.033%;height:10.422%" aria-label="save"><span class="spot-num ">2</span></button>
+<button class="spot" data-key="42-shell-service:bind" style="left:10.563%;top:67.246%;width:38.498%;height:10.422%" aria-label="bind"><span class="spot-num ">3</span></button>
+<button class="spot" data-key="42-shell-service:lock" style="left:50.939%;top:67.246%;width:38.498%;height:10.422%" aria-label="lock"><span class="spot-num ">4</span></button>
+          </div>
+          <div class="shot-bar"><figcaption>Блок «Сервісний доступ»: пароль вищого доступу, режим привʼязки й рівень блокування.</figcaption><button class="toggle" type="button" data-toggle="shot-42-shell-service">Прибрати підсвітку</button></div>
+        </figure>
+      </div>
+      <div class="note note--warn"><span class="note-tag">Без пароля Shell ставити не можна</span><span>Поки пароль не заданий, у панелі так і написано: «Пароль не встановлено… адміністратор не зможе вийти з кіоску на клубному ПК». Інсталятор при цьому <b>завантажується</b> — система не перевіряє пароль перед скачуванням, тому легко поставити Shell і замкнути себе в кіоску. Задайте пароль зараз і збережіть його в менеджері паролів разом з іншими доступами клубу.</span></div>
+      <label class="check"><input type="checkbox" data-step="1"> Пароль вищого доступу задано</label>
+    </section>
+
+    <section class="step" id="step-2">
+      <div class="step-head">
+        <span class="step-num">02</span>
+        <div>
+          <h2>Тепер беріть інсталятор і ключ</h2>
+          <p>
+            Shell — програма, яка стоїть на самій ігровій машині: показує гостю екран
+            входу, рахує сесію й слухає команди адміністратора. Інсталятор і ключ
+            клубу лежать на тій самій вкладці, вище — у блоці «Встановлення».
           </p>
         </div>
       </div>
@@ -349,39 +383,7 @@
         </figure>
       </div>
       <div class="note note--warn"><span class="note-tag">Ключ</span><span>Один ключ на клуб. Не пересилайте його в загальних чатах і не показуйте на скріншотах — з ним будь-яка машина може приєднатися до вашого клубу.</span></div>
-      <label class="check"><input type="checkbox" data-step="1"> Інсталятор завантажено, ключ скопійовано</label>
-    </section>
-
-    <section class="step" id="step-2">
-      <div class="step-head">
-        <span class="step-num">02</span>
-        <div>
-          <h2>Задайте сервісний доступ</h2>
-          <p>
-            Це робиться <b>до</b> встановлення на машинах. Shell працює в режимі кіоску: гість
-            бачить лише ваш екран і нічого більше. Щоб адміністратор міг з нього виходити,
-            потрібен окремий пароль.
-          </p>
-        </div>
-      </div>
-      <div class="step-body">
-        <ol class="hints" data-shot="42-shell-service"><li data-key="42-shell-service:password"><span class="hint-num">1</span><span class="hint-text"><b>Пароль вищого доступу</b> — задайте одразу. Поки його немає, адміністратор не зможе вийти з кіоску на клубному ПК: ні до робочого столу, ні до налаштувань Windows.</span></li>
-<li data-key="42-shell-service:save"><span class="hint-num">2</span><span class="hint-text"><b>Зберегти</b> — пароль застосовується одразу, окремої кнопки внизу сторінки немає.</span></li>
-<li data-key="42-shell-service:bind"><span class="hint-num">3</span><span class="hint-text"><b>Режим прив’язки</b> — «Автоматично» дозволяє новій машині зайняти вільний слот сама. Ручний режим — коли хочете підтверджувати кожен ПК.</span></li>
-<li data-key="42-shell-service:lock"><span class="hint-num">4</span><span class="hint-text"><b>Рівень блокування</b> — «Максимальний» ховає від гостя все, крім Shell. Знижуйте лише якщо гостям потрібен доступ до системи.</span></li></ol>
-        <figure>
-          <div class="shot" id="shot-42-shell-service">
-            <img src="shots/crop-42-shell-service.png" alt="Сервісний доступ і рівень блокування — на тій же вкладці, нижче.">
-            <button class="spot" data-key="42-shell-service:password" style="left:10.563%;top:22.333%;width:66.901%;height:10.422%" aria-label="password"><span class="spot-num ">1</span></button>
-<button class="spot" data-key="42-shell-service:save" style="left:78.404%;top:22.333%;width:11.033%;height:10.422%" aria-label="save"><span class="spot-num ">2</span></button>
-<button class="spot" data-key="42-shell-service:bind" style="left:10.563%;top:67.246%;width:38.498%;height:10.422%" aria-label="bind"><span class="spot-num ">3</span></button>
-<button class="spot" data-key="42-shell-service:lock" style="left:10.563%;top:67.246%;width:38.498%;height:10.422%" aria-label="lock"><span class="spot-num ">4</span></button>
-          </div>
-          <div class="shot-bar"><figcaption>Сервісний доступ і рівень блокування — на тій же вкладці, нижче.</figcaption><button class="toggle" type="button" data-toggle="shot-42-shell-service">Прибрати підсвітку</button></div>
-        </figure>
-      </div>
-      <div class="note note--warn"><span class="note-tag">Не пропустіть</span><span>Поки пароль вищого доступу не заданий, вийти з кіоску на клубному ПК буде неможливо. Задайте його зараз і збережіть у менеджері паролів разом з іншими доступами клубу.</span></div>
-      <label class="check"><input type="checkbox" data-step="2"> Пароль вищого доступу задано</label>
+      <label class="check"><input type="checkbox" data-step="2"> Інсталятор завантажено, ключ скопійовано</label>
     </section>
 
     <section class="step" id="step-3">
@@ -474,7 +476,7 @@
           <div class="shot" id="shot-46-shell-updates">
             <img src="shots/crop-46-shell-updates.png" alt="Вкладка «Оновлення»: автооновлення, тривалість вікна й режим.">
             <button class="spot" data-key="46-shell-updates:auto" style="left:71.304%;top:21.446%;width:9.565%;height:7.481%" aria-label="auto"><span class="spot-num ">1</span></button>
-<button class="spot" data-key="46-shell-updates:duration" style="left:57.826%;top:48.379%;width:22.609%;height:10.474%" aria-label="duration"><span class="spot-num ">2</span></button>
+<button class="spot" data-key="46-shell-updates:duration" style="left:57.826%;top:48.628%;width:22.609%;height:10.474%" aria-label="duration"><span class="spot-num ">2</span></button>
 <button class="spot" data-key="46-shell-updates:mode" style="left:19.565%;top:67.082%;width:60.870%;height:10.474%" aria-label="mode"><span class="spot-num ">3</span></button>
           </div>
           <div class="shot-bar"><figcaption>Вкладка «Оновлення»: автооновлення, тривалість вікна й режим.</figcaption><button class="toggle" type="button" data-toggle="shot-46-shell-updates">Прибрати підсвітку</button></div>
