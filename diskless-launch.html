@@ -100,7 +100,7 @@ pre.out{white-space:pre-wrap;background:var(--surface-2);border:1px solid var(--
 </header>
 
 <nav class="toc" aria-label="Розділи">
-  <a href="#owner">Коротко для власника</a><a href="#network">Мережа</a><a href="#server">Сервер</a><a href="#pcs">ПК і BIOS</a><a href="#image">Що в образі</a><a href="#internet">Інтернет</a><a href="#launch">День запуску</a><a href="#form">Анкета</a>
+  <a href="#owner">Коротко для власника</a><a href="#network">Мережа</a><a href="#server">Сервер</a><a href="#pcs">ПК</a><a href="#bios">BIOS</a><a href="#image">Що в образі</a><a href="#internet">Інтернет</a><a href="#launch">День запуску</a><a href="#form">Анкета</a>
 </nav>
 
 <section id="owner">
@@ -132,7 +132,7 @@ pre.out{white-space:pre-wrap;background:var(--surface-2);border:1px solid var(--
     <thead><tr><th>Вимога</th><th>Значення</th><th>Як перевірити</th></tr></thead>
     <tbody>
       <tr><td>Оперативна пам'ять (RAM)<span class="tag must">обов'язково</span></td><td>Мінімум 32 ГБ RAM, краще 64 або 96 ГБ. З 12 ГБ не працює віртуальна машина для оновлення ігор</td><td>Диспетчер завдань → Продуктивність → Пам'ять</td></tr>
-      <tr><td>Віртуалізація</td><td>У BIOS сервера увімкнено SVM (AMD) або VT-x (Intel)</td><td>BIOS → CPU / Advanced</td></tr>
+      <tr><td>Віртуалізація<span class="tag must">обов'язково</span></td><td>У BIOS сервера увімкнено SVM (AMD) або VT-x (Intel). Як це зробити — у розділі «Що увімкнути в BIOS»</td><td>BIOS → CPU / Advanced</td></tr>
       <tr><td>Мережева карта</td><td>10 Гбіт/с (SFP+), бажано 2 порти</td><td>Модель карти в характеристиках сервера</td></tr>
       <tr><td>Процесор<span class="tag must">обов'язково</span></td><td>Від 16 потоків</td><td>Диспетчер завдань → Продуктивність → ЦП → Логічні процесори</td></tr>
       <tr><td>Диски<span class="tag must">обов'язково</span></td><td>Під систему сервера (Linux): від 120 ГБ. Під образи Windows: 1 ТБ. Під ігри: 6 ТБ (можна двома дисками 4 + 2 ТБ)</td><td>Повні характеристики сервера в анкеті</td></tr>
@@ -154,6 +154,48 @@ pre.out{white-space:pre-wrap;background:var(--surface-2);border:1px solid var(--
       <tr><td>Пароль на BIOS</td><td>Бажано. Адміністратор ставить пароль на BIOS на кожному ПК, щоб під час перезавантаження відвідувач не зміг зайти в BIOS (Del/F12), змінити порядок завантаження чи завантажитися з флешки в обхід системи</td><td>BIOS просить пароль</td></tr>
       <tr><td>Кілька моніторів</td><td>Вкажіть ПК з 2 і більше моніторами: перевіримо, що Shell закриває всі екрани</td><td>Анкета → кількість моніторів</td></tr>
     </tbody></table></div>
+</section>
+
+<section id="bios">
+  <h2>Що увімкнути в BIOS</h2>
+  <p class="note">Щоб зайти в BIOS, натисніть <b>Del</b> (або <b>F2</b>) одразу після ввімкнення ПК. Після змін — <b>F10</b> → «Зберегти й вийти». Назви пунктів можуть трохи відрізнятися залежно від моделі плати й версії BIOS; шукайте схожі слова.</p>
+
+  <h3>На кожному ПК клубу</h3>
+  <div class="tbl"><table>
+    <thead><tr><th>Налаштування</th><th>Значення</th><th>Навіщо</th></tr></thead>
+    <tbody>
+      <tr><td>Network Stack / PXE (IPv4)</td><td>Enabled</td><td>ПК завантажується з сервера по мережі</td></tr>
+      <tr><td>Порядок завантаження (Boot Priority)</td><td>Першим — UEFI Network / PXE IPv4</td><td>Щоб ПК не стартував з локального диска</td></tr>
+      <tr><td>Режим завантаження (Boot Mode / CSM)</td><td>UEFI, CSM вимкнено</td><td>Потрібно для Secure Boot</td></tr>
+      <tr><td>Secure Boot</td><td>Enabled (Windows UEFI mode)</td><td>Без нього не працює античит FACEIT</td></tr>
+      <tr><td>TPM (AMD fTPM / Intel PTT)</td><td>Enabled</td><td>Потрібен для FACEIT і Windows 11</td></tr>
+      <tr><td>Wake-on-LAN (Power On by PCI-E / Resume by PCI-E)</td><td>Enabled</td><td>Кнопка «Увімкнути» в панелі</td></tr>
+      <tr><td>ErP / Deep Sleep</td><td>Disabled</td><td>Інакше Wake-on-LAN не працює з вимкненого ПК</td></tr>
+      <tr><td>Пароль на BIOS (Administrator / Supervisor Password)</td><td>Встановити</td><td>Відвідувач не змінить налаштування під час перезавантаження</td></tr>
+    </tbody></table></div>
+
+  <h3>На сервері</h3>
+  <div class="tbl"><table>
+    <thead><tr><th>Налаштування</th><th>Значення</th><th>Навіщо</th></tr></thead>
+    <tbody>
+      <tr><td>Віртуалізація: SVM Mode (AMD) / Intel Virtualization Technology (VT-x)</td><td>Enabled</td><td>Без неї не працює віртуальна машина для оновлення ігор</td></tr>
+      <tr><td>Secure Boot</td><td>Disabled</td><td>На сервері працює Linux</td></tr>
+    </tbody></table></div>
+
+  <h3>Де шукати на популярних платах</h3>
+  <div class="tbl"><table>
+    <thead><tr><th>Що</th><th>ASUS</th><th>MSI</th><th>Gigabyte</th><th>ASRock</th></tr></thead>
+    <tbody>
+      <tr><td>Network Stack / PXE</td><td>Advanced → Network Stack Configuration</td><td>Settings → Advanced → Integrated Peripherals → Network Stack</td><td>Settings → IO Ports → Network Stack Configuration</td><td>Advanced → Network Configuration</td></tr>
+      <tr><td>Порядок завантаження</td><td>Boot → Boot Option Priorities</td><td>Settings → Boot → Boot Option Priorities</td><td>Boot → Boot Option Priorities</td><td>Boot → Boot Option #1</td></tr>
+      <tr><td>CSM / UEFI</td><td>Boot → CSM → Disabled</td><td>Settings → Advanced → Windows OS Configuration → BIOS UEFI/CSM Mode: UEFI</td><td>Boot → CSM Support → Disabled</td><td>Boot → CSM → Disabled</td></tr>
+      <tr><td>Secure Boot</td><td>Boot → Secure Boot</td><td>Settings → Security → Secure Boot</td><td>Boot → Secure Boot</td><td>Security → Secure Boot</td></tr>
+      <tr><td>TPM</td><td>Advanced → AMD fTPM / PCH-FW Configuration (PTT)</td><td>Settings → Security → Trusted Computing</td><td>Settings → Miscellaneous → AMD CPU fTPM / Intel PTT</td><td>Advanced → CPU Configuration → AMD fTPM / Intel PTT</td></tr>
+      <tr><td>Wake-on-LAN</td><td>Advanced → APM Configuration → Power On By PCI-E</td><td>Settings → Advanced → Wake Up Event Setup → Resume By PCI-E Device</td><td>Settings → Platform Power → Wake on LAN</td><td>Advanced → ACPI Configuration → PCIE Devices Power On</td></tr>
+      <tr><td>ErP</td><td>Advanced → APM Configuration → ErP Ready → Disabled</td><td>Settings → Advanced → Power Management Setup → ErP Ready → Disabled</td><td>Settings → Platform Power → ErP → Disabled</td><td>Advanced → ACPI Configuration → Deep Sleep → Disabled</td></tr>
+      <tr><td>Віртуалізація (сервер)</td><td>Advanced → CPU Configuration → SVM Mode / Intel VT</td><td>OC → Advanced CPU Configuration → SVM Mode / Intel Virtualization Tech</td><td>Tweaker → Advanced CPU Settings → SVM Mode / VT-x</td><td>Advanced → CPU Configuration → SVM Mode / Intel VT</td></tr>
+    </tbody></table></div>
+  <p class="note">Якщо пункт не знайшовся — надішліть менеджеру фото екрана BIOS і модель материнської плати, підкажемо.</p>
 </section>
 
 <section id="image">
@@ -318,8 +360,9 @@ const OWNER=[
  ['acc','Паролі від роутера й комутаторів або налаштування від провайдера','Без них інженер не налаштує мережу'],
  ['usb','Флешка від 8 ГБ і зовнішній SSD від 120 ГБ','Для інсталятора й тимчасового образу'],
  ['ram','На сервері від 32 ГБ оперативної пам\'яті (RAM)','Інакше не працюватиме оновлення ігор'],
+ ['svm','На сервері в BIOS увімкнено віртуалізацію (SVM / VT-x)','Без неї не працюватиме оновлення ігор'],
  ['net','Роутер MikroTik не нижче RB5009 і комутатори з портами SFP+','Сервер підключається на 10 Гбіт/с'],
- ['bios','На всіх ПК увімкнено завантаження по мережі, Wake-on-LAN і Secure Boot','Інженер підкаже, де це в BIOS'],
+ ['bios','На всіх ПК увімкнено завантаження по мережі, Wake-on-LAN, Secure Boot і TPM','Покроково — у розділі «Що увімкнути в BIOS»'],
  ['speed','Виміряли реальну швидкість інтернету','speedtest.net з ПК на кабелі'],
  ['time','Запланували запуск на ніч або вихідний день клубу','Перше завантаження займає від 2–3 годин (базовий образ) до 8 і більше (повний) і залежить від швидкості вашого інтернету'],
 ];
