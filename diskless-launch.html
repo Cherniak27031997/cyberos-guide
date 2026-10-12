@@ -138,7 +138,6 @@ pre.out{white-space:pre-wrap;background:var(--surface-2);border:1px solid var(--
       <tr><td>Процесор і диски до 20 ПК<span class="tag tbd">уточнює Женя</span></td><td>Модель, обсяг дисків під образ, ігри й кеш запису</td><td>Повні характеристики сервера в анкеті</td></tr>
       <tr><td>Процесор і диски до 40 ПК<span class="tag tbd">уточнює Женя</span></td><td>Те саме з запасом</td><td>Повні характеристики сервера в анкеті</td></tr>
       <tr><td>Живлення</td><td>ДБЖ на сервер і комутатори</td><td>Сервер не вимикається при короткому знеструмленні</td></tr>
-      <tr><td>Звук у залі</td><td>Музику не виводити із сервера: на сервері немає звуку. Окреме джерело звуку</td><td>—</td></tr>
     </tbody></table></div>
 </section>
 
@@ -295,7 +294,8 @@ pre.out{white-space:pre-wrap;background:var(--surface-2);border:1px solid var(--
       <div class="q">Перенести клієнтів і баланси зі старої системи
         <div class="yn"><label><input type="radio" name="migr" value="yes">Так</label><label><input type="radio" name="migr" value="no">Ні</label></div>
       </div>
-      <label class="f">Питання або побажання<textarea id="notes"></textarea></label>
+      <label class="f">Особливі побажання до налаштування<span class="h">Що в клубі влаштовано по-своєму й має працювати після запуску: музика в залі, окремі програми, налаштування ПК тощо</span><textarea id="special" placeholder="Напр. музика в залі зараз грає з сервера"></textarea></label>
+      <label class="f">Питання<textarea id="notes"></textarea></label>
     </fieldset>
   </form>
 
@@ -380,7 +380,7 @@ L('Завантаження по мережі',yn('pxe')),L('Wake-on-LAN',yn('wo
 ``,`Мережа`,L('Роутер',v('router')),L('Комутатори',v('switches')),L('Доступи',yn('access')),L('DHCP',yn('dhcp')),L('Особливості',v('netnotes')),
 ``,`Сервер`,L('Процесор',v('srvcpu')),L('Пам\'ять, ГБ',v('srvram')),L('Мережева карта',v('srvnic')),L('Диски',v('srvdisk')),L('Віртуалізація',yn('svm')),L('ДБЖ',yn('ups')),
 ``,`Інтернет`,L('Провайдер',v('isp')),L('Тариф, Мбіт/с',v('plan')),L('Реальна швидкість, Мбіт/с',v('speed')),
-``,`Ігри і каса`,L('Додаткові ігри',v('games')),L('Програми',v('soft')),L('Фіскалізація',yn('fisc')),L('Перенесення клієнтів',yn('migr')),L('Питання',v('notes')),
+``,`Ігри і каса`,L('Додаткові ігри',v('games')),L('Програми',v('soft')),L('Фіскалізація',yn('fisc')),L('Перенесення клієнтів',yn('migr')),L('Особливі побажання',v('special')),L('Питання',v('notes')),
 ``,`Готово з короткого списку: ${OWNER.filter(([k])=>S['oc_'+k]).map(([,t])=>'✓ '+t).join('; ')||'—'}`,
 ``,`Що ще потрібно:`, ...issues().map(([l,t])=>(l==='bad'?'❗ ':l==='warn'?'⚠ ':'✓ ')+t)
   ].join('\n');
