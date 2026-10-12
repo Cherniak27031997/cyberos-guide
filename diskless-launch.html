@@ -101,7 +101,7 @@ pre.out{white-space:pre-wrap;background:var(--surface-2);border:1px solid var(--
 </header>
 
 <nav class="toc" aria-label="Розділи">
-  <a href="#owner">Коротко для власника</a><a href="#network">Мережа</a><a href="#server">Сервер</a><a href="#pcs">ПК і BIOS</a><a href="#image">Образ і ПЗ</a><a href="#internet">Інтернет</a><a href="#buy">Що докупити</a><a href="#launch">День запуску</a><a href="#form">Анкета</a>
+  <a href="#owner">Коротко для власника</a><a href="#network">Мережа</a><a href="#server">Сервер</a><a href="#pcs">ПК і BIOS</a><a href="#image">Що в образі</a><a href="#internet">Інтернет</a><a href="#buy">Що докупити</a><a href="#launch">День запуску</a><a href="#form">Анкета</a>
 </nav>
 
 <section id="owner">
@@ -147,6 +147,7 @@ pre.out{white-space:pre-wrap;background:var(--surface-2);border:1px solid var(--
     <thead><tr><th>Вимога</th><th>Значення</th><th>Як перевірити</th></tr></thead>
     <tbody>
       <tr><td>Завантаження по мережі<span class="tag must">обов'язково</span></td><td>У BIOS увімкнено <span class="mono">Network Stack</span> / PXE, мережа першою в порядку завантаження, режим UEFI</td><td>Під час старту ПК з'являється завантаження по мережі</td></tr>
+      <tr><td>Windows<span class="tag must">обов'язково</span></td><td>Ліцензія Windows 11 Pro на кожен ПК (Home не підходить)</td><td>Параметри → Система → Про систему</td></tr>
       <tr><td>Wake-on-LAN</td><td>Увімкнено в BIOS (і в драйвері мережевої карти). Потрібно для кнопки «Увімкнути» в панелі</td><td>Вимкнений ПК вмикається з панелі</td></tr>
       <tr><td>Secure Boot і TPM</td><td>Увімкнено: потрібні для античитів (FACEIT, Vanguard у Valorant)</td><td><span class="mono">msinfo32</span> → Стан безпечного завантаження: Увімкнено</td></tr>
       <tr><td>Унікальний MAC</td><td>Кожен ПК має свій MAC. Панель прив'язує ПК за MAC. Якщо була інша система (Senet тощо), MAC можна взяти з її панелі</td><td>Список MAC з анкети без повторів</td></tr>
@@ -157,17 +158,22 @@ pre.out{white-space:pre-wrap;background:var(--surface-2);border:1px solid var(--
 </section>
 
 <section id="image">
-  <h2>Образ і програми</h2>
+  <h2>Що вже є в образі</h2>
+  <p class="note">Ігри, лаунчери й програми встановлені в образ Highlink заздалегідь: клубу нічого ставити не потрібно. Якщо бракує якоїсь гри, допишіть її в анкеті в полі «Додаткові ігри».</p>
   <div class="tbl"><table>
-    <thead><tr><th>Вимога</th><th>Значення</th><th>Як перевірити</th></tr></thead>
+    <thead><tr><th>Лаунчер</th><th>Ігри</th><th></th></tr></thead>
     <tbody>
-      <tr><td>Windows<span class="tag must">обов'язково</span></td><td>Windows 11 Pro (Home не підходить)</td><td>Параметри → Система → Про систему</td></tr>
-      <tr><td>Shell</td><td>Встановлюється в образ один раз, лише на диск C: (на іншому диску ПК лишиться без кіоску, якщо диск не підключиться)</td><td>Робить інженер</td></tr>
-      <tr><td>Клієнти зі старої системи</td><td>Клієнти й баланси переносимо; паролі ні: гравці відновлюють пароль поштою, через адміністратора або Telegram</td><td>Менеджер вивантажує дані до запуску</td></tr>
-      <tr><td>Лаунчери й ігри</td><td>Стандартний набір лаунчерів (Steam, Epic, Battle.net, Riot, Ubisoft, EA…) та ігор уже є в образі Highlink. Якщо клубу потрібні додаткові ігри, вкажіть їх в анкеті</td><td>Після першого завантаження ігри є в Shell</td></tr>
-      <tr><td>Програми периферії</td><td>SteelSeries, Logitech G Hub, Razer Synapse, HyperX, NVIDIA тощо</td><td>Анкета → програми</td></tr>
-      <tr><td>Оновлення ігор</td><td>Тільки з адмін-ПК через ярлик «Server», не з клієнтських ПК при гостях</td><td>Показує інженер після запуску</td></tr>
+      <tr><td>Steam</td><td>Counter-Strike 2, Dota 2, PUBG: Battlegrounds, Apex Legends та інші популярні</td><td><span class="tag tbd">повний список уточнює Женя</span></td></tr>
+      <tr><td>Riot Client</td><td>Valorant, League of Legends</td><td></td></tr>
+      <tr><td>Battle.net</td><td>Call of Duty: Warzone, Overwatch</td><td></td></tr>
+      <tr><td>Epic Games</td><td>Fortnite</td><td></td></tr>
+      <tr><td>HoYoPlay</td><td>Genshin Impact</td><td></td></tr>
+      <tr><td>Wargaming</td><td>World of Tanks</td><td></td></tr>
+      <tr><td>Інші</td><td>Minecraft, Roblox</td><td></td></tr>
+      <tr><td>Програми</td><td>Discord, TeamSpeak, OBS, Telegram, браузер</td><td></td></tr>
+      <tr><td>Периферія</td><td>SteelSeries GG, Logitech G Hub, Razer Synapse, HyperX NGENUITY, NVIDIA</td><td><span class="tag tbd">уточнює Женя</span></td></tr>
     </tbody></table></div>
+  <p class="note">Ігри оновлюються тільки з адмін-ПК через ярлик «Server», не з клієнтських ПК при гостях. Як це робити, інженер покаже після запуску.</p>
 </section>
 
 <section id="internet">
@@ -285,7 +291,7 @@ pre.out{white-space:pre-wrap;background:var(--surface-2);border:1px solid var(--
     </fieldset>
 
     <fieldset><legend>Ігри, програми, каса</legend>
-      <label class="f">Додаткові ігри (необов'язково)<span class="h">Лише те, чого може не бути в стандартному образі Highlink</span><textarea id="games" placeholder="Steam: CS2, Dota 2, PUBG&#10;Riot: Valorant, LoL&#10;Battle.net: Warzone, Overwatch"></textarea></label>
+      <label class="f">Додаткові ігри (необов'язково)<span class="h">Лише те, чого немає в списку «Що вже є в образі»</span><textarea id="games" placeholder="Steam: CS2, Dota 2, PUBG&#10;Riot: Valorant, LoL&#10;Battle.net: Warzone, Overwatch"></textarea></label>
       <label class="f">Програми периферії та інше<input id="soft" type="text" placeholder="SteelSeries GG, Discord, OBS, TeamSpeak"></label>
       <div class="q">Каса з фіскалізацією (ПРРО Checkbox)
         <div class="yn"><label><input type="radio" name="fisc" value="yes">Потрібна</label><label><input type="radio" name="fisc" value="no">Ні</label><label><input type="radio" name="fisc" value="?">Обговоримо</label></div>
