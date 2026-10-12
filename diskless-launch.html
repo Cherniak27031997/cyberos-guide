@@ -167,7 +167,7 @@ pre.out{white-space:pre-wrap;background:var(--surface-2);border:1px solid var(--
       <tr><td>Повний, ~2,5 ТБ</td><td>Усе налаштовано (драйвери, програми, периферія) і всі найпопулярніші ігри зі списку нижче</td><td>~8 год</td></tr>
       <tr><td>Базовий, ~800 ГБ</td><td>Усе налаштовано (драйвери, програми, периферія) і 1–3 гри, наприклад Counter-Strike 2. Інші ігри докачуються пізніше</td><td>~2–3 год</td></tr>
     </tbody></table></div>
-  <p class="note">Що входить у повний образ (якщо бракує якоїсь гри, допишіть її в анкеті в полі «Додаткові ігри»):</p>
+  <p class="note">Що входить у повний образ (якщо бракує якоїсь гри, скажіть менеджеру Highlink):</p>
   <div class="tbl"><table>
     <thead><tr><th>Лаунчер</th><th>Ігри</th><th></th></tr></thead>
     <tbody>
@@ -282,14 +282,13 @@ pre.out{white-space:pre-wrap;background:var(--surface-2);border:1px solid var(--
         <label class="f">Тариф, Мбіт/с<input id="plan" type="number" min="0" placeholder="1000"></label>
         <label class="f">Реальна швидкість (speedtest), Мбіт/с<input id="speed" type="number" min="0" placeholder="Завантаження"></label>
       </div>
-    </fieldset>
-
-    <fieldset><legend>Ігри, програми, каса</legend>
-      <label class="f">Додаткові ігри (необов'язково)<span class="h">Лише те, чого немає в списку «Що вже є в образі»</span><textarea id="games" placeholder="Steam: CS2, Dota 2, PUBG&#10;Riot: Valorant, LoL&#10;Battle.net: Warzone, Overwatch"></textarea></label>
-      <label class="f">Програми периферії та інше<input id="soft" type="text" placeholder="SteelSeries GG, Discord, OBS, TeamSpeak"></label>
+    
       <div class="q">Який образ потрібен
         <div class="yn"><label><input type="radio" name="img" value="full">Повний (~2,5 ТБ, усі популярні ігри)</label><label><input type="radio" name="img" value="base">Базовий (~800 ГБ, 1–3 гри)</label><label><input type="radio" name="img" value="?">Порадьте</label></div>
       </div>
+    </fieldset>
+
+    <fieldset><legend>Каса та побажання</legend>
       <div class="q">Каса з фіскалізацією (ПРРО Checkbox)
         <div class="yn"><label><input type="radio" name="fisc" value="yes">Потрібна</label><label><input type="radio" name="fisc" value="no">Ні</label><label><input type="radio" name="fisc" value="?">Обговоримо</label></div>
       </div>
@@ -388,7 +387,7 @@ L('Завантаження по мережі',yn('pxe')),L('Wake-on-LAN',yn('wo
 ``,`Мережа`,L('Роутер',v('router')),L('Комутатори',v('switches')),L('Доступи',yn('access')),L('DHCP',yn('dhcp')),L('Особливості',v('netnotes')),
 ``,`Сервер`,L('Процесор',v('srvcpu')),L('Пам\'ять, ГБ',v('srvram')),L('Мережева карта',v('srvnic')),L('Диски',v('srvdisk')),L('Віртуалізація',yn('svm')),L('ДБЖ',yn('ups')),
 ``,`Інтернет`,L('Провайдер',v('isp')),L('Тариф, Мбіт/с',v('plan')),L('Реальна швидкість, Мбіт/с',v('speed')),
-``,`Ігри і каса`,L('Додаткові ігри',v('games')),L('Програми',v('soft')),L('Образ',({full:'повний ~2,5 ТБ',base:'базовий ~800 ГБ','?':'порадьте'})[S.img]||'—'),L('Фіскалізація',yn('fisc')),L('Перенесення клієнтів',yn('migr')),L('Особливі побажання',v('special')),L('Питання',v('notes')),
+``,`Образ і каса`,L('Образ',({full:'повний ~2,5 ТБ',base:'базовий ~800 ГБ','?':'порадьте'})[S.img]||'—'),L('Фіскалізація',yn('fisc')),L('Перенесення клієнтів',yn('migr')),L('Особливі побажання',v('special')),L('Питання',v('notes')),
 ``,`Готово з короткого списку: ${OWNER.filter(([k])=>S['oc_'+k]).map(([,t])=>'✓ '+t).join('; ')||'—'}`,
 ``,`Що ще потрібно:`, ...issues().map(([l,t])=>(l==='bad'?'❗ ':l==='warn'?'⚠ ':'✓ ')+t)
   ].join('\n');
