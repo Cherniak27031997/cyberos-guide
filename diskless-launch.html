@@ -166,7 +166,7 @@ pre.out{white-space:pre-wrap;background:var(--surface-2);border:1px solid var(--
       <tr><td>Windows<span class="tag must">обов'язково</span></td><td>Windows 11 Pro (Home не підходить)</td><td>Параметри → Система → Про систему</td></tr>
       <tr><td>Shell</td><td>Встановлюється в образ один раз, лише на диск C: (на іншому диску ПК лишиться без кіоску, якщо диск не підключиться)</td><td>Робить інженер</td></tr>
       <tr><td>Клієнти зі старої системи</td><td>Клієнти й баланси переносимо; паролі ні: гравці відновлюють пароль поштою, через адміністратора або Telegram</td><td>Менеджер вивантажує дані до запуску</td></tr>
-      <tr><td>Лаунчери й ігри</td><td>Список лаунчерів (Steam, Epic, Battle.net, Riot, Ubisoft, EA…) та ігор, які мають бути в клубі</td><td>Анкета → список ігор</td></tr>
+      <tr><td>Лаунчери й ігри</td><td>Стандартний набір лаунчерів (Steam, Epic, Battle.net, Riot, Ubisoft, EA…) та ігор уже є в образі Highlink. Якщо клубу потрібні додаткові ігри, вкажіть їх в анкеті</td><td>Після першого завантаження ігри є в Shell</td></tr>
       <tr><td>Програми периферії</td><td>SteelSeries, Logitech G Hub, Razer Synapse, HyperX, NVIDIA тощо</td><td>Анкета → програми</td></tr>
       <tr><td>Оновлення ігор</td><td>Тільки з адмін-ПК через ярлик «Server», не з клієнтських ПК при гостях</td><td>Показує інженер після запуску</td></tr>
     </tbody></table></div>
@@ -287,7 +287,7 @@ pre.out{white-space:pre-wrap;background:var(--surface-2);border:1px solid var(--
     </fieldset>
 
     <fieldset><legend>Ігри, програми, каса</legend>
-      <label class="f">Лаунчери й ігри<span class="h">Що обов'язково має бути на старті</span><textarea id="games" placeholder="Steam: CS2, Dota 2, PUBG&#10;Riot: Valorant, LoL&#10;Battle.net: Warzone, Overwatch"></textarea></label>
+      <label class="f">Додаткові ігри (необов'язково)<span class="h">Лише те, чого може не бути в стандартному образі Highlink</span><textarea id="games" placeholder="Steam: CS2, Dota 2, PUBG&#10;Riot: Valorant, LoL&#10;Battle.net: Warzone, Overwatch"></textarea></label>
       <label class="f">Програми периферії та інше<input id="soft" type="text" placeholder="SteelSeries GG, Discord, OBS, TeamSpeak"></label>
       <div class="q">Каса з фіскалізацією (ПРРО Checkbox)
         <div class="yn"><label><input type="radio" name="fisc" value="yes">Потрібна</label><label><input type="radio" name="fisc" value="no">Ні</label><label><input type="radio" name="fisc" value="?">Обговоримо</label></div>
@@ -323,7 +323,6 @@ const OWNER=[
  ['bios','На всіх ПК увімкнено завантаження по мережі, Wake-on-LAN і Secure Boot','Інженер підкаже, де це в BIOS'],
  ['win','Ліцензія Windows 11 Pro','Home не підходить'],
  ['speed','Виміряли реальну швидкість інтернету','speedtest.net з ПК на кабелі'],
- ['games','Склали список ігор і програм для старту','Щоб перше завантаження не довелося повторювати'],
  ['time','Запланували запуск на ніч або день без гостей','Перше завантаження ігор займає від 8 годин'],
 ];
 const KEY='hl-diskless-v1'; let S={};
@@ -361,7 +360,7 @@ function issues(){
   if(!out.some(x=>x[0]!=='ok')) add('ok','Критичних проблем не видно. Менеджер узгодить дату запуску');
   return out;
 }
-const FIELDS=['club','addr','contact','phone','date','pcs','zones','pcspec','router','switches','access','dhcp','srvcpu','srvram','srvnic','srvdisk','svm','isp','plan','speed','games','pxe','wol','sb'];
+const FIELDS=['club','addr','contact','phone','date','pcs','zones','pcspec','router','switches','access','dhcp','srvcpu','srvram','srvnic','srvdisk','svm','isp','plan','speed','pxe','wol','sb'];
 function update(){
   const filled=FIELDS.filter(k=>v(k)).length; const pct=Math.round(filled/FIELDS.length*100);
   document.getElementById('bar').style.width=pct+'%'; document.getElementById('pct').textContent=`Заповнено ${pct}%`;
@@ -381,7 +380,7 @@ L('Завантаження по мережі',yn('pxe')),L('Wake-on-LAN',yn('wo
 ``,`Мережа`,L('Роутер',v('router')),L('Комутатори',v('switches')),L('Доступи',yn('access')),L('DHCP',yn('dhcp')),L('Особливості',v('netnotes')),
 ``,`Сервер`,L('Процесор',v('srvcpu')),L('Пам\'ять, ГБ',v('srvram')),L('Мережева карта',v('srvnic')),L('Диски',v('srvdisk')),L('Віртуалізація',yn('svm')),L('ДБЖ',yn('ups')),
 ``,`Інтернет`,L('Провайдер',v('isp')),L('Тариф, Мбіт/с',v('plan')),L('Реальна швидкість, Мбіт/с',v('speed')),
-``,`Ігри і каса`,L('Ігри',v('games')),L('Програми',v('soft')),L('Фіскалізація',yn('fisc')),L('Перенесення клієнтів',yn('migr')),L('Питання',v('notes')),
+``,`Ігри і каса`,L('Додаткові ігри',v('games')),L('Програми',v('soft')),L('Фіскалізація',yn('fisc')),L('Перенесення клієнтів',yn('migr')),L('Питання',v('notes')),
 ``,`Готово з короткого списку: ${OWNER.filter(([k])=>S['oc_'+k]).map(([,t])=>'✓ '+t).join('; ')||'—'}`,
 ``,`Що ще потрібно:`, ...issues().map(([l,t])=>(l==='bad'?'❗ ':l==='warn'?'⚠ ':'✓ ')+t)
   ].join('\n');
