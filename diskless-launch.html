@@ -92,10 +92,10 @@ pre.out{white-space:pre-wrap;background:var(--surface-2);border:1px solid var(--
 <header class="hero">
   <div class="eyebrow">Highlink · бездискова система</div>
   <h1>Підготовка клубу до запуску бездиску</h1>
-  <p class="lead">Що потрібно клубу для запуску бездискової системи: роутер і комутатори, сервер з достатньою пам'яттю й мережевою картою, флешка та SSD. Нижче вимоги до мережі, сервера й ПК, а в кінці анкета з даними про клуб: заповніть її і надішліть менеджеру Highlink.</p>
+  <p class="lead">Що потрібно клубу для запуску бездискової системи: роутер і комутатори, сервер з достатньою оперативною пам'яттю (RAM) і мережевою картою, флешка та SSD. Нижче вимоги до мережі, сервера й ПК, а в кінці анкета з даними про клуб: заповніть її і надішліть менеджеру Highlink.</p>
   <div class="facts">
     <div class="fact">Перше завантаження ігор: <b>~8 год</b> на 1 Гбіт/с, <b>15–16 год</b> на 300–500 Мбіт/с</div>
-    <div class="fact">Пам'ять сервера: <b>від 32 ГБ</b></div>
+    <div class="fact">Оперативна пам'ять сервера (RAM): <b>від 32 ГБ</b></div>
     <div class="fact">Windows на ПК: <b>11 Pro</b></div>
   </div>
 </header>
@@ -132,7 +132,7 @@ pre.out{white-space:pre-wrap;background:var(--surface-2);border:1px solid var(--
   <div class="tbl"><table>
     <thead><tr><th>Вимога</th><th>Значення</th><th>Як перевірити</th></tr></thead>
     <tbody>
-      <tr><td>Оперативна пам'ять<span class="tag must">обов'язково</span></td><td>Від 32 ГБ. З 12 ГБ не працює віртуальна машина для оновлення ігор</td><td>Диспетчер завдань → Продуктивність → Пам'ять</td></tr>
+      <tr><td>Оперативна пам'ять (RAM)<span class="tag must">обов'язково</span></td><td>Від 32 ГБ RAM. З 12 ГБ не працює віртуальна машина для оновлення ігор</td><td>Диспетчер завдань → Продуктивність → Пам'ять</td></tr>
       <tr><td>Віртуалізація</td><td>У BIOS сервера увімкнено SVM (AMD) або VT-x (Intel)</td><td>BIOS → CPU / Advanced</td></tr>
       <tr><td>Мережева карта</td><td>10 Гбіт/с (SFP+), бажано 2 порти</td><td>Модель карти в характеристиках сервера</td></tr>
       <tr><td>Процесор і диски до 20 ПК<span class="tag tbd">уточнює Женя</span></td><td>Модель, обсяг дисків під образ, ігри й кеш запису</td><td>Повні характеристики сервера в анкеті</td></tr>
@@ -191,7 +191,7 @@ pre.out{white-space:pre-wrap;background:var(--surface-2);border:1px solid var(--
     <tbody>
       <tr><td>Флешка від 8 ГБ</td><td>Записати інсталятор з адмін-ПК</td><td>200–300 ₴</td></tr>
       <tr><td>Зовнішній SSD від 120 ГБ («карман» з диском)</td><td>Тимчасовий носій образу під час запуску</td><td>800–1 500 ₴</td></tr>
-      <tr><td>Пам'ять для сервера до 32 ГБ</td><td>Віртуальна машина для оновлення ігор</td><td><span class="tag tbd">уточнює Женя</span></td></tr>
+      <tr><td>Оперативна пам'ять (RAM) для сервера до 32 ГБ</td><td>Віртуальна машина для оновлення ігор</td><td><span class="tag tbd">уточнює Женя</span></td></tr>
       <tr><td>Роутер MikroTik RB5009</td><td>Якщо зараз слабший роутер</td><td><span class="tag tbd">уточнює Женя</span></td></tr>
       <tr><td>Комутатор CSS326-24G-2S+RM</td><td>Порти SFP+ для сервера, 24 порти на ПК</td><td><span class="tag tbd">уточнює Женя</span></td></tr>
       <tr><td>Мережева карта 10 Гбіт/с для сервера</td><td>Якщо в сервері лише 1 Гбіт/с</td><td><span class="tag tbd">уточнює Женя</span></td></tr>
@@ -240,7 +240,7 @@ pre.out{white-space:pre-wrap;background:var(--surface-2);border:1px solid var(--
         <label class="f">Попередня система<select id="prev"><option value="">—</option><option>Senet</option><option>Langame</option><option>iCafeCloud</option><option>Інша</option><option>Немає</option></select></label>
       </div>
       <label class="f">Зони й ПК у них<span class="h">Назва зони, кількість ПК, монітор (Гц, роздільність)</span><textarea id="zones" placeholder="Стандарт — 18 ПК, 1440p 300 Гц&#10;Solo — 2 ПК, 2 монітори, 1440p 420 Гц"></textarea></label>
-      <label class="f">Конфігурація ПК<span class="h">Процесор, відеокарта, пам'ять, материнська плата, мережева карта</span><textarea id="pcspec" placeholder="Ryzen 5 7500F / RTX 4060 / 32 ГБ / B650 / Realtek 2.5G"></textarea></label>
+      <label class="f">Конфігурація ПК<span class="h">Процесор, відеокарта, оперативна пам'ять, материнська плата, мережева карта</span><textarea id="pcspec" placeholder="Ryzen 5 7500F / RTX 4060 / 32 ГБ / B650 / Realtek 2.5G"></textarea></label>
       <div class="q">Налаштування BIOS на ПК
         <div class="yn" data-q="pxe"><label><input type="radio" name="pxe" value="yes">Завантаження по мережі увімкнено</label><label><input type="radio" name="pxe" value="no">Ні</label><label><input type="radio" name="pxe" value="?">Не знаю</label></div>
         <div class="yn" data-q="wol"><label><input type="radio" name="wol" value="yes">Wake-on-LAN увімкнено</label><label><input type="radio" name="wol" value="no">Ні</label><label><input type="radio" name="wol" value="?">Не знаю</label></div>
@@ -266,7 +266,7 @@ pre.out{white-space:pre-wrap;background:var(--surface-2);border:1px solid var(--
     <fieldset><legend>Сервер</legend>
       <div class="row">
         <label class="f">Процесор<input id="srvcpu" type="text"></label>
-        <label class="f">Оперативна пам'ять, ГБ<input id="srvram" type="number" min="0" placeholder="32"></label>
+        <label class="f">Оперативна пам'ять (RAM), ГБ<input id="srvram" type="number" min="0" placeholder="32"></label>
         <label class="f">Мережева карта<input id="srvnic" type="text" placeholder="2× SFP+ 10G"></label>
       </div>
       <label class="f">Диски<span class="h">Тип, обсяг, скільки штук</span><input id="srvdisk" type="text" placeholder="2× NVMe 2 ТБ + 4× SSD 4 ТБ"></label>
@@ -318,7 +318,7 @@ pre.out{white-space:pre-wrap;background:var(--surface-2);border:1px solid var(--
 const OWNER=[
  ['acc','Паролі від роутера й комутаторів або налаштування від провайдера','Без них інженер не налаштує мережу'],
  ['usb','Флешка від 8 ГБ і зовнішній SSD від 120 ГБ','Для інсталятора й тимчасового образу'],
- ['ram','На сервері від 32 ГБ пам\'яті','Інакше не працюватиме оновлення ігор'],
+ ['ram','На сервері від 32 ГБ оперативної пам\'яті (RAM)','Інакше не працюватиме оновлення ігор'],
  ['net','Роутер MikroTik не нижче RB5009 і комутатори з портами SFP+','Сервер підключається на 10 Гбіт/с'],
  ['bios','На всіх ПК увімкнено завантаження по мережі, Wake-on-LAN і Secure Boot','Інженер підкаже, де це в BIOS'],
  ['win','Ліцензія Windows 11 Pro','Home не підходить'],
@@ -348,7 +348,7 @@ function issues(){
   const out=[]; const add=(lvl,t)=>out.push([lvl,t]);
   if(S.access==='no') add('bad','Немає доступів до роутера й комутаторів: візьміть налаштування в провайдера, інакше запуск перенесеться');
   if(S.access==='provider') add('warn','Доступів немає: інженер працюватиме з налаштуваннями провайдера, запросіть їх заздалегідь');
-  const ram=+v('srvram'); if(ram&&ram<32) add('bad',`На сервері ${ram} ГБ пам'яті: потрібно від 32 ГБ`);
+  const ram=+v('srvram'); if(ram&&ram<32) add('bad',`На сервері ${ram} ГБ оперативної пам'яті (RAM): потрібно від 32 ГБ`);
   if(S.svm==='no') add('bad','Увімкніть віртуалізацію (SVM / VT-x) у BIOS сервера');
   if(S.pxe==='no') add('bad','Увімкніть завантаження по мережі (Network Stack / PXE) у BIOS усіх ПК');
   if(S.wol==='no') add('warn','Без Wake-on-LAN ПК не вмикатимуться з панелі');
