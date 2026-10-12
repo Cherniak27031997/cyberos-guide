@@ -96,7 +96,6 @@ pre.out{white-space:pre-wrap;background:var(--surface-2);border:1px solid var(--
   <div class="facts">
     <div class="fact">Образ на вибір: <b>повний ~2,5 ТБ</b> або <b>базовий ~800 ГБ</b></div>
     <div class="fact">Оперативна пам'ять сервера (RAM): <b>від 32 ГБ</b>, краще 64–96 ГБ</div>
-    <div class="fact">Windows на ПК: <b>11 Pro</b></div>
   </div>
 </header>
 
@@ -148,7 +147,6 @@ pre.out{white-space:pre-wrap;background:var(--surface-2);border:1px solid var(--
     <thead><tr><th>Вимога</th><th>Значення</th><th>Як перевірити</th></tr></thead>
     <tbody>
       <tr><td>Завантаження по мережі<span class="tag must">обов'язково</span></td><td>У BIOS увімкнено <span class="mono">Network Stack</span> / PXE, мережа першою в порядку завантаження, режим UEFI</td><td>Під час старту ПК з'являється завантаження по мережі</td></tr>
-      <tr><td>Windows<span class="tag must">обов'язково</span></td><td>Ліцензія Windows 11 Pro на кожен ПК (Home не підходить)</td><td>Параметри → Система → Про систему</td></tr>
       <tr><td>Wake-on-LAN</td><td>Увімкнено в BIOS (і в драйвері мережевої карти). Потрібно для кнопки «Увімкнути» в панелі</td><td>Вимкнений ПК вмикається з панелі</td></tr>
       <tr><td>Secure Boot і TPM<span class="tag must">обов'язково</span></td><td>Увімкнено на всіх ПК клубу: без них не працює античит FACEIT (і Vanguard у Valorant)</td><td><span class="mono">msinfo32</span> → Стан безпечного завантаження: Увімкнено</td></tr>
       <tr><td>Унікальний MAC</td><td>Кожен ПК має свій MAC. Панель прив'язує ПК за MAC. Якщо була інша система (Senet тощо), MAC можна взяти з її панелі</td><td>Список MAC з анкети без повторів</td></tr>
@@ -322,7 +320,6 @@ const OWNER=[
  ['ram','На сервері від 32 ГБ оперативної пам\'яті (RAM)','Інакше не працюватиме оновлення ігор'],
  ['net','Роутер MikroTik не нижче RB5009 і комутатори з портами SFP+','Сервер підключається на 10 Гбіт/с'],
  ['bios','На всіх ПК увімкнено завантаження по мережі, Wake-on-LAN і Secure Boot','Інженер підкаже, де це в BIOS'],
- ['win','Ліцензія Windows 11 Pro','Home не підходить'],
  ['speed','Виміряли реальну швидкість інтернету','speedtest.net з ПК на кабелі'],
  ['time','Запланували запуск на ніч або день без гостей','Перше завантаження займає від 2–3 годин (базовий образ) до 8 і більше (повний) і залежить від швидкості вашого інтернету'],
 ];
