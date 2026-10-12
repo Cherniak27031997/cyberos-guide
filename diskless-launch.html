@@ -218,7 +218,7 @@ pre.out{white-space:pre-wrap;background:var(--surface-2);border:1px solid var(--
         <label class="f">Мережевик клубу (якщо є)<input id="netadmin" type="text" placeholder="Ім'я, контакт"></label>
       </div>
       <div class="row">
-        <label class="f">Бажана дата запуску<input id="date" type="date"></label>
+        <label class="f">Бажана дата запуску<span style="display:grid;grid-template-columns:1fr 2fr 1.3fr;gap:6px"><select id="dDay" aria-label="День"></select><select id="dMon" aria-label="Місяць"></select><select id="dYear" aria-label="Рік"></select></span></label>
         <label class="f">Коли клуб не працює або мало гостей<input id="window" type="text" placeholder="Напр. 03:00–10:00 щодня"></label>
       </div>
     </fieldset>
@@ -322,6 +322,12 @@ const save=()=>{try{localStorage.setItem(KEY,JSON.stringify(S))}catch(e){}};
 // owner checklist
 const oc=document.getElementById('ownerCheck');
 oc.innerHTML=OWNER.map(([k,t,h])=>`<label class="ci"><input type="checkbox" id="oc_${k}" ${S['oc_'+k]?'checked':''}><span>${t}<small>${h}</small></span></label>`).join('');
+// date selects (Ukrainian, independent of browser language)
+const MON=['січня','лютого','березня','квітня','травня','червня','липня','серпня','вересня','жовтня','листопада','грудня'];
+(()=>{const d=document.getElementById('dDay'),m=document.getElementById('dMon'),y=document.getElementById('dYear'),yr=new Date().getFullYear();
+ d.innerHTML='<option value="">День</option>'+Array.from({length:31},(_,i)=>`<option>${i+1}</option>`).join('');
+ m.innerHTML='<option value="">Місяць</option>'+MON.map((n,i)=>`<option value="${i+1}">${n}</option>`).join('');
+ y.innerHTML='<option value="">Рік</option>'+[yr,yr+1].map(v=>`<option>${v}</option>`).join('');})();
 // restore form
 const F=document.getElementById('f');
 F.querySelectorAll('input,select,textarea').forEach(el=>{
@@ -332,7 +338,7 @@ document.addEventListener('input',e=>{const el=e.target; if(!el.closest('#f,#own
   if(el.type==='radio') S[el.name]=el.value; else if(el.type==='checkbox') S[el.id]=el.checked; else S[el.id]=el.value; save(); update();});
 document.addEventListener('change',e=>{const el=e.target; if(el.type==='radio'){S[el.name]=el.value; save(); update();}});
 
-const v=id=>(S[id]||'').toString().trim();
+const v=id=>{ if(id==='date'){ return (S.dDay&&S.dMon&&S.dYear)?`${S.dDay} ${MON[S.dMon-1]} ${S.dYear}`:''; } return (S[id]||'').toString().trim(); };
 function hoursFor(mbps){ if(!mbps) return null; const gb=2500*8; return Math.round(gb*1000/ (mbps*0.7) /3600); }
 function issues(){
   const out=[]; const add=(lvl,t)=>out.push([lvl,t]);
