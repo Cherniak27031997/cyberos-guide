@@ -1,0 +1,398 @@
+<!doctype html>
+<html lang="uk">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<style>[hidden]{display:none!important}body{margin:0}img{max-width:100%}</style>
+</head>
+<body>
+<title>Підготовка до бездиску Highlink</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Onest:wght@400;500;600;700;800&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+/* Layout: one-column technical brief; sticky section nav; requirements tables + owner checklist + pre-launch questionnaire with live readiness */
+:root{
+  --bg:#f5f7fb; --surface:#ffffff; --surface-2:#eef2f9; --line:#d9e0ec; --fg:#121a2b; --muted:#5a6680;
+  --accent:#2563eb; --accent-soft:#e3ecff; --ok:#11804b; --ok-soft:#dff5e9; --warn:#a15c00; --warn-soft:#fff1d6; --bad:#c02c2c; --bad-soft:#fde4e4;
+  --f-ui:"Onest",system-ui,-apple-system,"Segoe UI",sans-serif; --f-mono:"IBM Plex Mono",ui-monospace,Menlo,monospace;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --bg:#0c111c; --surface:#141b2b; --surface-2:#1a2336; --line:#2a3550; --fg:#e7ecf6; --muted:#97a3bd;
+  --accent:#6f9bff; --accent-soft:#1d2b4d; --ok:#4fd18b; --ok-soft:#14301f; --warn:#f0b04a; --warn-soft:#352711; --bad:#ff7b7b; --bad-soft:#3a1717; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#0c111c; --surface:#141b2b; --surface-2:#1a2336; --line:#2a3550; --fg:#e7ecf6; --muted:#97a3bd;
+  --accent:#6f9bff; --accent-soft:#1d2b4d; --ok:#4fd18b; --ok-soft:#14301f; --warn:#f0b04a; --warn-soft:#352711; --bad:#ff7b7b; --bad-soft:#3a1717; color-scheme:dark}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--fg);font:15px/1.55 var(--f-ui);padding-inline:16px;padding-block:0 48px}
+.wrap{max-width:980px;margin:0 auto}
+a{color:var(--accent)}
+header.hero{padding-block:36px 20px;display:grid;gap:10px}
+.eyebrow{font:600 12px var(--f-ui);letter-spacing:.08em;text-transform:uppercase;color:var(--accent)}
+h1{font-size:clamp(26px,4vw,36px);line-height:1.15;margin:0;font-weight:800;text-wrap:balance}
+.lead{margin:0;color:var(--muted);max-width:68ch}
+.facts{display:flex;flex-wrap:wrap;gap:8px;margin-top:6px}
+.fact{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:8px 12px;font-size:13px}
+.fact b{font-variant-numeric:tabular-nums}
+nav.toc{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:color-mix(in srgb,var(--bg) 92%,transparent);backdrop-filter:blur(6px);border-bottom:1px solid var(--line);margin-inline:-16px;padding:10px 16px;display:flex;gap:6px;overflow-x:auto}
+nav.toc a{white-space:nowrap;text-decoration:none;color:var(--muted);font:600 13px var(--f-ui);padding:6px 10px;border-radius:8px}
+nav.toc a:hover{background:var(--surface-2);color:var(--fg)}
+section{padding-block:28px 8px;display:grid;gap:14px}
+h2{font-size:22px;margin:0;text-wrap:balance}
+h3{font-size:16px;margin:8px 0 0}
+.note{font-size:13.5px;color:var(--muted);margin:0;max-width:72ch}
+.tbl{overflow-x:auto;border:1px solid var(--line);border-radius:12px;background:var(--surface)}
+table{border-collapse:collapse;width:100%;min-width:680px;font-size:14px}
+th,td{text-align:left;vertical-align:top;padding:10px 12px;border-bottom:1px solid var(--line)}
+th{font:600 12px var(--f-ui);letter-spacing:.05em;text-transform:uppercase;color:var(--muted);background:var(--surface-2)}
+tr:last-child td{border-bottom:0}
+td:first-child{font-weight:600;width:26%}
+td:nth-child(2){width:34%}
+code,.mono{font-family:var(--f-mono);font-size:12.5px}
+.tag{display:inline-block;font:600 11px var(--f-ui);padding:2px 7px;border-radius:6px;margin-left:4px;vertical-align:1px}
+.tag.must{background:var(--bad-soft);color:var(--bad)} .tag.tbd{background:var(--warn-soft);color:var(--warn)}
+.callout{border:1px solid var(--line);border-left:4px solid var(--warn);background:var(--surface);border-radius:10px;padding:12px 14px;font-size:14px}
+.callout b{color:var(--warn)}
+/* checklist */
+.check{display:grid;gap:8px}
+.ci{display:grid;grid-template-columns:22px minmax(0,1fr);gap:10px;align-items:start;background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:10px 12px;cursor:pointer}
+.ci input{width:18px;height:18px;margin-top:2px;accent-color:var(--accent)}
+.ci small{display:block;color:var(--muted);font-size:12.5px}
+.ci:has(input:checked){background:var(--ok-soft);border-color:color-mix(in srgb,var(--ok) 40%,var(--line))}
+/* form */
+form{display:grid;gap:18px}
+fieldset{border:1px solid var(--line);border-radius:12px;background:var(--surface);padding:14px 16px 16px;margin:0;display:grid;gap:12px}
+legend{font-weight:700;padding:0 6px}
+.row{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px}
+label.f{display:grid;gap:5px;font-size:13px;font-weight:600;min-width:0}
+label.f span.h{font-weight:400;color:var(--muted);font-size:12px}
+input[type=text],input[type=number],input[type=date],select,textarea{width:100%;font:15px var(--f-ui);color:var(--fg);background:var(--bg);border:1px solid var(--line);border-radius:8px;padding:9px 10px}
+textarea{min-height:70px;resize:vertical}
+input:focus-visible,select:focus-visible,textarea:focus-visible,button:focus-visible,.ci:focus-within{outline:2px solid var(--accent);outline-offset:1px}
+.yn{display:flex;flex-wrap:wrap;gap:6px}
+.yn label{display:inline-flex;gap:6px;align-items:center;font-weight:500;font-size:13px;border:1px solid var(--line);border-radius:8px;padding:6px 10px;cursor:pointer;background:var(--bg)}
+.yn input{accent-color:var(--accent)}
+.yn label:has(input:checked){border-color:var(--accent);background:var(--accent-soft)}
+.q{display:grid;gap:6px;font-size:13.5px;font-weight:600}
+/* summary */
+.summary{position:sticky;bottom:0;z-index:4;margin-inline:-16px;padding:12px 16px calc(12px + env(safe-area-inset-bottom,0px));background:var(--surface);border-top:1px solid var(--line);display:flex;flex-wrap:wrap;gap:10px;align-items:center;justify-content:space-between}
+.meter{display:flex;gap:10px;align-items:center;min-width:0}
+.bar{width:160px;max-width:40vw;height:8px;border-radius:99px;background:var(--surface-2);overflow:hidden}
+.bar i{display:block;height:100%;background:var(--accent);width:0;transition:width .3s}
+.btn{font:700 14px var(--f-ui);border:0;border-radius:10px;padding:11px 16px;cursor:pointer;background:var(--accent);color:#fff}
+.btn.ghost{background:var(--surface-2);color:var(--fg)}
+.issues{display:grid;gap:6px}
+.issue{font-size:13.5px;border-radius:8px;padding:8px 10px}
+.issue.bad{background:var(--bad-soft);color:var(--bad)} .issue.warn{background:var(--warn-soft);color:var(--warn)} .issue.ok{background:var(--ok-soft);color:var(--ok)}
+pre.out{white-space:pre-wrap;background:var(--surface-2);border:1px solid var(--line);border-radius:10px;padding:12px;font:12.5px/1.5 var(--f-mono);max-height:320px;overflow:auto}
+.toast{font-size:13px;color:var(--ok)}
+@media (prefers-reduced-motion:reduce){.bar i{transition:none}}
+</style>
+
+<div class="wrap">
+<header class="hero">
+  <div class="eyebrow">Highlink · бездискова система</div>
+  <h1>Підготовка клубу до запуску бездиску</h1>
+  <p class="lead">Що клуб має купити, налаштувати й перевірити до приїзду інженера Highlink, і анкета з даними про клуб. Заповніть її і надішліть менеджеру: так запуск займе одну ніч, а не кілька.</p>
+  <div class="facts">
+    <div class="fact">Перше завантаження ігор: <b>~8 год</b> на 1 Гбіт/с, <b>15–16 год</b> на 300–500 Мбіт/с</div>
+    <div class="fact">Пам'ять сервера: <b>від 32 ГБ</b></div>
+    <div class="fact">Windows на ПК: <b>11 Pro</b></div>
+  </div>
+</header>
+
+<nav class="toc" aria-label="Розділи">
+  <a href="#owner">Коротко для власника</a><a href="#network">Мережа</a><a href="#server">Сервер</a><a href="#pcs">ПК і BIOS</a><a href="#image">Образ і ПЗ</a><a href="#internet">Інтернет</a><a href="#buy">Що докупити</a><a href="#launch">День запуску</a><a href="#form">Анкета</a>
+</nav>
+
+<section id="owner">
+  <h2>Коротко для власника клубу</h2>
+  <p class="note">Позначайте, що вже готово. Відмітки зберігаються в цьому браузері й потрапляють у відповідь менеджеру.</p>
+  <div class="check" id="ownerCheck"></div>
+  <div class="callout"><b>Чому це важливо.</b> Під час першого підключення клуб може довго працювати без ігор: образ з іграми важить кілька терабайт і качається через ваш інтернет. Без паролів від роутера й комутаторів інженер не може налаштувати мережу, і запуск переноситься.</div>
+</section>
+
+<section id="network">
+  <h2>Мережа клубу</h2>
+  <div class="tbl"><table>
+    <thead><tr><th>Вимога</th><th>Значення</th><th>Як перевірити</th></tr></thead>
+    <tbody>
+      <tr><td>Роутер<span class="tag must">обов'язково</span></td><td>MikroTik не нижче <span class="mono">RB5009</span></td><td>Модель на корпусі або в WinBox → System → RouterBoard</td></tr>
+      <tr><td>Комутатори</td><td>Керовані, не нижче <span class="mono">CSS326-24G-2S+RM</span>, з портами SFP+</td><td>Модель на корпусі; є порти SFP+ для сервера</td></tr>
+      <tr><td>Сервер ↔ комутатор</td><td>10 Гбіт/с і більше (SFP+); приклад клубу: 2×10 Гбіт/с в LACP = 20 Гбіт/с</td><td>Лінк на порту комутатора показує 10G</td></tr>
+      <tr><td>Комутатор ↔ ПК</td><td>1 Гбіт/с на кожен ПК (2,5 Гбіт/с бажано)</td><td>На ПК: Мережеві підключення → Стан → Швидкість</td></tr>
+      <tr><td>Доступи<span class="tag must">обов'язково</span></td><td>Логін і пароль до роутера й усіх комутаторів, або налаштування від провайдера (тип підключення, IP, шлюз, DNS)</td><td>Інженер заходить у роутер дистанційно до дня запуску</td></tr>
+      <tr><td>DHCP і завантаження по мережі</td><td>Або DHCP віддає наш роутер, або ваш мережевик додає опції <span class="mono">66</span> (next-server) і <span class="mono">67</span> (файл завантаження) на адресу сервера</td><td>Тестовий ПК з «Network boot» бачить сервер</td></tr>
+      <tr><td>Власний мережевик клубу</td><td>Якщо є VLAN, bonding чи MTU 9000: контакт мережевика й схема мережі заздалегідь. Наявну конфігурацію не скидаємо без згоди клубу</td><td>Узгоджений дзвінок мережевика з інженером</td></tr>
+      <tr><td>Адреси ПК</td><td>Кожен ПК отримує постійну адресу (резервування в DHCP)</td><td>Список ПК з MAC і IP в анкеті</td></tr>
+    </tbody></table></div>
+</section>
+
+<section id="server">
+  <h2>Сервер для образу</h2>
+  <div class="tbl"><table>
+    <thead><tr><th>Вимога</th><th>Значення</th><th>Як перевірити</th></tr></thead>
+    <tbody>
+      <tr><td>Оперативна пам'ять<span class="tag must">обов'язково</span></td><td>Від 32 ГБ. З 12 ГБ не працює віртуальна машина для оновлення ігор</td><td>Диспетчер завдань → Продуктивність → Пам'ять</td></tr>
+      <tr><td>Віртуалізація</td><td>У BIOS сервера увімкнено SVM (AMD) або VT-x (Intel)</td><td>BIOS → CPU / Advanced</td></tr>
+      <tr><td>Мережева карта</td><td>10 Гбіт/с (SFP+), бажано 2 порти</td><td>Модель карти в характеристиках сервера</td></tr>
+      <tr><td>Процесор і диски до 20 ПК<span class="tag tbd">уточнює Женя</span></td><td>Модель, обсяг дисків під образ, ігри й кеш запису</td><td>Повні характеристики сервера в анкеті</td></tr>
+      <tr><td>Процесор і диски до 40 ПК<span class="tag tbd">уточнює Женя</span></td><td>Те саме з запасом</td><td>Повні характеристики сервера в анкеті</td></tr>
+      <tr><td>Живлення</td><td>ДБЖ на сервер і комутатори</td><td>Сервер не вимикається при короткому знеструмленні</td></tr>
+      <tr><td>Звук у залі</td><td>Музику не виводити із сервера: на сервері немає звуку. Окреме джерело звуку</td><td>—</td></tr>
+    </tbody></table></div>
+</section>
+
+<section id="pcs">
+  <h2>ПК клубу і налаштування BIOS</h2>
+  <div class="tbl"><table>
+    <thead><tr><th>Вимога</th><th>Значення</th><th>Як перевірити</th></tr></thead>
+    <tbody>
+      <tr><td>Завантаження по мережі<span class="tag must">обов'язково</span></td><td>У BIOS увімкнено <span class="mono">Network Stack</span> / PXE, мережа першою в порядку завантаження, режим UEFI</td><td>Під час старту ПК з'являється завантаження по мережі</td></tr>
+      <tr><td>Wake-on-LAN</td><td>Увімкнено в BIOS (і в драйвері мережевої карти). Потрібно для кнопки «Увімкнути» в панелі</td><td>Вимкнений ПК вмикається з панелі</td></tr>
+      <tr><td>Secure Boot і TPM</td><td>Увімкнено: потрібні для античитів (FACEIT, Vanguard у Valorant)</td><td><span class="mono">msinfo32</span> → Стан безпечного завантаження: Увімкнено</td></tr>
+      <tr><td>Унікальний MAC</td><td>Кожен ПК має свій MAC. Панель прив'язує ПК за MAC. Якщо була інша система (Senet тощо), MAC можна взяти з її панелі</td><td>Список MAC з анкети без повторів</td></tr>
+      <tr><td>Мережева карта</td><td>Модель і чипсет в анкеті: інженер перевіряє драйвер в образі (і підтримку MTU 9000, якщо мережа клубу на jumbo frames)</td><td>Диспетчер пристроїв → Мережеві адаптери</td></tr>
+      <tr><td>Пароль на BIOS</td><td>Бажано: щоб гравець не змінив порядок завантаження чи не завантажився з флешки</td><td>BIOS просить пароль</td></tr>
+      <tr><td>Вхід у Windows</td><td>Автоматичний вхід без пароля: після перезавантаження ПК не має зупинятися на екрані входу Windows</td><td>Після перезавантаження одразу з'являється Shell</td></tr>
+      <tr><td>Кілька моніторів</td><td>Вкажіть ПК з 2 і більше моніторами: перевіримо, що Shell закриває всі екрани</td><td>Анкета → кількість моніторів</td></tr>
+    </tbody></table></div>
+</section>
+
+<section id="image">
+  <h2>Образ і програми</h2>
+  <div class="tbl"><table>
+    <thead><tr><th>Вимога</th><th>Значення</th><th>Як перевірити</th></tr></thead>
+    <tbody>
+      <tr><td>Windows<span class="tag must">обов'язково</span></td><td>Windows 11 Pro (Home не підходить)</td><td>Параметри → Система → Про систему</td></tr>
+      <tr><td>Shell</td><td>Встановлюється в образ один раз, лише на диск C: (на іншому диску ПК лишиться без кіоску, якщо диск не підключиться)</td><td>Робить інженер</td></tr>
+      <tr><td>Клієнти зі старої системи</td><td>Клієнти й баланси переносимо; паролі ні: гравці відновлюють пароль поштою, через адміністратора або Telegram</td><td>Менеджер вивантажує дані до запуску</td></tr>
+      <tr><td>Лаунчери й ігри</td><td>Список лаунчерів (Steam, Epic, Battle.net, Riot, Ubisoft, EA…) та ігор, які мають бути в клубі</td><td>Анкета → список ігор</td></tr>
+      <tr><td>Програми периферії</td><td>SteelSeries, Logitech G Hub, Razer Synapse, HyperX, NVIDIA тощо</td><td>Анкета → програми</td></tr>
+      <tr><td>Оновлення ігор</td><td>Тільки з адмін-ПК через ярлик «Server», не з клієнтських ПК при гостях</td><td>Показує інженер після запуску</td></tr>
+    </tbody></table></div>
+</section>
+
+<section id="internet">
+  <h2>Інтернет і доступи</h2>
+  <div class="tbl"><table>
+    <thead><tr><th>Вимога</th><th>Значення</th><th>Як перевірити</th></tr></thead>
+    <tbody>
+      <tr><td>Реальна швидкість</td><td>Бажано 1 Гбіт/с. Провайдер гарантує швидкість лише до вашого роутера</td><td>speedtest.net з ПК, підключеного кабелем; результат в анкету</td></tr>
+      <tr><td>Час першого завантаження</td><td>Орієнтир: ~8 год на 1 Гбіт/с, 15–16 год на 300–500 Мбіт/с. Залежить від провайдера</td><td>Плануйте запуск на ніч або вихідний</td></tr>
+      <tr><td>Зовнішні порти</td><td>RDP та інші порти назовні не відкривати. Доступ інженера через захищений тунель</td><td>—</td></tr>
+      <tr><td>Часовий пояс</td><td>Україна (Київ) на сервері, ПК і в панелі клубу</td><td>Налаштування клубу → Часовий пояс</td></tr>
+    </tbody></table></div>
+</section>
+
+<section id="buy">
+  <h2>Що докупити, якщо чогось бракує</h2>
+  <div class="tbl"><table>
+    <thead><tr><th>Що</th><th>Навіщо</th><th>Орієнтовна ціна</th></tr></thead>
+    <tbody>
+      <tr><td>Флешка від 8 ГБ</td><td>Записати інсталятор з адмін-ПК</td><td>200–300 ₴</td></tr>
+      <tr><td>Зовнішній SSD від 120 ГБ («карман» з диском)</td><td>Тимчасовий носій образу під час запуску</td><td>800–1 500 ₴</td></tr>
+      <tr><td>Пам'ять для сервера до 32 ГБ</td><td>Віртуальна машина для оновлення ігор</td><td><span class="tag tbd">уточнює Женя</span></td></tr>
+      <tr><td>Роутер MikroTik RB5009</td><td>Якщо зараз слабший роутер</td><td><span class="tag tbd">уточнює Женя</span></td></tr>
+      <tr><td>Комутатор CSS326-24G-2S+RM</td><td>Порти SFP+ для сервера, 24 порти на ПК</td><td><span class="tag tbd">уточнює Женя</span></td></tr>
+      <tr><td>Мережева карта 10 Гбіт/с для сервера</td><td>Якщо в сервері лише 1 Гбіт/с</td><td><span class="tag tbd">уточнює Женя</span></td></tr>
+    </tbody></table></div>
+</section>
+
+<section id="launch">
+  <h2>День запуску: як перевіряємо готовність</h2>
+  <div class="tbl"><table>
+    <thead><tr><th>Крок</th><th>Хто</th><th>Готово, коли</th></tr></thead>
+    <tbody>
+      <tr><td>1. Доступи до мережі й сервера</td><td>Клуб, за 2–3 дні</td><td>Інженер зайшов у роутер і сервер дистанційно</td></tr>
+      <tr><td>2. ПК заведені в панелі</td><td>Інженер</td><td>Усі ПК є на карті клубу з назвою, зоною й MAC</td></tr>
+      <tr><td>3. Перше завантаження ігор</td><td>Інженер, у неробочий час</td><td>Образ скачано й синхронізовано</td></tr>
+      <tr><td>4. Увімкнути всі ПК</td><td>Клуб</td><td>Кожен ПК завантажився по мережі, Shell показує екран входу</td></tr>
+      <tr><td>5. Увімкнення з панелі</td><td>Інженер</td><td>Вимкнений ПК вмикається кнопкою «Увімкнути»</td></tr>
+      <tr><td>6. Тест ігор</td><td>Клуб + інженер</td><td>Запустилися ігри з анкети в кожному лаунчері</td></tr>
+      <tr><td>7. Каса й клієнти</td><td>Менеджер Highlink</td><td>Перенесено клієнтів зі старої системи, адмін знає, як закрити зміну (<a href="https://cherniak27031997.github.io/cyberos-guide/instruction-09-close-shift.html" target="_blank" rel="noopener">інструкція</a>)</td></tr>
+    </tbody></table></div>
+</section>
+
+<section id="form">
+  <h2>Анкета перед запуском</h2>
+  <p class="note">Заповніть, що знаєте; решту уточнимо на дзвінку. Чернетка зберігається в цьому браузері. Внизу кнопка «Скопіювати відповіді»: надішліть текст своєму менеджеру Highlink у Telegram.</p>
+  <form id="f" novalidate>
+    <fieldset><legend>Клуб і контакти</legend>
+      <div class="row">
+        <label class="f">Назва клубу<input id="club" type="text" placeholder="Напр. Cybersfera Пасічна"></label>
+        <label class="f">Місто й адреса<input id="addr" type="text" placeholder="Івано-Франківськ, вул. …"></label>
+      </div>
+      <div class="row">
+        <label class="f">Контактна особа<input id="contact" type="text" placeholder="Ім'я, роль"></label>
+        <label class="f">Телефон або Telegram<input id="phone" type="text" placeholder="+380… або @нік"></label>
+        <label class="f">Мережевик клубу (якщо є)<input id="netadmin" type="text" placeholder="Ім'я, контакт"></label>
+      </div>
+      <div class="row">
+        <label class="f">Бажана дата запуску<input id="date" type="date"></label>
+        <label class="f">Коли клуб не працює або мало гостей<input id="window" type="text" placeholder="Напр. 03:00–10:00 щодня"></label>
+      </div>
+    </fieldset>
+
+    <fieldset><legend>ПК і зони</legend>
+      <div class="row">
+        <label class="f">Кількість ПК усього<input id="pcs" type="number" min="1" placeholder="20"></label>
+        <label class="f">ПК з 2+ моніторами<input id="multimon" type="number" min="0" placeholder="0"></label>
+        <label class="f">Попередня система<select id="prev"><option value="">—</option><option>Senet</option><option>Langame</option><option>iCafeCloud</option><option>Інша</option><option>Немає</option></select></label>
+      </div>
+      <label class="f">Зони й ПК у них<span class="h">Назва зони, кількість ПК, монітор (Гц, роздільність)</span><textarea id="zones" placeholder="Стандарт — 18 ПК, 1440p 300 Гц&#10;Solo — 2 ПК, 2 монітори, 1440p 420 Гц"></textarea></label>
+      <label class="f">Конфігурація ПК<span class="h">Процесор, відеокарта, пам'ять, материнська плата, мережева карта</span><textarea id="pcspec" placeholder="Ryzen 5 7500F / RTX 4060 / 32 ГБ / B650 / Realtek 2.5G"></textarea></label>
+      <div class="q">Налаштування BIOS на ПК
+        <div class="yn" data-q="pxe"><label><input type="radio" name="pxe" value="yes">Завантаження по мережі увімкнено</label><label><input type="radio" name="pxe" value="no">Ні</label><label><input type="radio" name="pxe" value="?">Не знаю</label></div>
+        <div class="yn" data-q="wol"><label><input type="radio" name="wol" value="yes">Wake-on-LAN увімкнено</label><label><input type="radio" name="wol" value="no">Ні</label><label><input type="radio" name="wol" value="?">Не знаю</label></div>
+        <div class="yn" data-q="sb"><label><input type="radio" name="sb" value="yes">Secure Boot і TPM увімкнено</label><label><input type="radio" name="sb" value="no">Ні</label><label><input type="radio" name="sb" value="?">Не знаю</label></div>
+      </div>
+      <label class="f">Список ПК з MAC-адресами<span class="h">Можна пізніше. Формат: PC-01 — 74:56:3C:C6:52:01</span><textarea id="macs" placeholder="PC-01 — 74:56:3C:…"></textarea></label>
+    </fieldset>
+
+    <fieldset><legend>Мережа</legend>
+      <div class="row">
+        <label class="f">Роутер (модель)<input id="router" type="text" placeholder="MikroTik RB5009"></label>
+        <label class="f">Комутатори (модель, кількість)<input id="switches" type="text" placeholder="CSS326-24G-2S+RM × 2"></label>
+      </div>
+      <div class="q">Доступи до роутера й комутаторів
+        <div class="yn"><label><input type="radio" name="access" value="yes">Є, передамо інженеру</label><label><input type="radio" name="access" value="provider">Немає, візьмемо налаштування в провайдера</label><label><input type="radio" name="access" value="no">Немає</label></div>
+      </div>
+      <div class="q">Хто роздає адреси (DHCP)
+        <div class="yn"><label><input type="radio" name="dhcp" value="ours">Можна наш роутер</label><label><input type="radio" name="dhcp" value="own">Наш мережевик, додасть опції 66/67</label><label><input type="radio" name="dhcp" value="?">Не знаю</label></div>
+      </div>
+      <label class="f">Особливості мережі<span class="h">VLAN, LACP/bonding, MTU 9000, кілька філій</span><textarea id="netnotes"></textarea></label>
+    </fieldset>
+
+    <fieldset><legend>Сервер</legend>
+      <div class="row">
+        <label class="f">Процесор<input id="srvcpu" type="text"></label>
+        <label class="f">Оперативна пам'ять, ГБ<input id="srvram" type="number" min="0" placeholder="32"></label>
+        <label class="f">Мережева карта<input id="srvnic" type="text" placeholder="2× SFP+ 10G"></label>
+      </div>
+      <label class="f">Диски<span class="h">Тип, обсяг, скільки штук</span><input id="srvdisk" type="text" placeholder="2× NVMe 2 ТБ + 4× SSD 4 ТБ"></label>
+      <div class="q">Віртуалізація (SVM / VT-x) у BIOS сервера
+        <div class="yn"><label><input type="radio" name="svm" value="yes">Увімкнено</label><label><input type="radio" name="svm" value="no">Ні</label><label><input type="radio" name="svm" value="?">Не знаю</label></div>
+      </div>
+      <div class="q">ДБЖ на сервер і комутатори
+        <div class="yn"><label><input type="radio" name="ups" value="yes">Є</label><label><input type="radio" name="ups" value="no">Немає</label></div>
+      </div>
+    </fieldset>
+
+    <fieldset><legend>Інтернет</legend>
+      <div class="row">
+        <label class="f">Провайдер<input id="isp" type="text"></label>
+        <label class="f">Тариф, Мбіт/с<input id="plan" type="number" min="0" placeholder="1000"></label>
+        <label class="f">Реальна швидкість (speedtest), Мбіт/с<input id="speed" type="number" min="0" placeholder="Завантаження"></label>
+      </div>
+    </fieldset>
+
+    <fieldset><legend>Ігри, програми, каса</legend>
+      <label class="f">Лаунчери й ігри<span class="h">Що обов'язково має бути на старті</span><textarea id="games" placeholder="Steam: CS2, Dota 2, PUBG&#10;Riot: Valorant, LoL&#10;Battle.net: Warzone, Overwatch"></textarea></label>
+      <label class="f">Програми периферії та інше<input id="soft" type="text" placeholder="SteelSeries GG, Discord, OBS, TeamSpeak"></label>
+      <div class="q">Каса з фіскалізацією (ПРРО Checkbox)
+        <div class="yn"><label><input type="radio" name="fisc" value="yes">Потрібна</label><label><input type="radio" name="fisc" value="no">Ні</label><label><input type="radio" name="fisc" value="?">Обговоримо</label></div>
+      </div>
+      <div class="q">Перенести клієнтів і баланси зі старої системи
+        <div class="yn"><label><input type="radio" name="migr" value="yes">Так</label><label><input type="radio" name="migr" value="no">Ні</label></div>
+      </div>
+      <label class="f">Питання або побажання<textarea id="notes"></textarea></label>
+    </fieldset>
+  </form>
+
+  <h3>Що ще потрібно до запуску</h3>
+  <div class="issues" id="issues"></div>
+  <pre class="out" id="out" hidden></pre>
+</section>
+
+<div class="summary">
+  <div class="meter"><div class="bar"><i id="bar"></i></div><span id="pct">Заповнено 0%</span></div>
+  <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:center">
+    <span class="toast" id="toast"></span>
+    <button class="btn ghost" type="button" id="show">Показати текст</button>
+    <button class="btn" type="button" id="copy">Скопіювати відповіді</button>
+  </div>
+</div>
+</div>
+
+<script>
+const OWNER=[
+ ['acc','Паролі від роутера й комутаторів або налаштування від провайдера','Без них інженер не налаштує мережу'],
+ ['usb','Флешка від 8 ГБ і зовнішній SSD від 120 ГБ','Для інсталятора й тимчасового образу'],
+ ['ram','На сервері від 32 ГБ пам\'яті','Інакше не працюватиме оновлення ігор'],
+ ['net','Роутер MikroTik не нижче RB5009 і комутатори з портами SFP+','Сервер підключається на 10 Гбіт/с'],
+ ['bios','На всіх ПК увімкнено завантаження по мережі, Wake-on-LAN і Secure Boot','Інженер підкаже, де це в BIOS'],
+ ['win','Ліцензія Windows 11 Pro','Home не підходить'],
+ ['speed','Виміряли реальну швидкість інтернету','speedtest.net з ПК на кабелі'],
+ ['games','Склали список ігор і програм для старту','Щоб перше завантаження не довелося повторювати'],
+ ['time','Запланували запуск на ніч або день без гостей','Перше завантаження ігор займає від 8 годин'],
+];
+const KEY='hl-diskless-v1'; let S={};
+try{S=JSON.parse(localStorage.getItem(KEY)||'{}')}catch(e){S={}}
+const save=()=>{try{localStorage.setItem(KEY,JSON.stringify(S))}catch(e){}};
+// owner checklist
+const oc=document.getElementById('ownerCheck');
+oc.innerHTML=OWNER.map(([k,t,h])=>`<label class="ci"><input type="checkbox" id="oc_${k}" ${S['oc_'+k]?'checked':''}><span>${t}<small>${h}</small></span></label>`).join('');
+// restore form
+const F=document.getElementById('f');
+F.querySelectorAll('input,select,textarea').forEach(el=>{
+  if(el.type==='radio'){ if(S[el.name]===el.value) el.checked=true; }
+  else if(S[el.id]!=null) el.value=S[el.id];
+});
+document.addEventListener('input',e=>{const el=e.target; if(!el.closest('#f,#ownerCheck')) return;
+  if(el.type==='radio') S[el.name]=el.value; else if(el.type==='checkbox') S[el.id]=el.checked; else S[el.id]=el.value; save(); update();});
+document.addEventListener('change',e=>{const el=e.target; if(el.type==='radio'){S[el.name]=el.value; save(); update();}});
+
+const v=id=>(S[id]||'').toString().trim();
+function hoursFor(mbps){ if(!mbps) return null; const gb=2500*8; return Math.round(gb*1000/ (mbps*0.7) /3600); }
+function issues(){
+  const out=[]; const add=(lvl,t)=>out.push([lvl,t]);
+  if(S.access==='no') add('bad','Немає доступів до роутера й комутаторів: візьміть налаштування в провайдера, інакше запуск перенесеться');
+  if(S.access==='provider') add('warn','Доступів немає: інженер працюватиме з налаштуваннями провайдера, запросіть їх заздалегідь');
+  const ram=+v('srvram'); if(ram&&ram<32) add('bad',`На сервері ${ram} ГБ пам'яті: потрібно від 32 ГБ`);
+  if(S.svm==='no') add('bad','Увімкніть віртуалізацію (SVM / VT-x) у BIOS сервера');
+  if(S.pxe==='no') add('bad','Увімкніть завантаження по мережі (Network Stack / PXE) у BIOS усіх ПК');
+  if(S.wol==='no') add('warn','Без Wake-on-LAN ПК не вмикатимуться з панелі');
+  if(S.sb==='no') add('warn','Без Secure Boot і TPM не працюватимуть античити (FACEIT, Valorant)');
+  const sp=+v('speed'); if(sp){ const h=hoursFor(sp); add(sp<500?'warn':'ok',`Перше завантаження ігор на ${sp} Мбіт/с: приблизно ${h} год. Плануйте запуск на час без гостей`); }
+  if(+v('multimon')>0) add('warn',`${v('multimon')} ПК з кількома моніторами: перевіримо, що Shell закриває всі екрани`);
+  if(v('router')&&!/mikrotik|rb5009|ccr|rb4011/i.test(v('router'))) add('warn',`Роутер «${v('router')}»: інженер перевірить, чи підходить, можливо знадобиться MikroTik RB5009`);
+  if(S.ups==='no') add('warn','Без ДБЖ сервер вимкнеться при стрибку живлення, і всі ПК зупиняться');
+  const missingOwner=OWNER.filter(([k])=>!S['oc_'+k]).length; if(missingOwner) add('warn',`У короткому списку для власника не відмічено ${missingOwner} з ${OWNER.length} пунктів`);
+  if(!out.some(x=>x[0]!=='ok')) add('ok','Критичних проблем не видно. Менеджер узгодить дату запуску');
+  return out;
+}
+const FIELDS=['club','addr','contact','phone','date','pcs','zones','pcspec','router','switches','access','dhcp','srvcpu','srvram','srvnic','srvdisk','svm','isp','plan','speed','games','pxe','wol','sb'];
+function update(){
+  const filled=FIELDS.filter(k=>v(k)).length; const pct=Math.round(filled/FIELDS.length*100);
+  document.getElementById('bar').style.width=pct+'%'; document.getElementById('pct').textContent=`Заповнено ${pct}%`;
+  document.getElementById('issues').innerHTML=issues().map(([l,t])=>`<div class="issue ${l}"></div>`).join('');
+  [...document.querySelectorAll('#issues .issue')].forEach((el,i)=>el.textContent=issues()[i][1]);
+  const o=document.getElementById('out'); if(!o.hidden) o.textContent=text();
+}
+const YN={yes:'так',no:'ні','?':'не знаю',provider:'немає, візьмемо в провайдера',ours:'можна наш роутер',own:'наш мережевик (опції 66/67)'};
+const yn=k=>S[k]?(YN[S[k]]||S[k]):'—';
+function text(){
+  const L=(a,b)=>`${a}: ${b||'—'}`;
+  return [
+`Анкета Highlink: запуск бездиску`,
+L('Клуб',v('club')),L('Адреса',v('addr')),L('Контакт',v('contact')+(v('phone')?' · '+v('phone'):'')),L('Мережевик',v('netadmin')),L('Бажана дата',v('date')),L('Вікно без гостей',v('window')),
+``,`ПК`,L('Усього ПК',v('pcs')),L('ПК з 2+ моніторами',v('multimon')),L('Попередня система',v('prev')),L('Зони',v('zones')),L('Конфігурація',v('pcspec')),
+L('Завантаження по мережі',yn('pxe')),L('Wake-on-LAN',yn('wol')),L('Secure Boot / TPM',yn('sb')),L('MAC-адреси',v('macs')),
+``,`Мережа`,L('Роутер',v('router')),L('Комутатори',v('switches')),L('Доступи',yn('access')),L('DHCP',yn('dhcp')),L('Особливості',v('netnotes')),
+``,`Сервер`,L('Процесор',v('srvcpu')),L('Пам\'ять, ГБ',v('srvram')),L('Мережева карта',v('srvnic')),L('Диски',v('srvdisk')),L('Віртуалізація',yn('svm')),L('ДБЖ',yn('ups')),
+``,`Інтернет`,L('Провайдер',v('isp')),L('Тариф, Мбіт/с',v('plan')),L('Реальна швидкість, Мбіт/с',v('speed')),
+``,`Ігри і каса`,L('Ігри',v('games')),L('Програми',v('soft')),L('Фіскалізація',yn('fisc')),L('Перенесення клієнтів',yn('migr')),L('Питання',v('notes')),
+``,`Готово з короткого списку: ${OWNER.filter(([k])=>S['oc_'+k]).map(([,t])=>'✓ '+t).join('; ')||'—'}`,
+``,`Що ще потрібно:`, ...issues().map(([l,t])=>(l==='bad'?'❗ ':l==='warn'?'⚠ ':'✓ ')+t)
+  ].join('\n');
+}
+document.getElementById('show').onclick=()=>{const o=document.getElementById('out'); o.hidden=!o.hidden; o.textContent=text(); document.getElementById('show').textContent=o.hidden?'Показати текст':'Сховати текст'; if(!o.hidden) o.scrollIntoView({block:'nearest'});};
+document.getElementById('copy').onclick=async()=>{const t=text(), toast=document.getElementById('toast');
+  try{await navigator.clipboard.writeText(t); toast.textContent='Скопійовано. Надішліть менеджеру в Telegram';}
+  catch(e){const o=document.getElementById('out'); o.hidden=false; o.textContent=t; const r=document.createRange(); r.selectNodeContents(o); const s=getSelection(); s.removeAllRanges(); s.addRange(r); toast.textContent='Текст виділено: натисніть Ctrl+C';}
+  setTimeout(()=>toast.textContent='',5000);};
+update();
+</script>
+
+</body>
+</html>
