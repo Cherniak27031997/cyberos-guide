@@ -94,8 +94,8 @@ pre.out{white-space:pre-wrap;background:var(--surface-2);border:1px solid var(--
   <h1>Підготовка клубу до запуску бездиску</h1>
   <p class="lead">Що потрібно клубу для запуску бездискової системи: роутер і комутатори, сервер з достатньою оперативною пам'яттю (RAM) і мережевою картою, флешка та SSD. Нижче вимоги до мережі, сервера й ПК, а в кінці анкета з даними про клуб: заповніть її і надішліть менеджеру Highlink.</p>
   <div class="facts">
-    <div class="fact">Перше завантаження ігор: <b>~8 год</b> на 1 Гбіт/с, <b>15–16 год</b> на 300–500 Мбіт/с</div>
-    <div class="fact">Оперативна пам'ять сервера (RAM): <b>від 32 ГБ</b></div>
+    <div class="fact">Перше завантаження ігор: образ <b>~2,5 ТБ</b> (незабаром ~800 ГБ), <b>~8 год</b> на 1 Гбіт/с</div>
+    <div class="fact">Оперативна пам'ять сервера (RAM): <b>від 32 ГБ</b>, краще 64–96 ГБ</div>
     <div class="fact">Windows на ПК: <b>11 Pro</b></div>
   </div>
 </header>
@@ -119,7 +119,7 @@ pre.out{white-space:pre-wrap;background:var(--surface-2);border:1px solid var(--
       <tr><td>Роутер<span class="tag must">обов'язково</span></td><td>MikroTik не нижче <span class="mono">RB5009</span></td><td>Модель на корпусі або в WinBox → System → RouterBoard</td></tr>
       <tr><td>Комутатори</td><td>Керовані, не нижче <span class="mono">CSS326-24G-2S+RM</span>, з портами SFP+</td><td>Модель на корпусі; є порти SFP+ для сервера</td></tr>
       <tr><td>Сервер ↔ комутатор</td><td>10 Гбіт/с і більше (SFP+); приклад клубу: 2×10 Гбіт/с в LACP = 20 Гбіт/с</td><td>Лінк на порту комутатора показує 10G</td></tr>
-      <tr><td>Комутатор ↔ ПК</td><td>1 Гбіт/с на кожен ПК (2,5 Гбіт/с бажано)</td><td>На ПК: Мережеві підключення → Стан → Швидкість</td></tr>
+      <tr><td>Комутатор ↔ ПК</td><td>1 Гбіт/с на кожен ПК. 2,5 Гбіт/с дає помітно швидше завантаження ПК та ігор, але лише якщо вся мережа клубу (комутатори, карти ПК) теж на 2,5 Гбіт/с</td><td>На ПК: Мережеві підключення → Стан → Швидкість</td></tr>
       <tr><td>Доступи<span class="tag must">обов'язково</span></td><td>Логін і пароль до роутера й усіх комутаторів, або налаштування від провайдера (тип підключення, IP, шлюз, DNS)</td><td>Інженер заходить у роутер дистанційно до дня запуску</td></tr>
       <tr><td>DHCP і завантаження по мережі</td><td>Або DHCP віддає наш роутер, або ваш мережевик додає опції <span class="mono">66</span> (next-server) і <span class="mono">67</span> (файл завантаження) на адресу сервера</td><td>Тестовий ПК з «Network boot» бачить сервер</td></tr>
       <tr><td>Власний мережевик клубу</td><td>Якщо є VLAN, bonding чи MTU 9000: контакт мережевика й схема мережі заздалегідь. Наявну конфігурацію не скидаємо без згоди клубу</td><td>Узгоджений дзвінок мережевика з інженером</td></tr>
@@ -132,11 +132,12 @@ pre.out{white-space:pre-wrap;background:var(--surface-2);border:1px solid var(--
   <div class="tbl"><table>
     <thead><tr><th>Вимога</th><th>Значення</th><th>Як перевірити</th></tr></thead>
     <tbody>
-      <tr><td>Оперативна пам'ять (RAM)<span class="tag must">обов'язково</span></td><td>Від 32 ГБ RAM. З 12 ГБ не працює віртуальна машина для оновлення ігор</td><td>Диспетчер завдань → Продуктивність → Пам'ять</td></tr>
+      <tr><td>Оперативна пам'ять (RAM)<span class="tag must">обов'язково</span></td><td>Мінімум 32 ГБ RAM, краще 64 або 96 ГБ. З 12 ГБ не працює віртуальна машина для оновлення ігор</td><td>Диспетчер завдань → Продуктивність → Пам'ять</td></tr>
       <tr><td>Віртуалізація</td><td>У BIOS сервера увімкнено SVM (AMD) або VT-x (Intel)</td><td>BIOS → CPU / Advanced</td></tr>
       <tr><td>Мережева карта</td><td>10 Гбіт/с (SFP+), бажано 2 порти</td><td>Модель карти в характеристиках сервера</td></tr>
-      <tr><td>Процесор і диски до 20 ПК<span class="tag tbd">уточнює Женя</span></td><td>Модель, обсяг дисків під образ, ігри й кеш запису</td><td>Повні характеристики сервера в анкеті</td></tr>
-      <tr><td>Процесор і диски до 40 ПК<span class="tag tbd">уточнює Женя</span></td><td>Те саме з запасом</td><td>Повні характеристики сервера в анкеті</td></tr>
+      <tr><td>Процесор<span class="tag must">обов'язково</span></td><td>Від 16 потоків</td><td>Диспетчер завдань → Продуктивність → ЦП → Логічні процесори</td></tr>
+      <tr><td>Диски<span class="tag must">обов'язково</span></td><td>Під систему сервера (Linux): від 120 ГБ. Під образи Windows: 1 ТБ. Під ігри: 6 ТБ (можна двома дисками 4 + 2 ТБ)</td><td>Повні характеристики сервера в анкеті</td></tr>
+      <tr><td>Secure Boot на сервері</td><td>Вимкнено (на сервері, на відміну від ПК клубу)</td><td>BIOS сервера → Security / Boot</td></tr>
       <tr><td>Живлення</td><td>ДБЖ на сервер і комутатори</td><td>Сервер не вимикається при короткому знеструмленні</td></tr>
     </tbody></table></div>
 </section>
@@ -149,9 +150,9 @@ pre.out{white-space:pre-wrap;background:var(--surface-2);border:1px solid var(--
       <tr><td>Завантаження по мережі<span class="tag must">обов'язково</span></td><td>У BIOS увімкнено <span class="mono">Network Stack</span> / PXE, мережа першою в порядку завантаження, режим UEFI</td><td>Під час старту ПК з'являється завантаження по мережі</td></tr>
       <tr><td>Windows<span class="tag must">обов'язково</span></td><td>Ліцензія Windows 11 Pro на кожен ПК (Home не підходить)</td><td>Параметри → Система → Про систему</td></tr>
       <tr><td>Wake-on-LAN</td><td>Увімкнено в BIOS (і в драйвері мережевої карти). Потрібно для кнопки «Увімкнути» в панелі</td><td>Вимкнений ПК вмикається з панелі</td></tr>
-      <tr><td>Secure Boot і TPM</td><td>Увімкнено: потрібні для античитів (FACEIT, Vanguard у Valorant)</td><td><span class="mono">msinfo32</span> → Стан безпечного завантаження: Увімкнено</td></tr>
+      <tr><td>Secure Boot і TPM<span class="tag must">обов'язково</span></td><td>Увімкнено на всіх ПК клубу: без них не працює античит FACEIT (і Vanguard у Valorant)</td><td><span class="mono">msinfo32</span> → Стан безпечного завантаження: Увімкнено</td></tr>
       <tr><td>Унікальний MAC</td><td>Кожен ПК має свій MAC. Панель прив'язує ПК за MAC. Якщо була інша система (Senet тощо), MAC можна взяти з її панелі</td><td>Список MAC з анкети без повторів</td></tr>
-      <tr><td>Мережева карта</td><td>Модель і чипсет в анкеті: інженер перевіряє драйвер в образі (і підтримку MTU 9000, якщо мережа клубу на jumbo frames)</td><td>Диспетчер пристроїв → Мережеві адаптери</td></tr>
+      <tr><td>Мережева карта</td><td>Intel або Realtek. Інші не рекомендуються. Модель вкажіть в анкеті: інженер перевірить драйвер в образі (і MTU 9000, якщо мережа клубу на jumbo frames)</td><td>Диспетчер пристроїв → Мережеві адаптери</td></tr>
       <tr><td>Пароль на BIOS</td><td>Бажано. Адміністратор ставить пароль на BIOS на кожному ПК, щоб під час перезавантаження відвідувач не зміг зайти в BIOS (Del/F12), змінити порядок завантаження чи завантажитися з флешки в обхід системи</td><td>BIOS просить пароль</td></tr>
       <tr><td>Кілька моніторів</td><td>Вкажіть ПК з 2 і більше моніторами: перевіримо, що Shell закриває всі екрани</td><td>Анкета → кількість моніторів</td></tr>
     </tbody></table></div>
@@ -255,7 +256,7 @@ pre.out{white-space:pre-wrap;background:var(--surface-2);border:1px solid var(--
 
     <fieldset><legend>Сервер</legend>
       <div class="row">
-        <label class="f">Процесор<input id="srvcpu" type="text"></label>
+        <label class="f">Процесор (від 16 потоків)<input id="srvcpu" type="text"></label>
         <label class="f">Оперативна пам'ять (RAM), ГБ<input id="srvram" type="number" min="0" placeholder="32"></label>
         <label class="f">Мережева карта<input id="srvnic" type="text" placeholder="2× SFP+ 10G"></label>
       </div>
@@ -348,7 +349,7 @@ function issues(){
   if(S.svm==='no') add('bad','Увімкніть віртуалізацію (SVM / VT-x) у BIOS сервера');
   if(S.pxe==='no') add('bad','Увімкніть завантаження по мережі (Network Stack / PXE) у BIOS усіх ПК');
   if(S.wol==='no') add('warn','Без Wake-on-LAN ПК не вмикатимуться з панелі');
-  if(S.sb==='no') add('warn','Без Secure Boot і TPM не працюватимуть античити (FACEIT, Valorant)');
+  if(S.sb==='no') add('bad','Увімкніть Secure Boot і TPM на всіх ПК: без них не працює античит FACEIT');
   const sp=+v('speed'); if(sp){ const h=hoursFor(sp); add(sp<500?'warn':'ok',`Перше завантаження ігор на ${sp} Мбіт/с: приблизно ${h} год. Плануйте запуск на час без гостей`); }
   if(+v('multimon')>0) add('warn',`${v('multimon')} ПК з кількома моніторами: перевіримо, що Shell закриває всі екрани`);
   if(v('router')&&!/mikrotik|rb5009|ccr|rb4011/i.test(v('router'))) add('warn',`Роутер «${v('router')}»: інженер перевірить, чи підходить, можливо знадобиться MikroTik RB5009`);
