@@ -1,0 +1,178 @@
+<!doctype html>
+<html lang="uk">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="robots" content="noindex">
+<title>Перенос даних із Senet</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Onest:wght@400;500;600;700;800&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+[hidden]{display:none!important}
+/* Те саме оформлення, що й анкета в diskless-launch.html */
+:root{
+  --bg:#f5f7fb; --surface:#ffffff; --surface-2:#eef2f9; --line:#d9e0ec; --fg:#121a2b; --muted:#5a6680;
+  --accent:#2563eb; --accent-soft:#e3ecff; --ok:#11804b; --ok-soft:#dff5e9; --warn:#a15c00; --warn-soft:#fff1d6; --bad:#c02c2c; --bad-soft:#fde4e4;
+  --f-ui:"Onest",system-ui,-apple-system,"Segoe UI",sans-serif; --f-mono:"IBM Plex Mono",ui-monospace,Menlo,monospace;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --bg:#0c111c; --surface:#141b2b; --surface-2:#1a2336; --line:#2a3550; --fg:#e7ecf6; --muted:#97a3bd;
+  --accent:#6f9bff; --accent-soft:#1d2b4d; --ok:#4fd18b; --ok-soft:#14301f; --warn:#f0b04a; --warn-soft:#352711; --bad:#ff7b7b; --bad-soft:#3a1717; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#0c111c; --surface:#141b2b; --surface-2:#1a2336; --line:#2a3550; --fg:#e7ecf6; --muted:#97a3bd;
+  --accent:#6f9bff; --accent-soft:#1d2b4d; --ok:#4fd18b; --ok-soft:#14301f; --warn:#f0b04a; --warn-soft:#352711; --bad:#ff7b7b; --bad-soft:#3a1717; color-scheme:dark}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--fg);font:15px/1.55 var(--f-ui);padding-inline:16px;padding-block:0 48px}
+.wrap{max-width:720px;margin:0 auto}
+header.hero{padding-block:36px 20px;display:grid;gap:10px}
+.eyebrow{font:600 12px var(--f-ui);letter-spacing:.08em;text-transform:uppercase;color:var(--accent)}
+h1{font-size:clamp(26px,4vw,36px);line-height:1.15;margin:0;font-weight:800;text-wrap:balance}
+.lead{margin:0;color:var(--muted);max-width:68ch}
+.callout{border:1px solid var(--line);border-left:4px solid var(--warn);background:var(--surface);border-radius:10px;padding:12px 14px;font-size:14px}
+.callout b{color:var(--warn)}
+.callout ul{margin:8px 0 0;padding-left:18px;display:grid;gap:4px}
+form{display:grid;gap:18px;margin-top:18px}
+fieldset{border:1px solid var(--line);border-radius:12px;background:var(--surface);padding:14px 16px 16px;margin:0;display:grid;gap:12px;min-width:0}
+legend{font-weight:700;padding:0 6px}
+.row{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px}
+label.f{display:grid;gap:5px;font-size:13px;font-weight:600;min-width:0}
+label.f span.h{font-weight:400;color:var(--muted);font-size:12px}
+input[type=text],input[type=password],input[type=url],select{width:100%;font:15px var(--f-ui);color:var(--fg);background:var(--bg);border:1px solid var(--line);border-radius:8px;padding:9px 10px;min-width:0}
+input:focus-visible,select:focus-visible,button:focus-visible,.ci:focus-within{outline:2px solid var(--accent);outline-offset:1px}
+.pass{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:6px}
+.dt{display:grid;grid-template-columns:1.3fr 1.8fr 1.2fr;gap:6px}
+.tm{display:grid;grid-template-columns:1fr 1fr;gap:6px}
+.ci{display:grid;grid-template-columns:22px minmax(0,1fr);gap:10px;align-items:start;background:var(--bg);border:1px solid var(--line);border-radius:10px;padding:10px 12px;cursor:pointer;font-weight:600}
+.ci input{width:18px;height:18px;margin-top:2px;accent-color:var(--accent)}
+.ci:has(input:checked){background:var(--ok-soft);border-color:color-mix(in srgb,var(--ok) 40%,var(--line))}
+.note{font-size:13px;color:var(--muted);margin:0}
+.issues{display:grid;gap:6px;margin-top:18px}
+.issue{font-size:13.5px;border-radius:8px;padding:8px 10px}
+.issue.bad{background:var(--bad-soft);color:var(--bad)} .issue.warn{background:var(--warn-soft);color:var(--warn)} .issue.ok{background:var(--ok-soft);color:var(--ok)}
+pre.out{white-space:pre-wrap;overflow-wrap:anywhere;background:var(--surface-2);border:1px solid var(--line);border-radius:10px;padding:12px;font:12.5px/1.5 var(--f-mono);max-height:320px;overflow:auto;margin:12px 0 0}
+.summary{position:sticky;bottom:0;z-index:4;margin:18px -16px 0;padding:12px 16px calc(12px + env(safe-area-inset-bottom,0px));background:var(--surface);border-top:1px solid var(--line);display:flex;flex-wrap:wrap;gap:8px;align-items:center;justify-content:flex-end}
+.btn{font:700 14px var(--f-ui);border:0;border-radius:10px;padding:11px 16px;cursor:pointer;background:var(--accent);color:#fff}
+.btn.ghost{background:var(--surface-2);color:var(--fg)}
+.toast{font-size:13px;color:var(--ok);margin-right:auto}
+</style>
+</head>
+<body>
+<div class="wrap">
+<header class="hero">
+  <div class="eyebrow">Highlink · перехід із Senet</div>
+  <h1>Анкета на перенос даних</h1>
+  <p class="lead">Заповніть поля, натисніть «Скопіювати відповіді» і надішліть текст менеджеру Highlink у Telegram. Ця сторінка нікуди не передає дані сама.</p>
+</header>
+
+<div class="callout"><b>Важливо про час.</b> Вказаний час це момент, коли ми починаємо знімати дані з Senet, а не час готовності переносу.
+  <ul>
+    <li>До цього моменту зупиніть роботу клубу в Senet: нові продажі, клієнтів і товари там більше не вносимо.</li>
+    <li>Зняття даних може тривати до 2–3 годин.</li>
+  </ul>
+</div>
+
+<form id="f" novalidate autocomplete="off">
+  <fieldset><legend>1. Доступи до Senet</legend>
+    <label class="f">Посилання на панель Senet<input id="url" type="url" inputmode="url" placeholder="https://назва-клубу.admin-v2.enes.tech"></label>
+    <div class="row">
+      <label class="f">Логін<input id="login" type="text" autocomplete="off" autocapitalize="none" spellcheck="false"></label>
+      <label class="f">Пароль
+        <span class="pass"><input id="pass" type="password" autocomplete="new-password"><button class="btn ghost" type="button" id="eye">Показати</button></span>
+      </label>
+    </div>
+    <p class="note">Пароль не зберігається на цій сторінці: після оновлення його треба ввести ще раз. Після переносу радимо його змінити.</p>
+  </fieldset>
+
+  <fieldset><legend>2. Клуб у Highlink</legend>
+    <label class="f">Назва або ID клубу<input id="club" type="text" placeholder="Назва клубу в панелі Highlink"></label>
+  </fieldset>
+
+  <fieldset><legend>3. Що переносимо</legend>
+    <label class="ci"><input type="checkbox" id="clients"><span>Клієнти</span></label>
+    <label class="ci"><input type="checkbox" id="goods"><span>Товари</span></label>
+  </fieldset>
+
+  <fieldset><legend>4. Бажана дата й час початку переносу</legend>
+    <div class="row">
+      <label class="f">Дата<span class="dt"><select id="dDay" aria-label="День"></select><select id="dMon" aria-label="Місяць"></select><select id="dYear" aria-label="Рік"></select></span></label>
+      <label class="f">Час (за Києвом)<span class="tm"><select id="tH" aria-label="Години"></select><select id="tM" aria-label="Хвилини"></select></span></label>
+    </div>
+  </fieldset>
+</form>
+
+<div class="issues" id="issues" aria-live="polite"></div>
+<pre class="out" id="out" hidden></pre>
+
+<div class="summary">
+  <span class="toast" id="toast" role="status"></span>
+  <button class="btn ghost" type="button" id="show">Показати текст</button>
+  <button class="btn" type="button" id="copy">Скопіювати відповіді</button>
+</div>
+</div>
+
+<script>
+const $=id=>document.getElementById(id);
+const MON=['січня','лютого','березня','квітня','травня','червня','липня','серпня','вересня','жовтня','листопада','грудня'];
+const pad=n=>String(n).padStart(2,'0');
+const yr=new Date().getFullYear();
+$('dDay').innerHTML='<option value="">День</option>'+Array.from({length:31},(_,i)=>`<option>${i+1}</option>`).join('');
+$('dMon').innerHTML='<option value="">Місяць</option>'+MON.map((n,i)=>`<option value="${i+1}">${n}</option>`).join('');
+$('dYear').innerHTML='<option value="">Рік</option>'+[yr,yr+1].map(v=>`<option>${v}</option>`).join('');
+$('tH').innerHTML='<option value="">Год</option>'+Array.from({length:24},(_,i)=>`<option>${pad(i)}</option>`).join('');
+$('tM').innerHTML='<option value="">Хв</option>'+[0,15,30,45].map(m=>`<option>${pad(m)}</option>`).join('');
+
+// Зберігаємо чернетку в браузері, але без логіна й пароля: клуб може заповнювати на спільному ПК.
+const KEY='hl-senet-transfer-v1', SAVED=['url','club','clients','goods','dDay','dMon','dYear','tH','tM'];
+const read=el=>el.type==='checkbox'?el.checked:el.value;
+try{const S=JSON.parse(localStorage.getItem(KEY)||'{}');
+  SAVED.forEach(id=>{if(S[id]==null) return; if($(id).type==='checkbox') $(id).checked=S[id]; else $(id).value=S[id];});}catch(e){}
+const save=()=>{try{localStorage.setItem(KEY,JSON.stringify(Object.fromEntries(SAVED.map(id=>[id,read($(id))]))))}catch(e){}};
+
+const v=id=>$(id).value.trim();
+function when(){
+  const [d,m,y,h,mi]=['dDay','dMon','dYear','tH','tM'].map(v);
+  if(!d||!m||!y||!h||!mi) return null;
+  const dt=new Date(+y,+m-1,+d,+h,+mi);
+  return {dt,real:dt.getMonth()===+m-1,label:`${pad(d)}.${pad(m)}.${y}, ${h}:${mi}`};
+}
+function issues(){
+  const out=[]; const add=(l,t)=>out.push([l,t]);
+  const u=v('url');
+  if(!u) add('bad','Вкажіть посилання на панель Senet');
+  else if(!/^https?:\/\/[^\s/]+\.[^\s/]+/i.test(u)) add('bad','Посилання має виглядати як https://назва-клубу.admin-v2.enes.tech');
+  if(!v('login')) add('bad','Вкажіть логін до Senet');
+  if(!$('pass').value) add('bad','Вкажіть пароль до Senet');
+  if(!v('club')) add('bad','Вкажіть назву або ID клубу в Highlink');
+  if(!$('clients').checked&&!$('goods').checked) add('bad','Відмітьте, що переносимо: клієнти, товари або все');
+  const w=when();
+  if(!w) add('bad','Вкажіть дату й час початку переносу');
+  else if(!w.real) add('bad','Такої дати немає, перевірте день і місяць');
+  else if(w.dt<=new Date()) add('bad','Цей час уже минув, вкажіть дату в майбутньому');
+  if(!out.length) add('ok','Усе заповнено. Скопіюйте відповіді й надішліть менеджеру');
+  return out;
+}
+function text(){
+  const L=(a,b)=>`${a}: ${b||'—'}`;
+  const what=[$('clients').checked&&'клієнти',$('goods').checked&&'товари'].filter(Boolean).join(', ');
+  const w=when();
+  return [`Анкета Highlink: перенос даних із Senet`,``,L('Посилання на Senet',v('url')),L('Логін',v('login')),L('Пароль',$('pass').value),``,L('Клуб у Highlink',v('club')),L('Що переносимо',what),L('Початок переносу',w&&w.label)].join('\n');
+}
+function update(){
+  const box=$('issues'); box.innerHTML='';
+  issues().forEach(([l,t])=>{const d=document.createElement('div'); d.className='issue '+l; d.textContent=t; box.append(d);});
+  if(!$('out').hidden) $('out').textContent=text();
+}
+document.addEventListener('input',()=>{save(); update();});
+$('eye').onclick=()=>{const p=$('pass'); const on=p.type==='password'; p.type=on?'text':'password'; $('eye').textContent=on?'Сховати':'Показати';};
+$('show').onclick=()=>{const o=$('out'); o.hidden=!o.hidden; o.textContent=text(); $('show').textContent=o.hidden?'Показати текст':'Сховати текст'; if(!o.hidden) o.scrollIntoView({block:'nearest'});};
+let toastTimer;
+const say=(t,bad)=>{const toast=$('toast'); toast.style.color=bad?'var(--bad)':''; toast.textContent=t; clearTimeout(toastTimer); toastTimer=setTimeout(()=>toast.textContent='',5000);};
+$('copy').onclick=async()=>{
+  if(issues().some(([l])=>l==='bad')){say('Заповніть усі поля',true); $('issues').scrollIntoView({block:'nearest'}); return;}
+  const t=text();
+  try{await navigator.clipboard.writeText(t); say('Скопійовано. Надішліть менеджеру в Telegram');}
+  catch(e){const o=$('out'); o.hidden=false; o.textContent=t; const r=document.createRange(); r.selectNodeContents(o); const s=getSelection(); s.removeAllRanges(); s.addRange(r); say('Текст виділено: натисніть Ctrl+C');}};
+update();
+</script>
+</body>
+</html>
