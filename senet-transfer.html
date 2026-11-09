@@ -44,6 +44,7 @@ input:focus-visible,select:focus-visible,button:focus-visible,.ci:focus-within{o
 .tm{display:grid;grid-template-columns:1fr 1fr;gap:6px}
 .ci{display:grid;grid-template-columns:22px minmax(0,1fr);gap:10px;align-items:start;background:var(--bg);border:1px solid var(--line);border-radius:10px;padding:10px 12px;cursor:pointer;font-weight:600}
 .ci input{width:18px;height:18px;margin-top:2px;accent-color:var(--accent)}
+.ci .h{font-weight:400;color:var(--muted);font-size:12.5px}
 .ci:has(input:checked){background:var(--ok-soft);border-color:color-mix(in srgb,var(--ok) 40%,var(--line))}
 .note{font-size:13px;color:var(--muted);margin:0}
 .issues{display:grid;gap:6px;margin-top:18px}
@@ -88,8 +89,11 @@ pre.out{white-space:pre-wrap;overflow-wrap:anywhere;background:var(--surface-2);
   </fieldset>
 
   <fieldset><legend>3. Що переносимо</legend>
-    <label class="ci"><input type="checkbox" id="clients"><span>Клієнти</span></label>
+    <label class="ci"><input type="checkbox" id="zones"><span>Зони й обладнання <span class="h">з MAC-адресами ПК</span></span></label>
+    <label class="ci"><input type="checkbox" id="clients"><span>Клієнти <span class="h">з балансами</span></span></label>
     <label class="ci"><input type="checkbox" id="goods"><span>Товари</span></label>
+    <label class="ci"><input type="checkbox" id="tariffs"><span>Тарифи та абонементи</span></label>
+    <p class="note">Карту клубу, співробітників, лояльність, налаштування клубу і Shell та Checkbox ви заводите самі в Highlink, це з Senet не переноситься.</p>
   </fieldset>
 
   <fieldset><legend>4. Бажана дата й час початку переносу</legend>
@@ -122,7 +126,7 @@ $('tH').innerHTML='<option value="">Год</option>'+Array.from({length:24},(_,i
 $('tM').innerHTML='<option value="">Хв</option>'+[0,15,30,45].map(m=>`<option>${pad(m)}</option>`).join('');
 
 // Зберігаємо чернетку в браузері, але без логіна й пароля: клуб може заповнювати на спільному ПК.
-const KEY='hl-senet-transfer-v1', SAVED=['url','club','clients','goods','dDay','dMon','dYear','tH','tM'];
+const KEY='hl-senet-transfer-v1', SAVED=['url','club','zones','clients','goods','tariffs','dDay','dMon','dYear','tH','tM'];
 const read=el=>el.type==='checkbox'?el.checked:el.value;
 try{const S=JSON.parse(localStorage.getItem(KEY)||'{}');
   SAVED.forEach(id=>{if(S[id]==null) return; if($(id).type==='checkbox') $(id).checked=S[id]; else $(id).value=S[id];});}catch(e){}
@@ -143,7 +147,7 @@ function issues(){
   if(!v('login')) add('bad','Вкажіть логін до Senet');
   if(!$('pass').value) add('bad','Вкажіть пароль до Senet');
   if(!v('club')) add('bad','Вкажіть назву або ID клубу в Highlink');
-  if(!$('clients').checked&&!$('goods').checked) add('bad','Відмітьте, що переносимо: клієнти, товари або все');
+  if(!['zones','clients','goods','tariffs'].some(id=>$(id).checked)) add('bad','Відмітьте, що переносимо: хоча б один пункт або все');
   const w=when();
   if(!w) add('bad','Вкажіть дату й час початку переносу');
   else if(!w.real) add('bad','Такої дати немає, перевірте день і місяць');
@@ -153,7 +157,7 @@ function issues(){
 }
 function text(){
   const L=(a,b)=>`${a}: ${b||'—'}`;
-  const what=[$('clients').checked&&'клієнти',$('goods').checked&&'товари'].filter(Boolean).join(', ');
+  const what=[$('zones').checked&&'зони й обладнання (MAC)',$('clients').checked&&'клієнти з балансами',$('goods').checked&&'товари',$('tariffs').checked&&'тарифи та абонементи'].filter(Boolean).join(', ');
   const w=when();
   return [`Анкета Highlink: перенос даних із Senet`,``,L('Посилання на Senet',v('url')),L('Логін',v('login')),L('Пароль',$('pass').value),``,L('Клуб у Highlink',v('club')),L('Що переносимо',what),L('Початок переносу',w&&w.label)].join('\n');
 }
